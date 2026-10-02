@@ -1,13 +1,25 @@
-# Java 基础语法学习记录
+# Java 学习记录
 
-这是我学习 Java 基础语法的练习代码仓库，用来记录每个知识点的动手练习。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
-- 工程模块：Hello World
-- 代码位置：`src/`，按知识点分包
+- 学习时间：基础语法、面向对象、继承均为国庆节（10 月 1 日）之前；多态为国庆节之后
+
+## 目录一览
+
+| 目录 | 主题 | 学习时间 |
+| --- | --- | --- |
+| 根目录 `src/` | 基础语法：变量、运算符、分支、方法、数组 | 国庆节前 |
+| `oop/` | 面向对象：类与对象、封装、构造方法、工具类、枚举、final | 国庆节前 |
+| `oop_extends/` | 继承：extends、方法重写、super、继承中的构造方法 | 国庆节前 |
+| `Poly/` | 多态：父类引用指向子类对象、instanceof、类型转换 | 国庆节后 |
+
+> 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
 ## 知识点索引
+
+### 一、基础语法（根目录 `src/`）
 
 | 包 | 文件 | 知识点 |
 | --- | --- | --- |
@@ -42,11 +54,40 @@
 | com.array.array | Demo5.java | 随机数去重后存入数组 |
 | com.array.array | Demo6.java | 快慢指针去除有序数组重复元素 |
 
+### 二、面向对象 `oop/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.oop.test1 | Dog.java、Test.java | 类与对象：成员变量、创建对象 |
+| com.oop.test2 | Teacher.java、test.java | 类的行为（方法）与调用 |
+| com.oop.test3 | Dog.java、test.java | 封装：`private` + get/set，数据校验 |
+| com.oop.test4 | student.java、test.java | 封装与 `this` 关键字 |
+| com.oop.test5 | student.java、test.java | 构造方法（有参构造初始化对象） |
+| com.oop.toolclasstest | Arrayutil.java、Test.java | 工具类：私有构造 + 静态方法 |
+| com.oop.finaltest | Circle.java、testcircle.java | `final` 常量、圆的面积与周长 |
+| com.oop.Enumtest | Orderstate.java、test.java | 枚举 `enum`（带属性与构造方法） |
+
+### 三、继承 `oop_extends/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.OopExtendTest1 | Person.java、Student.java、Teacher.java、Test.java | 继承 `extends`：抽取父类、子类特有属性/行为 |
+| com.OopExtendTest2 | SmartDevice.java、Phone.java、Apple.java、Android.java、Laptop.java、Test.java | 多层继承、方法重写 `@Override` |
+| com.OopExtendTest3 | Person.java、Student.java、Test.java | 继承中的构造方法、`super(...)` |
+
+### 四、多态 `Poly/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.test1 | Person.java、Student.java、Teacher.java、Admin.java、system.java、Test.java | 多态：父类引用指向子类对象、方法重写 |
+| com.test2 | Vehicle.java、car.java、bicycle.java、person.java、Test.java | 多态作参数、`instanceof` 判断、强制类型转换 |
+
 ## 运行方式
 
-每个类都带 `main` 方法，用 IDEA 直接点绿色三角运行即可；命令行方式：
+每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
 
 ```bash
+# 基础语法
 cd src
 javac com/test/HelloWorld.java
 java com.test.HelloWorld
@@ -56,12 +97,10 @@ java com.test.HelloWorld
 
 ## 学习进度
 
-- [x] 变量与数据类型
-- [x] 运算符
-- [x] 键盘录入 Scanner
-- [x] if 分支
-- [x] 方法
-- [x] 数组
-- [ ] 面向对象（类与对象）
-- [ ] 集合
+- [x] 基础语法（变量 / 运算符 / 分支 / 方法 / 数组）
+- [x] 面向对象（封装、构造方法、工具类、枚举、final）
+- [x] 继承（extends、方法重写、super）
+- [x] 多态（instanceof、类型转换）
+- [ ] 接口与抽象类
+- [ ] 集合框架
 - [ ] IO 与异常
