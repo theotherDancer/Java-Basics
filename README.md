@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -13,7 +13,7 @@
 | 根目录 `src/` | 基础语法：变量、运算符、分支、方法、数组 | 国庆节前 |
 | `oop/` | 面向对象：类与对象、封装、构造方法、工具类、枚举、final | 国庆节前 |
 | `oop_extends/` | 继承：extends、方法重写、super、继承中的构造方法 | 国庆节前 |
-| `Poly/` | 多态：父类引用指向子类对象、instanceof、类型转换 | 国庆节后 |
+| `Poly/` | 多态、抽象类、接口、内部类 | 国庆节后 |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -75,12 +75,15 @@
 | com.OopExtendTest2 | SmartDevice.java、Phone.java、Apple.java、Android.java、Laptop.java、Test.java | 多层继承、方法重写 `@Override` |
 | com.OopExtendTest3 | Person.java、Student.java、Test.java | 继承中的构造方法、`super(...)` |
 
-### 四、多态 `Poly/`
+### 四、多态与抽象 / 接口 `Poly/`
 
 | 包 | 文件 | 知识点 |
 | --- | --- | --- |
 | com.test1 | Person.java、Student.java、Teacher.java、Admin.java、system.java、Test.java | 多态：父类引用指向子类对象、方法重写 |
 | com.test2 | Vehicle.java、car.java、bicycle.java、person.java、Test.java | 多态作参数、`instanceof` 判断、强制类型转换 |
+| com.Abstracttest3 | Animal.java、Cat.java、Test.java | 抽象类 `abstract`、抽象方法、子类实现 |
+| com.Interface | Animal.java、Fork.java、swim.java、Test.java | 接口 `interface`、`implements`，抽象类 + 接口组合使用 |
+| com.InnerClass | Swim.java、Test.java | 匿名内部类：一次性实现接口，省去单独建类 |
 
 ## 运行方式
 
@@ -101,6 +104,16 @@ java com.test.HelloWorld
 - [x] 面向对象（封装、构造方法、工具类、枚举、final）
 - [x] 继承（extends、方法重写、super）
 - [x] 多态（instanceof、类型转换）
-- [ ] 接口与抽象类
+- [x] 抽象类、接口、内部类
 - [ ] 集合框架
 - [ ] IO 与异常
+
+## 更新记录
+
+### 2026-10-02
+
+- `Poly/` 新增三个知识点练习：
+  - `com.Abstracttest3`：抽象类与抽象方法（Animal / Cat）。
+  - `com.Interface`：接口 `interface` 与 `implements`，抽象类 + 接口组合使用（Animal / Fork / swim）。
+  - `com.InnerClass`：匿名内部类，用一次性的内部类实现接口（Swim / Test）。
+- README 同步更新知识点索引与学习进度。
