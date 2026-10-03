@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -14,6 +14,7 @@
 | `oop/` | 面向对象：类与对象、封装、构造方法、工具类、枚举、final | 国庆节前 |
 | `oop_extends/` | 继承：extends、方法重写、super、继承中的构造方法 | 国庆节前 |
 | `Poly/` | 多态、抽象类、接口、内部类 | 国庆节后 |
+| `API/` | 常用 API：Random、String 及其常用方法 | 2026-10-03 |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -85,6 +86,18 @@
 | com.Interface | Animal.java、Fork.java、swim.java、Test.java | 接口 `interface`、`implements`，抽象类 + 接口组合使用 |
 | com.InnerClass | Swim.java、Test.java | 匿名内部类：一次性实现接口，省去单独建类 |
 
+### 五、常用 API `API/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.APITest1 | Test.java | `java.util.Random`：`nextDouble()` / `nextInt()`、指定范围的随机数 |
+| com.StringTest2 | Test.java | String 的五种创建方式（直接赋值、`new`、char[]、byte[]） |
+| com.StringTest3 | Test.java | 字符串比较 `equals` + 登录模拟（3 次机会） |
+| com.StringTest3 | Test2.java | 字符串遍历 `length()` + `charAt()` |
+| com.StringTest3 | Test3.java | 统计字符串中大写 / 小写 / 数字的个数 |
+| com.StringTest3 | Arrayutil.java | 工具类：`arrayToString` 把 int 数组拼接成字符串 |
+| com.StringTest3 | Test4.java | 调用工具类将 int 数组转为字符串输出 |
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -105,6 +118,7 @@ java com.test.HelloWorld
 - [x] 继承（extends、方法重写、super）
 - [x] 多态（instanceof、类型转换）
 - [x] 抽象类、接口、内部类
+- [x] 常用 API（Random、String）
 - [ ] 集合框架
 - [ ] IO 与异常
 
@@ -116,4 +130,12 @@ java com.test.HelloWorld
   - `com.Abstracttest3`：抽象类与抽象方法（Animal / Cat）。
   - `com.Interface`：接口 `interface` 与 `implements`，抽象类 + 接口组合使用（Animal / Fork / swim）。
   - `com.InnerClass`：匿名内部类，用一次性的内部类实现接口（Swim / Test）。
+- README 同步更新知识点索引与学习进度。
+
+### 2026-10-03
+
+- 新增 `API/` 项目：常用 API 练习。
+  - `com.APITest1`：`Random` 随机数（小数、指定范围）。
+  - `com.StringTest2`：String 的五种创建方式。
+  - `com.StringTest3`：字符串比较 `equals` / 登录模拟、字符串遍历、字符种类统计、数组转字符串（`Arrayutil`）。
 - README 同步更新知识点索引与学习进度。
