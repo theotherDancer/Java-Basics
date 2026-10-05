@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -15,6 +15,7 @@
 | `oop_extends/` | 继承：extends、方法重写、super、继承中的构造方法 | 国庆节前 |
 | `Poly/` | 多态、抽象类、接口、内部类 | 国庆节后 |
 | `API/` | 常用 API：Random、String、StringBuilder、ArrayList | 2026-10-03 ~ 10-04 |
+| `TestFightGame/` | 阶段性项目：控制台文字格斗游戏（登录 / 注册） | 2026-10-05（进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -109,6 +110,18 @@
 | --- | --- | --- |
 | com.ArrayListDemo | Test1.java | `ArrayList` 集合：`add` / `set` / `get` / `size` / 遍历（长度用 `size()` 而非 `length`） |
 
+### 七、阶段性项目：文字格斗游戏 `TestFightGame/`（进行中）
+
+把前面所学（面向对象、集合、String、控制台交互）串起来做的第一个**综合项目**，从控制台登录 / 注册入口开始搭。
+
+| 包 | 文件 | 说明 |
+| --- | --- | --- |
+| （默认包） | APP.java | 启动类：创建 `Login` 并调用 `start()` |
+| com.zhangyihang.domain | User.java | 用户实体：id / username / password / status，id 由系统随机生成 |
+| com.zhangyihang.ui | Login.java | 控制台界面：登录 / 注册 / 退出；用户名长度（3~16 位）与格式（字母开头、不能纯数字）校验 |
+
+> 状态：**进行中，尚未完成**（注册流程还需完善）。今天没有新学知识点，主要是综合运用已有内容。
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -132,8 +145,40 @@ java com.test.HelloWorld
 - [x] 常用 API（Random、String）
 - [x] StringBuilder
 - [x] 集合入门（ArrayList）
+- [x] 综合练习：控制台文字格斗游戏（进行中）
 - [ ] 集合框架（进阶）
 - [ ] IO 与异常
+
+## 踩坑经验总结（2026-10-05）
+
+这是写「文字格斗游戏」时踩到的坑与结论，记下来避免再犯。
+
+### 结构 / 括号
+
+1. 方法只能写在类的**直接层级**：不能在方法里再定义方法（报 `illegal start of expression`），也不能写在类外面（报 `class, interface, enum, or record expected`）。
+2. 花括号必须配对：多一个或提前闭合的 `}`，会让后面的方法“掉到类外面”。写完按 `Ctrl + Alt + L` 格式化，层次一眼就清楚。
+3. 同一个方法里局部变量不能重名：报 `variable xxx is already defined`；哪怕一个在方法级、一个在循环块内，也不能同名。
+
+### 方法 / 参数 / 返回值
+
+4. 返回类型必须和 `return` 一致：`void` 方法不能 `return 值`（报 `unexpected return value`）；要返回值就把返回类型改成对应类型。
+5. `return` 结束的是**整个方法**，不是循环。区分三者：`return`（结束方法）/ `break`（结束循环）/ `continue`（跳过本次）。
+6. `return false` 要放在循环**外面**：放里面会报 `missing return statement`，而且循环只会检查第一个元素。规则是「循环里找到就 `return true`，循环外都找完没找到才 `return false`」。
+7. 形参 vs 实参：定义时写「类型 + 名字」（形参），调用时只写对象（实参）；参数名随便取、只在方法内有效。`ArrayList<User> list = new ArrayList<>()` 里的 `list` 是**变量名**，不是实参。
+
+### 逻辑
+
+8. 字符比较要用字符字面量：判断数字写 `c >= '0' && c <= '9'`，别写 `c >= 0 && c <= 9`（那是拿编码值比较，永远判不出数字）。
+9. 集合装的是对象：`ArrayList<User>` 里用 `list.contains("字符串")` 永远返回 false，要遍历比较 `getUsername()`。
+10. 防空指针：`x.equals(u.getUsername())` 比 `u.getUsername().equals(x)` 安全（后者用户名是 null 会崩）。
+
+### 常用 API
+
+11. `Random` 的构造参数是**种子**（long）：同种子序列可复现，且种子与输出之间没有可直观对应的关系；`java.util.Random` 是伪随机，安全场景请用 `SecureRandom`。
+
+### 学习方向（AI 时代）
+
+12. 语法 / API 细节可以少背、多交给 AI；但「读代码、调试、判断对错、设计结构」必须自己练——今天的坑几乎都是结构与逻辑问题，正是 AI 也容易写错、最需要你把关的地方。
 
 ## 更新记录
 
@@ -162,3 +207,9 @@ java com.test.HelloWorld
   - `com.StringBuilderDemo`：字符串拼接性能问题 + `StringBuilder` 的 `append` / `toString`。
   - `com.ArrayListDemo`：`ArrayList` 集合入门（`add` / `set` / `get` / `size` / 遍历）。
 - README 同步更新知识点索引与学习进度。
+
+### 2026-10-05
+
+- 新增 `TestFightGame/` 阶段性项目：控制台「文字格斗游戏」的登录 / 注册模块（`APP` 启动类、`User` 实体、`Login` 界面）。
+- 该项目是把已学内容（面向对象、集合、String、控制台交互）串起来的第一个综合练习；**今天没有新学知识点，项目尚未完成**。
+- README 新增「踩坑经验总结（2026-10-05）」，收录今天调试中遇到的问题与结论。
