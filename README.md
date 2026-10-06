@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -146,8 +146,30 @@ java com.test.HelloWorld
 - [x] StringBuilder
 - [x] 集合入门（ArrayList）
 - [x] 综合练习：控制台文字格斗游戏（进行中）
+- [x] 常用类：System、Object、包装类
 - [ ] 集合框架（进阶）
 - [ ] IO 与异常
+
+## 学习笔记（2026-10-06）：System / Object / 包装类
+
+### System 类
+
+1. `java.lang.System` 是 **final 类 + 私有构造**，不能 `new`，只能用它的**静态成员**。
+2. 常用：`System.out.println(...)` / `print(...)`（标准输出，`out` 是一个 `PrintStream`）；`System.exit(0)`（退出 JVM，0 正常、非 0 异常终止）；`System.currentTimeMillis()`（当前毫秒时间戳，常用来算耗时）；`System.arraycopy(...)`（高效数组复制）；`System.getProperty("os.name")`（系统属性）、`System.getenv(...)`（环境变量）。
+
+### Object 类
+
+1. 所有类的**根父类**：`class A {}` 等价于 `class A extends Object {}`。
+2. 被子类经常重写的方法：`toString()`（默认输出 `类名@哈希十六进制`，就是之前 `[C@xxx` 那个规则；`println(对象)` 会自动调用它）；`equals(Object)`（默认比地址；重写后比内容，如 `String` / `Integer`）；`hashCode()`（哈希值，**重写 `equals` 就要一起重写 `hashCode`**，集合去重要用）；`getClass()`（取运行时类型，反射用）。
+3. 为什么重要：多态、集合去重、打印对象、对象比较，都建立在这一层之上。
+
+### 包装类
+
+1. 8 种基本类型各有一个包装类：`int→Integer`、`char→Character`、`double→Double`……（其余首字母大写）。
+2. 价值：集合 / 泛型只能装对象（`ArrayList<Integer>`）；自带工具方法与常量（`Integer.parseInt`、`Integer.MAX_VALUE`）；可表示 `null`。
+3. 自动装箱 / 拆箱：`Integer i = 10;`（装箱）、`int x = i;`（拆箱）。
+4. 两个坑：`==` 只缓存 **-128~127**（比“值”要用 `equals`）；`null` 拆箱会 **NPE**。
+5. 扩展：超大整数用 `BigInteger`，精确小数（如金额）用 `BigDecimal`；`double` 有精度误差、算钱会出错；`BigDecimal` 比较用 `compareTo`，除法要指定精度和舍入模式。
 
 ## 踩坑经验总结（2026-10-05）
 
@@ -213,3 +235,8 @@ java com.test.HelloWorld
 - 新增 `TestFightGame/` 阶段性项目：控制台「文字格斗游戏」的登录 / 注册模块（`APP` 启动类、`User` 实体、`Login` 界面）。
 - 该项目是把已学内容（面向对象、集合、String、控制台交互）串起来的第一个综合练习；**今天没有新学知识点，项目尚未完成**。
 - README 新增「踩坑经验总结（2026-10-05）」，收录今天调试中遇到的问题与结论。
+
+### 2026-10-06
+
+- 学习常用类：`System`、`Object`、包装类（含扩展 `BigInteger` / `BigDecimal`），整理为「学习笔记（2026-10-06）」写进本 README。
+- README 同步更新学习进度（新增「常用类」一项）与更新记录。
