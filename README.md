@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -16,6 +16,8 @@
 | `Poly/` | 多态、抽象类、接口、内部类 | 国庆节后 |
 | `API/` | 常用 API：Random、String、StringBuilder、ArrayList | 2026-10-03 ~ 10-04 |
 | `TestFightGame/` | 阶段性项目：控制台文字格斗游戏（登录 / 注册） | 2026-10-05（进行中） |
+| `api-code/` | 常用类 `Math`、正则表达式与网络爬虫入门 | 2026-10-06 ~ 10-07 |
+| `search_code/` | 查找算法：基本查找 | 2026-10-07 |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -122,6 +124,27 @@
 
 > 状态：**进行中，尚未完成**（注册流程还需完善）。今天没有新学知识点，主要是综合运用已有内容。
 
+### 八、常用类 `Math` `api-code/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.mathTest | MathTest1.java | `Math` 工具类（静态、不能 new）：`abs` / `ceil` / `floor` / `round` / `pow` / `sqrt` / `cbrt` / `random` |
+
+### 九、正则表达式与网络爬取入门 `api-code/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.WebSpider | Test1.java | `Pattern` / `Matcher`：`find()` 循环取值，捕获 `JDK\s*(\d+)?` |
+| com.zhangyihang.WebSpider | Test2.java | `java.net.URL` 网页爬取入门（占位练习，未完成） |
+| com.zhangyihang.WebSpider | Test3.java | 忽略大小写 `(?i)` + 零宽前瞻 `(?=\s*\d+)`：只匹配 `JDK` 不带版本号 |
+| com.zhangyihang.WebSpider | Test4.java | `replaceAll` / `split` 按正则替换与切割 |
+
+### 十、查找算法 `search_code/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.search | BasicSearch1.java | 基本查找：从 0 索引开始逐个比较（初稿，见下方踩坑第 13 条） |
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -147,6 +170,9 @@ java com.test.HelloWorld
 - [x] 集合入门（ArrayList）
 - [x] 综合练习：控制台文字格斗游戏（进行中）
 - [x] 常用类：System、Object、包装类
+- [x] 常用类：Math（数学工具类）
+- [x] 正则表达式（Pattern / Matcher）
+- [x] 查找算法：基本查找
 - [ ] 集合框架（进阶）
 - [ ] IO 与异常
 
@@ -202,6 +228,26 @@ java com.test.HelloWorld
 
 12. 语法 / API 细节可以少背、多交给 AI；但「读代码、调试、判断对错、设计结构」必须自己练——今天的坑几乎都是结构与逻辑问题，正是 AI 也容易写错、最需要你把关的地方。
 
+## 踩坑经验总结（2026-10-07）
+
+学正则表达式和查找算法时踩到的坑，记下来避免再犯。
+
+### 正则 / Matcher
+
+13. `find()` 是**消费式**的：每调用一次才向后推进一格。正确写法是 `while (m.find()) { ... }`。
+14. 死循环的根源：写了 `boolean b = m.find(); while (b) { ... }`，循环里从不更新 `b`，`b` 永远为 `true`，`group()` 也永远返回同一个匹配。
+15. 反过来，进循环前**多调一次** `find()` 会「吃掉」第一个匹配：循环前写了 `boolean b = m.find();` 又用 `while (m.find())`，结果第一个 `JDK 27` 消失，只剩后面几个。
+16. 想「匹配但不消耗」，用**零宽前瞻** `(?=...)`：如 `(?i)JDK(?=\s*\d+)` 只匹配 `JDK`，版本号留给前瞻去「看」。
+17. 忽略大小写：正则开头加 `(?i)`，或 `Pattern.compile(re, Pattern.CASE_INSENSITIVE)`。
+18. 只要带数字的版本号，把可选组去掉：`JDK\s*(\d+)?` → `JDK\s*(\d+)`。
+19. `replaceAll(regex, ...)` / `split(regex)` 的形参名是 regex 时，一定按正则解析：`split("[A-Za-z0-9]+")` 会按「字母数字串」切割。
+
+### 结构 / IDEA
+
+20. **方法必须写在类的花括号内部**：写到类外面（`}` 之后）会报 `class, interface, enum, or record expected`。
+21. 文件放在 `src\com\zhangyihang\search\` 下，代码第一行应写 `package com.zhangyihang.search;`，否则报「包名与文件路径不对应」。
+22. 方法名不要和类名重名（如方法也叫 `BasicSearch1`），容易和构造器混淆，改用小驼峰。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -240,3 +286,11 @@ java com.test.HelloWorld
 
 - 学习常用类：`System`、`Object`、包装类（含扩展 `BigInteger` / `BigDecimal`），整理为「学习笔记（2026-10-06）」写进本 README。
 - README 同步更新学习进度（新增「常用类」一项）与更新记录。
+
+### 2026-10-07
+
+- 新增 `api-code/` 项目：
+  - `com.zhangyihang.mathTest`：`Math` 数学工具类（`abs` / `ceil` / `floor` / `round` / `pow` / `sqrt` / `cbrt` / `random`）。
+  - `com.zhangyihang.WebSpider`：`Pattern` / `Matcher` 正则入门、忽略大小写与前瞻断言、`replaceAll` / `split`，以及 `URL` 网页爬取占位练习。
+- 新增 `search_code/` 项目：基本查找（从 0 索引逐个比较）。
+- README 新增「踩坑经验总结（2026-10-07）」（正则与 IDEA 排错），并同步更新目录一览、知识点索引、学习进度与更新记录。
