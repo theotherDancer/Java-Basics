@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -17,7 +17,8 @@
 | `API/` | 常用 API：Random、String、StringBuilder、ArrayList | 2026-10-03 ~ 10-04 |
 | `TestFightGame/` | 阶段性项目：控制台文字格斗游戏（登录 / 注册） | 2026-10-05（进行中） |
 | `api-code/` | 常用类 `Math`、正则表达式与网络爬虫入门 | 2026-10-06 ~ 10-07 |
-| `search_code/` | 查找算法：基本查找 | 2026-10-07 |
+| `search_code/` | 查找算法：基本查找、二分查找、分块查找 | 2026-10-07 ~ 10-08 |
+| `Sort_Code/` | 排序算法：冒泡排序 | 2026-10-08 |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -143,7 +144,15 @@
 
 | 包 | 文件 | 知识点 |
 | --- | --- | --- |
-| com.zhangyihang.search | BasicSearch1.java | 基本查找：从 0 索引开始逐个比较（初稿，见下方踩坑第 13 条） |
+| com.zhangyihang.search | BasicSearch1.java | 基本查找：从 0 索引开始逐个比较，找到返回 `true` |
+| com.zhangyihang.search | BinarySearch.java | 二分查找：要求数组有序，用 `min` / `max` / `mid` 折半收缩，找不到返回 `-1` |
+| com.zhangyihang.search | BlockSearch.java | 分块查找（索引顺序查找）：先用索引表 `block[]` 按 `min~max` 定位到块，再在该块 `startIndex~endIndex` 内顺序查找 |
+
+### 十一、排序算法 `Sort_Code/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.mysort | a01_BubbleSort.java | 冒泡排序：相邻两两比较、左大于右就交换；外层 `n-1` 轮，内层 `n-1-i` 次 |
 
 ## 运行方式
 
@@ -172,7 +181,8 @@ java com.test.HelloWorld
 - [x] 常用类：System、Object、包装类
 - [x] 常用类：Math（数学工具类）
 - [x] 正则表达式（Pattern / Matcher）
-- [x] 查找算法：基本查找
+- [x] 查找算法：基本查找 / 二分查找 / 分块查找
+- [x] 排序算法：冒泡排序
 - [ ] 集合框架（进阶）
 - [ ] IO 与异常
 
@@ -248,6 +258,30 @@ java com.test.HelloWorld
 21. 文件放在 `src\com\zhangyihang\search\` 下，代码第一行应写 `package com.zhangyihang.search;`，否则报「包名与文件路径不对应」。
 22. 方法名不要和类名重名（如方法也叫 `BasicSearch1`），容易和构造器混淆，改用小驼峰。
 
+## 踩坑经验总结（2026-10-08）
+
+学查找 / 排序算法时踩到的坑，以及今天问到的几个概念，记下来避免再犯。
+
+### 结构与编译
+
+23. **大括号提前闭合**是今天最坑的错：`BlockSearch` 类在第 21 行就 `}` 结束了，`findBlock` / `getIndex` 掉到类外面。JDK 25 会把这种「顶层方法」当成**紧凑源文件**去解析，于是报错出现在**第 1 行**「压缩源文件不应有程序包声明」，跟真实原因完全对不上。**报错位置离谱时，先数括号。**
+24. **类名不能当对象用**：写 `block.getMin` 报「找不到符号 / 符号: 变量 getMin / 位置: 类 BlockSearch.block」——`block` 是类名，编译器在找同名字段；就算写 `block.getMin()` 也不行，**实例方法只能由对象调用**，类名只能调静态成员。
+25. **`private` 成员跨类访问不到**：`blockArr[i].min` 报「min 在 block 中是 private 访问控制」；同类里访问别人的私有方法报「secret() 在 A 中是 private 访问控制」；跨包访问包级成员报「pkg()在A中不是公共的; 无法从外部程序包中对其进行访问」。要用就通过 `getMin()`。
+26. **方法必须写在类里**：Java 没有顶层方法。唯一例外是 JDK 25 的**紧凑源文件**（JEP 512）——没有 `package` 声明的单文件可以直接写顶层 `void main()` 并用 `java Demo.java` 运行；但一旦有 `package` 声明就会冲突。
+
+### 逻辑与边界
+
+27. **返回「找不到」用 `null`**：对象类型的惯例，方法注释写清，调用方必须判空。对外 API 可用 `Optional`，只有「不该发生」的情况才抛异常；`return block;` 这种把类名当变量写会报「找不到符号」，循环走完也必须有 `return`，否则报 `missing return statement`。
+28. **循环边界 `<` 漏元素**：`for (int i = b.getStartIndex(); i < b.getEndIndex(); i++)` 把块的最后一个位置漏掉了——查 48（下标正好是 b4 的 `endIndex`）永远失败，而查 50（`endIndex - 1`）却正常。**这种「时灵时不灵」的边界 bug 最难查**：`endIndex` 是包含语义就必须写 `<=`，或者两处口径统一改。
+29. **分块查找的前提是「块间有序」**：后一块的所有元素都要大于前一块的最大值；今天的数据 22~40 / 13~20 / 7~10 / 43~50 块间是乱的，严格说不满足前提，只能靠 `min` / `max` 区间匹配块，没法用「块最大值 + 二分」加速索引表。
+30. **冒泡排序的边界**：外层 `n-1` 轮，内层 `n-1-i`（每轮结束末尾又多排好一个最大的元素），左 > 右就交换。边界写错不会报错，只会结果不对。
+
+### 概念
+
+31. **跨类调用 = 访问权限 + 调用方式**：`private` 本类 / 默认（包级）同包 / `protected` 同包 + 子类 / `public` 全部；实例方法要 `new` 对象，静态方法 `类名.方法()`，跨包要 `import`，子类可直接继承调用；静态方法里不能直接使用非静态成员。
+32. **`private` 的意义不在「能不能读」，在「能不能改」**：只给 getter 不给 setter 就是只读；setter 里能加校验（public 字段被改成 `100~1` 会静默报废，私有 setter 当场拦截）；还能只暴露部分字段、换内部实现、返回防御性副本、`final` 做成不可变对象。**每个字段都无脑配 getter/setter，那才真的等于 public。**
+33. **练习方法**：每种查找 / 排序都补三条边界用例——查第一个、查最后一个、查不存在的元素。今天的 48 就是死在最后一条上。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -294,3 +328,11 @@ java com.test.HelloWorld
   - `com.zhangyihang.WebSpider`：`Pattern` / `Matcher` 正则入门、忽略大小写与前瞻断言、`replaceAll` / `split`，以及 `URL` 网页爬取占位练习。
 - 新增 `search_code/` 项目：基本查找（从 0 索引逐个比较）。
 - README 新增「踩坑经验总结（2026-10-07）」（正则与 IDEA 排错），并同步更新目录一览、知识点索引、学习进度与更新记录。
+
+### 2026-10-08
+
+- 学习查找算法与排序算法，`search_code/` 同步补齐两个文件：
+  - `com.zhangyihang.search.BinarySearch`：二分查找（数组必须有序，`min` / `max` / `mid` 折半收缩，找不到返回 `-1`）。
+  - `com.zhangyihang.search.BlockSearch`：分块查找（索引表 `block[]` 定位块 + 块内顺序查找），含索引实体类 `block`（`min` / `max` / `startIndex` / `endIndex`）。
+- 新增 `Sort_Code/` 项目：`com.zhangyihang.mysort.a01_BubbleSort`（冒泡排序）。
+- README 新增「踩坑经验总结（2026-10-08）」（结构 / 边界 / 概念三组共 11 条），并同步更新目录一览、知识点索引（新增「十一、排序算法」）、学习进度与更新记录。
