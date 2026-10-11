@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda（进行中）。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -19,6 +19,7 @@
 | `api-code/` | 常用类 `Math`、正则表达式与网络爬虫入门 | 2026-10-06 ~ 10-07 |
 | `search_code/` | 查找算法：基本查找、二分查找、分块查找 | 2026-10-07 ~ 10-08 |
 | `Sort_Code/` | 排序算法：冒泡 / 选择 / 插入 / 快速排序、递归 | 2026-10-08 ~ 10-09 |
+| `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -158,6 +159,13 @@
 | com.zhangyihang.mysort | a04_Recursion.java | 递归：求 1~100 的和（`getSum`）+ 阶乘（`gatFactorial`，尚未改成 `long`） |
 | com.zhangyihang.mysort | a05_quicklySort.java | 快速排序：基准 + 双指针分区（右指针先动）+ 对左右两半递归 |
 
+### 十二、Arrays 常用 API 与 Lambda 入门 `MyAPI/`
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.TestAPI | MyArraysDemo1.java | `java.util.Arrays` 常用方法：`toString` 拼接、`binarySearch` 二分查找（需先有序）、`copyOf` / `copyOfRange` 复制、`fill` 填充、`sort` 排序；用「取负 → 排序 → 再取负」实现降序 |
+| com.zhangyihang.TestLambda | LambdaDemo1.java | 接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调）、Lambda 表达式入门（`method(() -> {...})`）（**进行中，尚未学完**） |
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -188,6 +196,8 @@ java com.test.HelloWorld
 - [x] 查找算法：基本查找 / 二分查找 / 分块查找
 - [x] 排序算法：冒泡 / 选择 / 插入 / 快速排序
 - [x] 递归（求和、阶乘）
+- [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
+- [ ] 函数式编程 / Lambda 表达式（进行中）
 - [ ] 集合框架（进阶）
 - [ ] IO 与异常
 
@@ -328,6 +338,34 @@ java com.test.HelloWorld
 51. **用对照实验定位**：拿 `Arrays.sort` / Python 的 `math.factorial` 当标准答案，比肉眼看快得多；**先看异常栈第一行**指向自己写的哪一行。
 52. **边界用例清单**：空数组、单元素、两个元素、全相同、已有序、完全倒序 —— 今天的 bug 几乎都是被其中一种逼出来的。
 
+## 踩坑经验总结（2026-10-11）
+
+学 `java.util.Arrays` 常用 API、接口与 Lambda 入门时踩到的坑和理清的概念，记下来避免再犯。
+
+### 结构 / 语法
+
+53. **匿名内部类作为语句，结尾必须有分号**：`new Swim(){ ... }` 只写了结尾的 `}`、漏掉 `;`，javac 报「需要';'」，定位就指向那个 `}`。写成 `new Swim(){...};`，或直接接 `.swimming();` 调用即可。
+54. **方法不能嵌套定义**：把 `public static void method(Swim s){...}` 写进 `main` 的方法体里，报「非法的表达式开始」「方法声明无效; 需要返回类型」，还会连带一批「非法的类型开始」「需要 class、interface、enum 或 record」——这些连锁错误其实只有**一个根因**：方法只能定义在类的直接层级、和 `main` 平级。
+55. **`return int[]arr;` 是语法错误**：`int[]arr;` 是「声明变量」的语句，不能当返回值，javac 报「需要 '.class'」。要返回数组变量直接写 `return arr;`。
+
+### Arrays 常用 API
+
+56. `Arrays.binarySearch(arr, x)` **要求数组先有序**：对乱序数组用，结果没有意义（可能返回负数或错误下标）。查找前先 `Arrays.sort`。
+57. `Arrays.copyOf(arr, n)`：`n` 比原长度**大就补 0**、小就截断；`copyOfRange(arr, from, to)` 是**左闭右开**区间。
+58. `Arrays.fill(arr, v)` 会把**整个数组**（包括原有元素）全部覆盖成 `v`。
+59. **Arrays 没有直接降序方法**：两种常用写法——①升序后首尾翻转；②「取负 → 升序 → 再取负」。第②种注意 `Integer.MIN_VALUE` 取负会溢出，且会**原地修改传入的数组**。
+
+### 接口 / 多态
+
+60. **接口里可以没有任何抽象方法**：空接口（标记接口，如 `Serializable`）、只放 `default` / `static`（Java 8+）/ `private`（Java 9+）方法的接口都合法。
+61. **接口抽象方法是「实现（implement）」，不是「重写（override）」**：接口只声明、没有方法体，不存在「原来的版本」。`@Override` 注解两者都能标。调用时因为**多态 / 动态绑定**，永远执行对象真实类型（实现类）里的那一版。
+
+### Lambda / 匿名内部类
+
+62. **Lambda 必须有「目标类型」**：单独写一句 `() -> ...;` 编译不过，必须赋给接口变量、强制转换 `(Swim) ...`、或作为函数式接口的参数传给方法。
+63. **`method(Swim s)` 这种辅助方法不是必需的**：不写它也能用匿名内部类 / Lambda，只要给 lambda 一个目标类型即可；它存在的意义是演示「接口作参数（回调）」。
+64. **函数式接口**（只有一个抽象方法的接口，如 `Swim`）的匿名内部类可以简化成 Lambda：`new Swim(){ @Override public void swimming(){...} }` 等价于 `() -> {...}`。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -391,3 +429,10 @@ java com.test.HelloWorld
   - `com.zhangyihang.mysort.a04_Recursion`：递归求 1~100 的和 + 阶乘（阶乘目前返回 `int`，20! 会溢出，待改 `long`）。
   - `com.zhangyihang.mysort.a05_quicklySort`：快速排序（递归出口 `i >= j` 放第一行、右指针先动、左右半递归参数修正）。
 - README 新增「踩坑经验总结（2026-10-09）」（结构 / 递归 / 快排 / 数值 / static / 调试 六组，编号 34~52），并同步更新目录一览、知识点索引（补充「十一、排序算法」）、学习进度与更新记录。
+
+### 2026-10-11
+
+- 新增 `MyAPI/` 项目：
+  - `com.zhangyihang.TestAPI.MyArraysDemo1`：`java.util.Arrays` 常用 API 练习（`toString` / `binarySearch` / `copyOf` / `copyOfRange` / `fill` / `sort`），并用「取负 → 排序 → 再取负」实现降序排序 `sort1`。
+  - `com.zhangyihang.TestLambda.LambdaDemo1`：接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调），并开始接触 Lambda 表达式。**Lambda 尚未学完。**
+- README 新增「踩坑经验总结（2026-10-11）」（结构 / Arrays / 接口多态 / Lambda 四组，编号 53~64），并同步更新目录一览、知识点索引（新增「十二」）、学习进度与更新记录。
