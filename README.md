@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda（进行中）。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API / IO 与异常（进行中）。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -20,6 +20,7 @@
 | `search_code/` | 查找算法：基本查找、二分查找、分块查找 | 2026-10-07 ~ 10-08 |
 | `Sort_Code/` | 排序算法：冒泡 / 选择 / 插入 / 快速排序、递归 | 2026-10-08 ~ 10-09 |
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
+| `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 | 2026-10-14（IO 进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -166,6 +167,18 @@
 | com.zhangyihang.TestAPI | MyArraysDemo1.java | `java.util.Arrays` 常用方法：`toString` 拼接、`binarySearch` 二分查找（需先有序）、`copyOf` / `copyOfRange` 复制、`fill` 填充、`sort` 排序；用「取负 → 排序 → 再取负」实现降序 |
 | com.zhangyihang.TestLambda | LambdaDemo1.java | 接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调）、Lambda 表达式入门（`method(() -> {...})`）（**进行中，尚未学完**） |
 
+### 十三、`File` 类常用 API 与 IO 入门 `Myfile/`
+
+`java.io.File` 的第一个练习，代码写在**默认包**（无 `package` 声明）下，是独立工程 `Myfile/`。
+
+| 文件 | 知识点 |
+| --- | --- |
+| FileDemo1.java | `new File(String)` 与 `new File(parent, child)` 两种构造路径的方式、打印 `File` 对象 |
+| FileDemo2.java | `isDirectory()` / `isFile()` / `exists()` 判断；路径不存在时三者全为 `false` |
+| FileDemo3.java | `length()` 文件字节数（对文件夹无意义）、`getAbsolutePath()` 绝对路径、`getName()`、`lastModified()` 毫秒时间戳 |
+| FileDemo4.java | `createNewFile()` 创建文件：不存在→`true`、已存在→`false`；方法签名 `throws IOException` |
+| FileDemo5.java | `delete()` 删除文件：成功返回 `true` |
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -199,7 +212,8 @@ java com.test.HelloWorld
 - [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
 - [ ] 函数式编程 / Lambda 表达式（进行中）
 - [ ] 集合框架（进阶）
-- [ ] IO 与异常
+- [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳）（2026-10-14，**进行中**）
+- [ ] 异常处理（`throw` / `throws` / `try-catch`）（刚接触概念）
 
 ## 学习笔记（2026-10-06）：System / Object / 包装类
 
@@ -366,6 +380,31 @@ java com.test.HelloWorld
 63. **`method(Swim s)` 这种辅助方法不是必需的**：不写它也能用匿名内部类 / Lambda，只要给 lambda 一个目标类型即可；它存在的意义是演示「接口作参数（回调）」。
 64. **函数式接口**（只有一个抽象方法的接口，如 `Swim`）的匿名内部类可以简化成 Lambda：`new Swim(){ @Override public void swimming(){...} }` 等价于 `() -> {...}`。
 
+## 踩坑经验总结（2026-10-14）
+
+学 `java.io.File` 常用 API、并顺带搞清「异常的抛出 / 声明 / 捕获」时踩到的坑与结论，记下来避免再犯。
+
+### File 类
+
+65. **`createNewFile()` 遇到「文件已存在」返回 `false`、不抛异常**：已存在属于**预期内的正常结果**，不是错误。`IOException` 只留给真正的 IO 错误（父目录不存在、路径是目录、无权限、磁盘故障）。想「已存在就报错」得自己写 `if (f.exists()) throw new RuntimeException("文件已存在");`。
+66. **`createNewFile()` / `delete()` / `mkdir()` 都返回 `boolean`**：用不用返回值要想清楚。代码里对同一个文件连调两次 `createNewFile()`、第一次的返回值却不接，就是冗余写法。
+67. **`length()` 返回的是「文件字节数」，对文件夹不可靠**：实测文件夹返回 `0`，拿不到文件夹的真实大小（要自己递归累加子文件/子目录）。
+68. **`getAbsolutePath()` 里相对路径基于「程序当前工作目录」**：IDEA 里默认是项目根目录，不是 `src`；`new File("a.txt")` 得到的绝对路径会指向项目根。
+69. **`lastModified()` 返回 `long` 毫秒时间戳**，要转成日期：老 API 用 `new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(ms))`；新 API 推荐 `Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault())` + `DateTimeFormatter`（`java.time` 不可变、线程安全）。
+70. **`getName()` 的文件 / 文件夹行为不同**：文件返回「名字 + 后缀」，文件夹只返回文件夹名。
+
+### 异常
+
+71. **声明 ≠ 抛出**：方法签名上的 `throws IOException` 只是「声明我这个方法可能会抛」，并**不代表真的抛了**。反而是不写它会报**编译期**错误「未报告的异常 java.io.IOException; 必须对其进行捕获或声明以便抛出」——这是编译错误，不是运行时抛出的异常。
+72. **抛出 vs 捕获**：`throw/throws` 是把问题**甩给上层**处理，`try-catch` 是**自己处理**完接着往下跑；一旦用了 `try-catch`，`main` 上的 `throws` 就可以去掉。
+73. **`catch` 的类型要从上到下匹配**：子类异常写在父类前面，否则父类会先接住；不确定就 `catch (Exception e)`，但最好写具体类型。
+74. **别用异常控制正常流程**：能用返回值表达的（如 `false`）就别抛异常；异常要构造栈、有开销，只留给「没法继续」的错误。
+
+### 结构 / IDEA
+
+75. **建包时别手滑打成逗号**：`src` 下出现了一个名为 `com.zhangyihang,myfile` 的 **0 字节普通文件**（本意应是包 `com.zhangyihang.myfile`）。IDEA 里建包要右键 `New > Package`、名字用**英文句点**分隔，不能用逗号；建成了文件就删掉重来。（该文件未提交到仓库）
+76. **跨类访问：局部变量别的类拿不到**：方法体里 `new` 出来的对象只在本方法内有效；想让别的类用，必须提升为**成员变量**（`public` 或提供 getter），实例成员用 `对象名.字段`、静态成员用 `类名.字段`。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -436,3 +475,14 @@ java com.test.HelloWorld
   - `com.zhangyihang.TestAPI.MyArraysDemo1`：`java.util.Arrays` 常用 API 练习（`toString` / `binarySearch` / `copyOf` / `copyOfRange` / `fill` / `sort`），并用「取负 → 排序 → 再取负」实现降序排序 `sort1`。
   - `com.zhangyihang.TestLambda.LambdaDemo1`：接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调），并开始接触 Lambda 表达式。**Lambda 尚未学完。**
 - README 新增「踩坑经验总结（2026-10-11）」（结构 / Arrays / 接口多态 / Lambda 四组，编号 53~64），并同步更新目录一览、知识点索引（新增「十二」）、学习进度与更新记录。
+
+### 2026-10-14
+
+- 新增 `Myfile/` 项目：`java.io.File` 常用 API 练习（写在默认包下）。
+  - `FileDemo1`：`File` 的两种构造方式（`new File(path)` / `new File(parent, child)`）与打印。
+  - `FileDemo2`：`isDirectory()` / `isFile()` / `exists()` 判断。
+  - `FileDemo3`：`length()`（文件字节数，对文件夹无意义）、`getAbsolutePath()`、`getName()`、`lastModified()`（毫秒时间戳）。
+  - `FileDemo4`：`createNewFile()` 创建文件（返回 `true` / `false`）与 `throws IOException`。
+  - `FileDemo5`：`delete()` 删除文件。
+- 顺带理清「异常的抛出 / 声明 / 捕获」：`throw`、`throws` 与 `try-catch` 的区别，以及 `createNewFile()` 为什么返回 `false` 而不是抛异常。
+- README 新增「踩坑经验总结（2026-10-14）」（File / 异常 / 结构三组，编号 65~76），并同步更新目录一览、知识点索引（新增「十三」）、学习进度与更新记录。
