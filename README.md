@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API / IO 与异常（进行中）。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流入门）/ 异常处理（进行中）。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -20,7 +20,8 @@
 | `search_code/` | 查找算法：基本查找、二分查找、分块查找 | 2026-10-07 ~ 10-08 |
 | `Sort_Code/` | 排序算法：冒泡 / 选择 / 插入 / 快速排序、递归 | 2026-10-08 ~ 10-09 |
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
-| `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 | 2026-10-14（IO 进行中） |
+| `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
+| `MyIO/` | IO 流：字节输出流 `FileOutputStream` 写出数据 | 2026-10-15（IO 进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -169,7 +170,7 @@
 
 ### 十三、`File` 类常用 API 与 IO 入门 `Myfile/`
 
-`java.io.File` 的第一个练习，代码写在**默认包**（无 `package` 声明）下，是独立工程 `Myfile/`。
+`java.io.File` 的练习，独立工程 `Myfile/`；`FileDemo1~6` 写在**默认包**（无 `package` 声明），`Test1~3` 放在 `com.zhangyihang.Test`。
 
 | 文件 | 知识点 |
 | --- | --- |
@@ -178,6 +179,18 @@
 | FileDemo3.java | `length()` 文件字节数（对文件夹无意义）、`getAbsolutePath()` 绝对路径、`getName()`、`lastModified()` 毫秒时间戳 |
 | FileDemo4.java | `createNewFile()` 创建文件：不存在→`true`、已存在→`false`；方法签名 `throws IOException` |
 | FileDemo5.java | `delete()` 删除文件：成功返回 `true` |
+| FileDemo6.java | `listFiles()` 列出目录下的**直接子项**（返回 `File[]`），配增强 for 遍历 |
+| com.zhangyihang.Test / Test1.java | `mkdirs()` 建目录 + `createNewFile()` 建文件；相对路径基于项目根（多写一层就“找不到路径”） |
+| com.zhangyihang.Test / Test2.java | 把查找封成方法：判断某个文件夹下是否存在 `.avi` 文件（`isFile()` + `endsWith()`） |
+| com.zhangyihang.Test / Test3.java | **递归**遍历文件夹找所有 `.avi`：`listFiles()` 判 `null` + 递归进入子目录 |
+
+### 十四、IO 流（字节流入门）`MyIO/`
+
+新工程 `MyIO/`，开始学 `java.io` 的**流**：方向和「程序」有关 —— 数据**进程序**叫输入流、**出程序**叫输出流。
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.bytestream | ByteStreamDemo1.java | 字节**输出流** `FileOutputStream`：`new FileOutputStream(file)` → `write(int)` 写出一个字节（`98` 即字符 `b`）→ `close()` 释放资源 |
 
 ## 运行方式
 
@@ -212,7 +225,10 @@ java com.test.HelloWorld
 - [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
 - [ ] 函数式编程 / Lambda 表达式（进行中）
 - [ ] 集合框架（进阶）
-- [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳）（2026-10-14，**进行中**）
+- [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
+- [x] IO 入门：递归遍历目录、找某类文件
+- [x] IO 入门：字节输出流 `FileOutputStream` 写出数据（2026-10-15，**进行中**）
+- [ ] IO 流进阶：字节输入流、字符流、缓冲流、转换流
 - [ ] 异常处理（`throw` / `throws` / `try-catch`）（刚接触概念）
 
 ## 学习笔记（2026-10-06）：System / Object / 包装类
@@ -405,6 +421,30 @@ java com.test.HelloWorld
 75. **建包时别手滑打成逗号**：`src` 下出现了一个名为 `com.zhangyihang,myfile` 的 **0 字节普通文件**（本意应是包 `com.zhangyihang.myfile`）。IDEA 里建包要右键 `New > Package`、名字用**英文句点**分隔，不能用逗号；建成了文件就删掉重来。（该文件未提交到仓库）
 76. **跨类访问：局部变量别的类拿不到**：方法体里 `new` 出来的对象只在本方法内有效；想让别的类用，必须提升为**成员变量**（`public` 或提供 getter），实例成员用 `对象名.字段`、静态成员用 `类名.字段`。
 
+## 踩坑经验总结（2026-10-15）
+
+学 `File` 递归遍历与字节输出流时踩到的坑和理清的概念，记下来避免再犯。
+
+### 路径 / 文件
+
+77. **相对路径又双叒多写了一层**：在 MyIO 项目里写 `new File("MyIO")`，实际指向 `<项目根>\MyIO`，而这个目录不存在 → `createNewFile()` 报 `java.io.IOException: 系统找不到指定的路径。`。项目根已经叫 MyIO 了，直接写 `new File("a.txt")`。**规则：路径里每多一层，就必须有一层真实存在。**
+78. **`createNewFile()` 不会创建父目录**：父目录不存在就报「系统找不到指定的路径」；要建目录请先 `mkdirs()`。`FileOutputStream` 同样不会自动建目录。
+79. **`listFiles()` 可能返回 `null`，必须判空**：目录无访问权限（实测 `C:\System Volume Information` 是 `exists=true`、`isDirectory=true`，但 `listFiles()` 返回 `null`）或路径是普通文件时都会返回 `null`。直接 `for (File f : null)` 会抛 `NullPointerException`。
+80. **该判的是返回值，不是入参**：可能为 `null` 的是 `listFiles()` 的**返回值** `files`；`f` 是 `new File(...)` 造出来的、不会是 null。要判断 `f` 能不能用，用 `isDirectory()` / `exists()`，不是 `f == null`。
+
+### 递归 / 性能
+
+81. **`new File("C:\\")` 全盘递归非常慢**：实测跑 4 分 20 秒、CPU 一直 ~90%、一行输出都没有，仍没结束（同样代码扫桌面：870 个目录 / 11547 个文件只用 1 秒）。**测试先换小目录。**
+82. **Windows 的目录联接（junction）**：`C:\ProgramData\Application Data`、`C:\Users\All Users` 这类是 `ReparsePoint`，实测 `listFiles()` 返回 `null`（访问被拒），会被判空跳过、不会死循环；但 `C:\Documents and Settings` 是指向 `C:\Users` 的联接且**可遍历**，会让同一批目录被扫两遍，拖慢速度。
+83. **深度优先递归要防栈溢出**：目录层级极深、或遇到可遍历的联接环时，递归可能 `StackOverflowError`；改用队列的广度优先、或 `Files.walkFileTree(...)` 更稳更快。
+
+### IO 流概念
+
+84. **「输入 / 输出」的参照物是「你的程序」**，不是文件：数据**进程序**叫输入流（调 `read()`），**出程序**叫输出流（调 `write()`）。所以**写文件 = `FileOutputStream` = 输出流**，读文件 = `FileInputStream` = 输入流。文件在磁盘上，不属于程序内存。
+85. **`File` 不能读写文件内容**：`File` 只负责路径、创建、删除、改名、查属性；真正读写内容必须用**流**。「IO 与异常」这条线是 `File` + 流 + 异常三块拼起来的。
+86. **流用完必须 `close()`**：否则文件被占用、资源泄漏。以后用 `try-with-resources`（`try (资源) { ... }`）自动关闭最省心。
+87. **「读完了」的信号要判**：字节流 `read()` 返回 `-1`、字符流 `readLine()` 返回 `null`，跟 `listFiles()` 返回 `null` 一样，都是 API 约定，必须判断，否则死循环或 NPE。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -486,3 +526,14 @@ java com.test.HelloWorld
   - `FileDemo5`：`delete()` 删除文件。
 - 顺带理清「异常的抛出 / 声明 / 捕获」：`throw`、`throws` 与 `try-catch` 的区别，以及 `createNewFile()` 为什么返回 `false` 而不是抛异常。
 - README 新增「踩坑经验总结（2026-10-14）」（File / 异常 / 结构三组，编号 65~76），并同步更新目录一览、知识点索引（新增「十三」）、学习进度与更新记录。
+
+### 2026-10-15
+
+- `Myfile/` 继续练 `File`，新增 4 个文件：
+  - `FileDemo6`：`listFiles()` 列出目录下的直接子项并遍历。
+  - `com.zhangyihang.Test.Test1`：`mkdirs()` 建目录 + `createNewFile()` 建文件（顺带修正了路径多写一层的问题）。
+  - `com.zhangyihang.Test.Test2`：封装方法判断某文件夹下是否存在 `.avi` 文件。
+  - `com.zhangyihang.Test.Test3`：递归遍历文件夹找出所有 `.avi` 文件。
+- 新增 `MyIO/` 项目：`com.zhangyihang.bytestream.ByteStreamDemo1`，字节**输出流** `FileOutputStream` 写出数据（`write(98)` → `close()`）。
+- 理清「输入流 / 输出流」的方向概念（参照物是程序而不是文件）、以及 `File` 与流的职责分工。
+- README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 77~87），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
