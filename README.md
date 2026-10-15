@@ -398,52 +398,57 @@ java com.test.HelloWorld
 
 ## 踩坑经验总结（2026-10-14）
 
-学 `java.io.File` 常用 API、并顺带搞清「异常的抛出 / 声明 / 捕获」时踩到的坑与结论，记下来避免再犯。
+学 `java.io.File` 常用 API、并顺带搞清「异常的抛出 / 声明 / 捕获」时踩的坑。每条只讲一个点：**现象 → 结论**。
 
 ### File 类
 
-65. **`createNewFile()` 遇到「文件已存在」返回 `false`、不抛异常**：已存在属于**预期内的正常结果**，不是错误。`IOException` 只留给真正的 IO 错误（父目录不存在、路径是目录、无权限、磁盘故障）。想「已存在就报错」得自己写 `if (f.exists()) throw new RuntimeException("文件已存在");`。
-66. **`createNewFile()` / `delete()` / `mkdir()` 都返回 `boolean`**：用不用返回值要想清楚。代码里对同一个文件连调两次 `createNewFile()`、第一次的返回值却不接，就是冗余写法。
-67. **`length()` 返回的是「文件字节数」，对文件夹不可靠**：实测文件夹返回 `0`，拿不到文件夹的真实大小（要自己递归累加子文件/子目录）。
-68. **`getAbsolutePath()` 里相对路径基于「程序当前工作目录」**：IDEA 里默认是项目根目录，不是 `src`；`new File("a.txt")` 得到的绝对路径会指向项目根。
-69. **`lastModified()` 返回 `long` 毫秒时间戳**，要转成日期：老 API 用 `new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(ms))`；新 API 推荐 `Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault())` + `DateTimeFormatter`（`java.time` 不可变、线程安全）。
-70. **`getName()` 的文件 / 文件夹行为不同**：文件返回「名字 + 后缀」，文件夹只返回文件夹名。
+65. **`createNewFile()` 遇到「文件已存在」返回 `false`、不抛异常**：已存在是**预期内的正常结果**，不是错误；`IOException` 只留给真正的 IO 错误（父目录不存在、路径是目录、无权限、磁盘故障）。想「已存在就报错」得自己 `throw`。
+66. **`createNewFile()` / `delete()` / `mkdir()` 都返回 `boolean`**：用不用返回值要想清楚；同一个文件连调两次 `createNewFile()`、第一次的返回值却不接，就是冗余写法。
+67. **`length()` 对文件夹不可靠**：它是「文件字节数」，实测文件夹返回 `0`，拿不到文件夹的真实大小（要自己递归累加）。
+68. **`getAbsolutePath()` 的相对路径基于「程序当前工作目录」**：IDEA 里默认是**项目根目录**，不是 `src`。
+69. **`lastModified()` 返回 `long` 毫秒时间戳**，要转成日期：老 API 用 `new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(ms))`；新 API 推荐 `Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault())` + `DateTimeFormatter`。
+70. **`getName()` 对文件和文件夹行为不同**：文件返回「名字 + 后缀」，文件夹只返回文件夹名。
 
 ### 异常
 
-71. **声明 ≠ 抛出**：方法签名上的 `throws IOException` 只是「声明我这个方法可能会抛」，并**不代表真的抛了**。反而是不写它会报**编译期**错误「未报告的异常 java.io.IOException; 必须对其进行捕获或声明以便抛出」——这是编译错误，不是运行时抛出的异常。
-72. **抛出 vs 捕获**：`throw/throws` 是把问题**甩给上层**处理，`try-catch` 是**自己处理**完接着往下跑；一旦用了 `try-catch`，`main` 上的 `throws` 就可以去掉。
-73. **`catch` 的类型要从上到下匹配**：子类异常写在父类前面，否则父类会先接住；不确定就 `catch (Exception e)`，但最好写具体类型。
+71. **声明 ≠ 抛出**：方法签名上的 `throws IOException` 只是「声明可能抛」，**不代表真的抛了**；不写它会报**编译期**错误「未报告的异常 java.io.IOException; 必须对其进行捕获或声明以便抛出」。
+72. **抛出 vs 捕获**：`throw` / `throws` 是把问题**甩给上层**，`try-catch` 是**自己处理**完接着往下跑；用了 `try-catch`，`main` 上的 `throws` 就可以去掉。
+73. **`catch` 从上到下匹配**：子类异常要写在父类前面，否则父类会先接住；不确定就 `catch (Exception e)`，但最好写具体类型。
 74. **别用异常控制正常流程**：能用返回值表达的（如 `false`）就别抛异常；异常要构造栈、有开销，只留给「没法继续」的错误。
 
 ### 结构 / IDEA
 
-75. **建包时别手滑打成逗号**：`src` 下出现了一个名为 `com.zhangyihang,myfile` 的 **0 字节普通文件**（本意应是包 `com.zhangyihang.myfile`）。IDEA 里建包要右键 `New > Package`、名字用**英文句点**分隔，不能用逗号；建成了文件就删掉重来。（该文件未提交到仓库）
-76. **跨类访问：局部变量别的类拿不到**：方法体里 `new` 出来的对象只在本方法内有效；想让别的类用，必须提升为**成员变量**（`public` 或提供 getter），实例成员用 `对象名.字段`、静态成员用 `类名.字段`。
+75. **建包时别手滑打成逗号**：`src` 下出现过一个名为 `com.zhangyihang,myfile` 的 **0 字节普通文件**（本意是包 `com.zhangyihang.myfile`）；IDEA 里建包要右键 `New > Package`、名字用**英文句点**分隔。（该文件未提交）
+76. **跨类访问：局部变量别的类拿不到**：方法体里 `new` 出来的对象只在本方法内有效；要让别的类用，必须提升为**成员变量**（`public` 或提供 getter），实例成员用 `对象名.字段`、静态成员用 `类名.字段`。
 
 ## 踩坑经验总结（2026-10-15）
 
-学 `File` 递归遍历与字节输出流时踩到的坑和理清的概念，记下来避免再犯。
+学 `File` 递归遍历与字节输出流时踩的坑。每条只讲一个点：**现象 → 结论**。
 
 ### 路径 / 文件
 
-77. **相对路径又双叒多写了一层**：在 MyIO 项目里写 `new File("MyIO")`，实际指向 `<项目根>\MyIO`，而这个目录不存在 → `createNewFile()` 报 `java.io.IOException: 系统找不到指定的路径。`。项目根已经叫 MyIO 了，直接写 `new File("a.txt")`。**规则：路径里每多一层，就必须有一层真实存在。**
-78. **`createNewFile()` 不会创建父目录**：父目录不存在就报「系统找不到指定的路径」；要建目录请先 `mkdirs()`。`FileOutputStream` 同样不会自动建目录。
-79. **`listFiles()` 可能返回 `null`，必须判空**：目录无访问权限（实测 `C:\System Volume Information` 是 `exists=true`、`isDirectory=true`，但 `listFiles()` 返回 `null`）或路径是普通文件时都会返回 `null`。直接 `for (File f : null)` 会抛 `NullPointerException`。
-80. **该判的是返回值，不是入参**：可能为 `null` 的是 `listFiles()` 的**返回值** `files`；`f` 是 `new File(...)` 造出来的、不会是 null。要判断 `f` 能不能用，用 `isDirectory()` / `exists()`，不是 `f == null`。
+77. **相对路径多写一层就找不到**：在 MyIO 项目里写 `new File("MyIO")`，实际指向 `<项目根>\MyIO`，该目录不存在 → `createNewFile()` 报 `IOException: 系统找不到指定的路径。`
+78. **项目根已经叫 MyIO，就别再写 MyIO**：想建 `<项目根>\a.txt`，直接写 `new File("a.txt")`。**规则：路径里每多一层，就必须有一层真实存在。**
+79. **`createNewFile()` 不会建父目录**：父目录不存在就报「系统找不到指定的路径」；要建目录先 `mkdirs()`。`FileOutputStream` 同样不会自动建目录。
+80. **`listFiles()` 可能返回 `null`，必须判空**：目录无访问权限、或路径其实是普通文件时都会返回 `null`；不判空就 `for (File f : files)` → `NullPointerException`。
+81. **判空判的是返回值，不是入参**：会变 `null` 的是 `listFiles()` 的返回值 `files`；`f` 是 `new File(...)` 造的，不会为 `null`。想知道 `f` 能不能用，用 `isDirectory()` / `exists()`。
 
 ### 递归 / 性能
 
-81. **`new File("C:\\")` 全盘递归非常慢**：实测跑 4 分 20 秒、CPU 一直 ~90%、一行输出都没有，仍没结束（同样代码扫桌面：870 个目录 / 11547 个文件只用 1 秒）。**测试先换小目录。**
-82. **Windows 的目录联接（junction）**：`C:\ProgramData\Application Data`、`C:\Users\All Users` 这类是 `ReparsePoint`，实测 `listFiles()` 返回 `null`（访问被拒），会被判空跳过、不会死循环；但 `C:\Documents and Settings` 是指向 `C:\Users` 的联接且**可遍历**，会让同一批目录被扫两遍，拖慢速度。
-83. **深度优先递归要防栈溢出**：目录层级极深、或遇到可遍历的联接环时，递归可能 `StackOverflowError`；改用队列的广度优先、或 `Files.walkFileTree(...)` 更稳更快。
+82. **别一上来就扫全盘**：`new File("C:\\")` 递归实测跑了 4 分 20 秒仍未结束，CPU 一直 ~90%，零输出。
+83. **先用小目录验证逻辑**：同一套代码扫桌面（870 个目录 / 11547 个文件）只用 1 秒；确认逻辑对了再换大目录。
+84. **Windows 目录联接（junction）会被判空跳过**：`C:\ProgramData\Application Data`、`C:\Users\All Users` 都是 `ReparsePoint`，实测 `listFiles()` 返回 `null`（访问被拒），所以不会死循环。
+85. **可遍历的联接会让目录被扫两遍**：`C:\Documents and Settings` 是指向 `C:\Users` 的联接且能列出来，等于 `C:\Users` 被扫了两遍。
+86. **深度优先递归要防栈溢出**：目录层级极深、或遇到可遍历的联接环，递归可能 `StackOverflowError`；改用队列的广度优先，或 `Files.walkFileTree(...)`。
 
 ### IO 流概念
 
-84. **「输入 / 输出」的参照物是「你的程序」**，不是文件：数据**进程序**叫输入流（调 `read()`），**出程序**叫输出流（调 `write()`）。所以**写文件 = `FileOutputStream` = 输出流**，读文件 = `FileInputStream` = 输入流。文件在磁盘上，不属于程序内存。
-85. **`File` 不能读写文件内容**：`File` 只负责路径、创建、删除、改名、查属性；真正读写内容必须用**流**。「IO 与异常」这条线是 `File` + 流 + 异常三块拼起来的。
-86. **流用完必须 `close()`**：否则文件被占用、资源泄漏。以后用 `try-with-resources`（`try (资源) { ... }`）自动关闭最省心。
-87. **「读完了」的信号要判**：字节流 `read()` 返回 `-1`、字符流 `readLine()` 返回 `null`，跟 `listFiles()` 返回 `null` 一样，都是 API 约定，必须判断，否则死循环或 NPE。
+87. **「输入 / 输出」的参照物是「你的程序」**：数据**进程序** = 输入流（调 `read()`），**出程序** = 输出流（调 `write()`）。
+88. **写文件 = 输出流**：`FileOutputStream` 把数据从程序写到磁盘，方向是「出程序」；读文件才用输入流 `FileInputStream`。
+89. **文件在磁盘上，不属于程序内存**：所以「数据流到文件」依然是「离开程序」，别拿文件的视角去判断方向。
+90. **`File` 不负责读写内容**：`File` 只管路径、创建、删除、改名、查属性；读写内容必须用**流**。
+91. **流用完必须 `close()`**：否则文件被占用、资源泄漏；以后用 `try-with-resources` 自动关。
+92. **「读完了」的信号要判**：字节流 `read()` 返回 `-1`，字符流 `readLine()` 返回 `null`，和 `listFiles()` 的 `null` 一样都是 API 约定。
 
 ## 更新记录
 
@@ -536,4 +541,4 @@ java com.test.HelloWorld
   - `com.zhangyihang.Test.Test3`：递归遍历文件夹找出所有 `.avi` 文件。
 - 新增 `MyIO/` 项目：`com.zhangyihang.bytestream.ByteStreamDemo1`，字节**输出流** `FileOutputStream` 写出数据（`write(98)` → `close()`）。
 - 理清「输入流 / 输出流」的方向概念（参照物是程序而不是文件）、以及 `File` 与流的职责分工。
-- README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 77~87），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
+- README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 77~92），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
