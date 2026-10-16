@@ -21,7 +21,7 @@
 | `Sort_Code/` | 排序算法：冒泡 / 选择 / 插入 / 快速排序、递归 | 2026-10-08 ~ 10-09 |
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
-| `MyIO/` | IO 流：字节输出流 `FileOutputStream` 写出数据 | 2026-10-15（IO 进行中） |
+| `MyIO/` | IO 流：字节输出流 / 输入流（写入、续写、读取） | 2026-10-15 ~ 10-16（IO 进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -186,11 +186,15 @@
 
 ### 十四、IO 流（字节流入门）`MyIO/`
 
-新工程 `MyIO/`，开始学 `java.io` 的**流**：方向和「程序」有关 —— 数据**进程序**叫输入流、**出程序**叫输出流。
+新工程 `MyIO/`，开始学 `java.io` 的**流**：方向和「程序」有关——数据**进程序**叫输入流、**出程序**叫输出流。
 
 | 包 | 文件 | 知识点 |
 | --- | --- | --- |
-| com.zhangyihang.bytestream | ByteStreamDemo1.java | 字节**输出流** `FileOutputStream`：`new FileOutputStream(file)` → `write(int)` 写出一个字节（`98` 即字符 `b`）→ `close()` 释放资源 |
+| com.zhangyihang.bytestream | ByteStreamDemo1.java | 字节**输出流** `FileOutputStream`：构造参数可以是文件名字符串或 `File` 对象；文件不存在会创建（父目录须存在）、已存在会**先清空**；`write(int)` 写一个字节、`close()` 释放资源 |
+| com.zhangyihang.bytestream | ByteStreamDemo3.java | `write(byte[])` 一次写整个数组；`write(byte[], off, len)` 写数组的一部分，第三个参数是**长度** |
+| com.zhangyihang.bytestream | ByteStreamDemo4.java | `FileOutputStream(file, true)` **续写**模式；`getBytes(StandardCharsets.UTF_8)` 字符串转字节；`\r\n` 写 Windows 换行 |
+| com.zhangyihang.bytestream | ByteStreamDemo5.java | 字节**输入流** `FileInputStream`：`read()` 返回一个字节值，读完返回 `-1` |
+| com.zhangyihang.bytestream | ByteStreamDemo6.java | 循环读取：`while ((b = fis.read()) != -1) { ... }` |
 
 ## 运行方式
 
@@ -227,8 +231,9 @@ java com.test.HelloWorld
 - [ ] 集合框架（进阶）
 - [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
 - [x] IO 入门：递归遍历目录、找某类文件
-- [x] IO 入门：字节输出流 `FileOutputStream` 写出数据（2026-10-15，**进行中**）
-- [ ] IO 流进阶：字节输入流、字符流、缓冲流、转换流
+- [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
+- [x] IO 入门：字节输入流 `FileInputStream`（`read()`，读完返回 `-1`）（2026-10-16，**进行中**）
+- [ ] IO 流进阶：字符流、缓冲流、转换流
 - [ ] 异常处理（`throw` / `throws` / `try-catch`）（刚接触概念）
 
 ## 学习笔记（2026-10-06）：System / Object / 包装类
@@ -454,6 +459,26 @@ java com.test.HelloWorld
 95. **流用完必须 `close()`**：否则文件被占用、资源泄漏；以后用 `try-with-resources` 自动关。
 96. **「读完了」的信号要判**：字节流 `read()` 返回 `-1`，字符流 `readLine()` 返回 `null`，和 `listFiles()` 的 `null` 一样都是 API 约定。
 
+## 踩坑经验总结（2026-10-16）
+
+学字节输出流 / 输入流时踩的坑与记下的 API 细节。每条只讲一个点：**现象 → 结论**。
+
+### 字节输出流
+
+97. **`FileOutputStream` 会先清空已有文件**：目标文件已存在时，`new FileOutputStream(file)` 会把它**清空再写**（覆盖）；想接着后面写，要传第二个参数 `true`。
+98. **父目录不存在照样报错**：路径的父级文件夹不存在时，`FileOutputStream` 同样报「系统找不到指定的路径」；它不会创建目录（和 `createNewFile()` 一样）。
+99. **`write(int)` 写的是一个字节**：参数是 ASCII 码，`write(98)` 写出的是字符 `b`。
+100. **`write(byte[], off, len)` 的第三个参数是长度**：不是「结束下标」，而是「写几个字节」；`write(bytes, 0, 2)` 只写前 2 个。
+101. **续写要传 `append = true`**：`FileOutputStream("a.txt", true)` 才是追加；默认 `false` 就是覆盖。
+102. **字符串转字节要指定编码**：`s.getBytes(StandardCharsets.UTF_8)`；不写参数就用平台默认编码，跨平台容易不一致。
+103. **Windows 的换行是 `\r\n`**：写换行就写 `"\r\n"`。
+
+### 字节输入流
+
+104. **`read()` 返回的是字节值（0~255）**：不是字符；读到文件末尾返回 `-1`。
+105. **标准读取循环**：`while ((b = fis.read()) != -1) { ... }`，靠 `-1` 判断结束。
+106. **字节流直接读中文会乱码**：UTF-8 下一个汉字占 3 字节，按字节读再 `(char)` 强转必然乱码（实测 `a.txt` 里的「这是一句神秘的代码」输出成 `è???...`）。读中文要用字符流，或先按 UTF-8 解码。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -547,3 +572,14 @@ java com.test.HelloWorld
 - 理清「输入流 / 输出流」的方向概念（参照物是程序而不是文件）、以及 `File` 与流的职责分工。
 - 把 README 的「踩坑经验总结」全量重排：1~96 条统一为「一条只讲一件事：现象 → 结论」，并把正文里 GitHub 不渲染的 `$...$` 公式改成纯文本。
 - README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 81~96），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
+
+### 2026-10-16
+
+- `MyIO/` 继续练字节流，新增 4 个文件、更新 1 个：
+  - `ByteStreamDemo1`：补充说明——输出流可以接收文件名字符串或 `File` 对象；文件不存在会创建（前提是父级路径存在），已存在会**先清空**。
+  - `ByteStreamDemo3`：`write(byte[])` 写整个数组、`write(byte[], off, len)` 写数组的一部分。
+  - `ByteStreamDemo4`：`FileOutputStream(file, true)` **续写**模式、`getBytes(StandardCharsets.UTF_8)` 转字节、`\r\n` 写换行。
+  - `ByteStreamDemo5`：字节输入流 `FileInputStream` 的 `read()`，读完返回 `-1`。
+  - `ByteStreamDemo6`：`while ((b = fis.read()) != -1)` 循环读取全部内容。
+- 记录字节流的两个关键点：`write(int)` 写的是字节（ASCII 码）；字节流按字节读中文会乱码（实测）。
+- README 新增「踩坑经验总结（2026-10-16）」（字节输出流 / 字节输入流两组，编号 97~106），并同步更新目录一览、知识点索引（补充「十四」）、学习进度与更新记录。
