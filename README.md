@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流入门）/ 异常处理（进行中）。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流 / 字符流入门）/ 异常处理（入门）。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -21,7 +21,7 @@
 | `Sort_Code/` | 排序算法：冒泡 / 选择 / 插入 / 快速排序、递归 | 2026-10-08 ~ 10-09 |
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
-| `MyIO/` | IO 流：字节输出流 / 输入流（写入、续写、读取） | 2026-10-15 ~ 10-16（IO 进行中） |
+| `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -184,7 +184,7 @@
 | com.zhangyihang.Test / Test2.java | 把查找封成方法：判断某个文件夹下是否存在 `.avi` 文件（`isFile()` + `endsWith()`） |
 | com.zhangyihang.Test / Test3.java | **递归**遍历文件夹找所有 `.avi`：`listFiles()` 判 `null` + 递归进入子目录 |
 
-### 十四、IO 流（字节流入门）`MyIO/`
+### 十四、IO 流（字节流 / 字符流入门）`MyIO/`
 
 新工程 `MyIO/`，开始学 `java.io` 的**流**：方向和「程序」有关——数据**进程序**叫输入流、**出程序**叫输出流。
 
@@ -195,6 +195,11 @@
 | com.zhangyihang.bytestream | ByteStreamDemo4.java | `FileOutputStream(file, true)` **续写**模式；`getBytes(StandardCharsets.UTF_8)` 字符串转字节；`\r\n` 写 Windows 换行 |
 | com.zhangyihang.bytestream | ByteStreamDemo5.java | 字节**输入流** `FileInputStream`：`read()` 返回一个字节值，读完返回 `-1` |
 | com.zhangyihang.bytestream | ByteStreamDemo6.java | 循环读取：`while ((b = fis.read()) != -1) { ... }` |
+| com.zhangyihang.bytestream | ByteStreamDemo7.java | 边读边写拷贝文件：`read()` + `write(int)`，先开的流最后关 |
+| com.zhangyihang.bytestream | ByteStreamDemo8.java | 用 `byte[]` 缓冲区拷贝图片：`read(byte[])` 返回本次长度，`write(b, 0, len)` 只写有效部分 |
+| com.zhangyihang.charstream | CharStreamDemo1.java | `FileReader` 无参 `read()`：逐字符读取，`(char)` 转回汉字 |
+| com.zhangyihang.charstream | CharStreamDemo2.java | `read(char[])`：返回本次读到的字符数，用 `new String(chars, 0, len)` 还原 |
+| com.zhangyihang.charstream | CharStreamDemo3.java | `FileWriter(file, true)` 追加写：`write(String)` / `write(char[])` |
 
 ## 运行方式
 
@@ -232,9 +237,10 @@ java com.test.HelloWorld
 - [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
 - [x] IO 入门：递归遍历目录、找某类文件
 - [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
-- [x] IO 入门：字节输入流 `FileInputStream`（`read()`，读完返回 `-1`）（2026-10-16，**进行中**）
-- [ ] IO 流进阶：字符流、缓冲流、转换流
-- [ ] 异常处理（`throw` / `throws` / `try-catch`）（刚接触概念）
+- [x] IO 入门：字节输入流 `FileInputStream` / 输出流拷贝文件（`read()`、`read(byte[])`）（2026-10-16 ~ 10-17）
+- [x] IO 入门：字符流 `FileReader` / `FileWriter`（2026-10-17）
+- [ ] IO 流进阶：缓冲流、转换流
+- [x] 异常处理：`throw` / `throws` / `try-catch`、受检异常（2026-10-17）
 
 ## 学习笔记（2026-10-06）：System / Object / 包装类
 
@@ -479,6 +485,44 @@ java com.test.HelloWorld
 105. **标准读取循环**：`while ((b = fis.read()) != -1) { ... }`，靠 `-1` 判断结束。
 106. **字节流直接读中文会乱码**：UTF-8 下一个汉字占 3 字节，按字节读再 `(char)` 强转必然乱码（实测 `a.txt` 里的「这是一句神秘的代码」输出成 `è???...`）。读中文要用字符流，或先按 UTF-8 解码。
 
+## IntelliJ IDEA 更新速报（2026-10-17）
+
+- 今天（2026-10-17）JetBrains 官方**没有发布新版本**，官方博客也没有当天的新文章。
+- 最新稳定版：**2026.2.3**（build 262.10968.63，2026-09-16 发布）。
+- 最新抢先版：**2026.3 EAP 7**（build 263.7031.23，2026-10-15 发布）。
+- 近期新闻：2026-10-15，**Java and Kotlin by IntelliJ IDEA 扩展发布 1.0**，可以在 VS Code / Cursor 里使用 IDEA 的 Java / Kotlin 代码分析与重构，需要 IntelliJ IDEA Ultimate 订阅（30 天试用）。
+- 如果 IDE 里弹出更新提示：多半是 2026.2.3 稳定版或 2026.3 EAP。学习阶段建议留在稳定版，EAP 可能有未修复的 bug。
+
+参考：[IntelliJ IDEA 官方博客](https://blog.jetbrains.com/idea/) · [2026.3 EAP 7 Release Notes](https://youtrack.jetbrains.com/articles/IDEA-A-2100662751/IntelliJ-IDEA-2026.3-EAP-7-263.7031.23-build-Release-Notes) · [LSP 扩展 1.0 公告](https://blog.jetbrains.com/idea/2026/10/intellij-idea-s-java-and-kotlin-for-cursor-and-vs-code-hits-1-0/)
+
+## 踩坑经验总结（2026-10-17）
+
+围绕「异常到底由谁处理」和「IO 流基础」问出来的问题。每条只讲一个点：**现象 → 结论**。
+
+### 抛出与捕获
+
+107. **`throw` 和 `throws` 不是一回事**：`throw new XxxException(...)` 是当场真的抛出一个异常对象；方法签名上的 `throws XxxException` 只是**声明**「我可能抛」，本身不产生任何异常。
+108. **不写 `throw` 也可能抛异常**：除零抛 `ArithmeticException`、空指针抛 `NullPointerException`、数组越界抛 `ArrayIndexOutOfBoundsException`，这些都是 JVM 自动抛的，跟写没写 `throw` 无关。
+109. **调用了带 `throws` 的方法就必须表态**：`new FileInputStream(path)` 的构造器声明了 `throws FileNotFoundException`，调用处要么 `try-catch`，要么自己在方法签名上继续 `throws`，否则编译报「未报告的异常」。
+110. **「代码逻辑没问题」和「编译能过」是两件事**：编译器检查的是「可能抛的受检异常有没有被处理」，不是「这次运行会不会真的出错」；文件在不在，是运行时才知道的事。
+111. **构造器不能靠重写去掉 `throws`**：构造器不参与继承和多态，`new FileInputStream()` 永远调 JDK 那个；`throws` 是 API 契约的一部分，改不了。
+112. **重写普通方法可以「少抛 / 窄抛」**：父类 `throws IOException`，子类重写可以不抛或只抛 `FileNotFoundException`；反过来抛更宽的受检异常编译不过。
+113. **去掉声明不等于消除异常**：把受检异常包成 `UncheckedIOException` 抛出去，只是把「编译期强制处理」换成「运行时可能崩」，风险从编译器转给了自己。
+114. **`catch` 从上到下按类型匹配**：子类写在父类前面；`FileNotFoundException` 是 `IOException` 的子类，`catch (IOException e)` 能一起接住。
+115. **`try-with-resources` 是关流的标准写法**：`try (var in = new FileInputStream(path)) { ... }` 会自动 `close()`，比手写 `finally` 稳。
+116. **捕获后什么都不做，等于隐藏 bug**：空 `catch` 让程序带病运行，错误会在更远的地方以更奇怪的方式爆出来。
+
+### IO 流
+
+117. **四个基类先记住**：`InputStream` / `OutputStream` 按字节，`Reader` / `Writer` 按字符；输入输出以「程序」为参照物。
+118. **`read()` 和 `read(byte[])` 返回值含义不同**：无参 `read()` 返回字节值（0~255，结束是 `-1`）；`read(byte[])` 返回本次读到的**长度**，结束同样是 `-1`。
+119. **拷贝文件必须 `read(byte[])` 配 `write(b, 0, len)`**：`len` 是本次实际读到的字节数，不是数组长度；写成 `read()` 却 `write(b, 0, len)`，写进去的是缓冲区里的脏数据（Demo8 一开始的坑）。
+120. **字节流直接读中文必乱码**：UTF-8 下一个汉字占 3 字节，按字节读再 `(char)` 强转，只能得到碎掉的一半。
+121. **字符流一次读一个字符**：`FileReader.read()` 返回 `int`，`(char)` 转回来就是完整汉字；`read(char[])` 返回本次读到的字符数。
+122. **`FileReader` 用平台默认编码**：Windows 中文环境一般是 GBK；文件是 UTF-8 时要用 `new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)` 指定编码。
+123. **`FileWriter(file, true)` 才是追加**：不传第二个参数就是覆盖，规则和 `FileOutputStream` 一样。
+124. **关流顺序：先开的后关**：Demo7 里先开 `fis` 后开 `fos`，所以先 `fos.close()` 再 `fis.close()`；用 try-with-resources 就不用记顺序。
+
 ## 更新记录
 
 ### 2026-10-02
@@ -583,3 +627,15 @@ java com.test.HelloWorld
   - `ByteStreamDemo6`：`while ((b = fis.read()) != -1)` 循环读取全部内容。
 - 记录字节流的两个关键点：`write(int)` 写的是字节（ASCII 码）；字节流按字节读中文会乱码（实测）。
 - README 新增「踩坑经验总结（2026-10-16）」（字节输出流 / 字节输入流两组，编号 97~106），并同步更新目录一览、知识点索引（补充「十四」）、学习进度与更新记录。
+
+### 2026-10-17
+
+- `MyIO/` 继续练 IO：
+  - `ByteStreamDemo6`：补上 `close()`。
+  - `ByteStreamDemo7`：`FileInputStream` + `FileOutputStream` 边读边写拷贝文件，并统计耗时。
+  - `ByteStreamDemo8`：用 `byte[]` 缓冲区拷贝图片（修正 `read()` / `read(byte[])` 混用导致写出脏数据的问题）。
+  - `CharStreamDemo1`：`FileReader` 无参 `read()` 逐字符读取，中文不再乱码。
+  - `CharStreamDemo2`：`read(char[])` 批量读取，按本次读到的长度构造字符串。
+  - `CharStreamDemo3`：`FileWriter(file, true)` 追加写字符串与字符数组。
+- 理清异常处理：`throw` / `throws` / `try-catch` 的分工、受检异常为什么绕不过编译器、构造器为什么不能重写去掉声明。
+- README 新增「踩坑经验总结（2026-10-17）」（异常 / IO 两组，编号 107~124）与「IntelliJ IDEA 更新速报（2026-10-17）」，并同步更新目录一览、知识点索引、学习进度与更新记录。
