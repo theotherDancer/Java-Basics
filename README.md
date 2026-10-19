@@ -22,6 +22,7 @@
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
 | `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
+| `Review/` | 复习：接口多态、登录注册、异常、File、字节流批量读取 | 2026-10-19 |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -670,3 +671,61 @@ java com.test.HelloWorld
 - 易错点：遗漏先前输出、混淆引用重新赋值与对象修改、遗漏范围上限、混淆读取数量与末尾标记。
 - 后续：构造调用小练习 → 继承/重写/多态/抽象类与接口 → String/ArrayList 基础与登录验证 → 异常、File、字节流和字符流综合验收。
 - 本次 README 总结基于交流中实际提交的代码和回答；本地 IDEA 复习项目尚未提供给当前环境，尚未上传，不能以本记录代替源码同步。
+
+## 复习记录（2026-10-19）
+
+今天围绕面向对象、多态、String/ArrayList、登录注册、异常和字节输入流复习。代码由学习者在讲解和提示下编写、修改；运行通过不代表已能完全独立实现。
+
+### 源码与验证
+
+本次同步今天的 10 个 Java 源文件至 `Review/src/com/zhangyihang/`，保留本地原始代码。未上传 IDEA 配置、编译产物或昨天的 `review_1`；10 月 18 日记录中有关旧复习源码未同步的说明仍适用。
+
+| 包 | 内容 | 验证结果 |
+| --- | --- | --- |
+| `review_2` | Notification 接口，App/Email/Sms 三个实现类，单条与批量通知 | 同一方法接收不同实现类；数组中 null 元素被跳过；输出三种通知。空数组此前已单独验证 |
+| `review_3` | User、findUser、login、register | 内容相同的不同 String 对象可匹配；不存在用户返回 null；登录成功/密码错误/用户不存在分支均运行；正常注册增加人数，重复注册不增加、不覆盖原密码；boolean 返回值控制后续登录 |
+| `review4.Test` | parseInt、try-catch、主动 throw、年龄校验 | 转换失败处理后继续执行；20、-1、150、151 四种年龄输入均得到预期结果 |
+| `review4.FileTest` | File、createNewFile、throws IOException | 新建返回 true，文件已存在返回 false，缺失父目录时捕获 IOException；循环结束提示正常输出 |
+| `review4.ByteReadTest` | try-with-resources、read(byte[])、有效长度 len | 使用 4 字节缓冲区读取 ABC123，完整输出，没有输出缓冲区残留内容；文件缺失场景此前也已运行验证 |
+
+上传前使用 JDK 25 编译全部 10 个源文件，并在独立测试目录运行上述五个入口，均正常退出。登录代码当前将密码不匹配提示为“登录错误”，实际分支正确；本项目仅为明文密码、内存集合的学习练习，尚无持久化和真实网站登录状态管理。
+
+### 今天理清的概念与踩坑
+
+1. **接口与对象**：接口不是类，但也是引用类型，可声明变量、参数和数组。真正创建的是实现类对象。`new Notification[3]` 创建数组，三个元素初始为 null，不会创建通知对象。
+2. **数组与集合**：数组用 `arr[i]`，ArrayList 用 `users.get(i)`；访问长度分别用 `length` 和 `size()`。
+3. **== 与 equals**：基本类型的 == 比较值，两个引用的 == 比较是否指向同一对象；String 的 equals 比较内容。字符串字面量可能复用常量池对象，不能据此用 == 判断用户名。未显式写 new 也可能创建对象。
+4. **判空与返回值**：findUser 返回 null 表示没有找到；先判断再调用 getter。register 返回 true 表示添加成功，false 表示拒绝添加。`if (success)` 直接判断 boolean，不必再写 == true。
+5. **方法职责**：查找方法找到后直接返回集合中的对象；调用方保存、复用返回值。曾在 findUser 中用相同参数再次调用自身，造成无限递归和 StackOverflowError，已修复。
+6. **注册条件**：曾将“没有找到用户”的分支误写为拒绝注册；现已改为不存在则添加、已存在则拒绝。
+7. **异常路径**：try 内发生异常后的剩余语句会被跳过。catch 正常处理结束后可以继续；catch 中再次 throw 会向外传播，同一个 catch 不会接住自己内部抛出的异常。单线程程序中，异常最终未捕获会终止主线程。
+8. **throw / throws / catch**：throw 实际抛出异常；throws 声明异常可能向外传递，本身不触发异常；catch 捕获处理。IOException 属于受检异常，需捕获或声明；IllegalArgumentException 属于运行时异常，不强制声明。
+9. **File 与磁盘操作**：new File 只表示路径，不创建磁盘文件；createNewFile 不创建缺失父目录；mkdirs 用来创建目录。返回 false 与抛出异常是两种不同结果。
+10. **IO 返回值与有效范围**：read() 返回字节值或 -1；read(buffer) 把数据写入数组，返回本次读取数量或 -1。处理范围为 0 到 len-1，不能按容量处理尾部旧数据；条件中已读取一次，循环体不能再重复 read。
+11. **自动关闭资源**：将流声明在 try 后的圆括号中，正常结束或读取异常时均会尝试关闭已成功创建的资源。ByteReadTest 已采用此写法；main 仍保留可清理的多余 FileNotFoundException 声明与导入，不影响运行。
+12. **打印数组**：byte[] 的 toString 不显示文件内容；当前练习对英文数字逐字节转 char 打印，这不适用于一般 UTF-8 中文解码。
+13. **代码结构**：曾因多余右大括号使方法或 catch 脱离所属结构，已修复；继续注意缩进与括号配对。
+
+### 进度与下一步
+
+- 已完成以上提示下的编码练习和验证；参数、返回值、分支含义及异常传播仍需持续巩固。
+- 增强 for 仅作概念讲解，当前练习继续使用普通 for；未计为独立掌握。
+- 下一步是 `CopyTest` 字节流复制：read(buffer) 配合 write(buffer, 0, len)，并避免源路径与目标路径相同。截至本次同步未发现该源码，不能计为完成。
+- 然后复习字符流读取/写入、编码与追加写入，完成小型 IO 综合验收；今天尚未完成该部分。
+- 后续沿已提供的 AI 全栈课程目录学习；本轮只复习此前已学内容，不以完成目录比例替代实际掌握程度。
+
+### 运行说明
+
+`Review/` 仅包含今天的源码与 ASCII 测试文件 `review-test.txt`。使用 JDK 25，在此目录编译并运行（PowerShell）：
+
+```powershell
+$sourceFiles = Get-ChildItem -Path ./src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName
+javac -encoding UTF-8 -d out $sourceFiles
+java -cp out com.zhangyihang.review_2.Test
+java -cp out com.zhangyihang.review_3.Test
+java -cp out com.zhangyihang.review4.Test
+java -cp out com.zhangyihang.review4.FileTest
+java -cp out com.zhangyihang.review4.ByteReadTest
+```
+
+相对路径以运行时工作目录为准。ByteReadTest 的单字节读取版本、Notification 的普通父类和抽象类版本曾在复习中运行，当前同步的是各文件最终版本，不包含所有中间版本。
