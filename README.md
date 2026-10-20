@@ -22,7 +22,8 @@
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
 | `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
-| `Review/` | 复习：接口多态、登录注册、异常、File、字节流批量读取 | 2026-10-19 |
+| `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
+| `JavaCollections/` | 集合学习：List/ArrayList、泛型入门、插入与替换、按下标删除起步 | 2026-10-20（进行中） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -240,7 +241,9 @@ java com.test.HelloWorld
 - [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
 - [x] IO 入门：字节输入流 `FileInputStream` / 输出流拷贝文件（`read()`、`read(byte[])`）（2026-10-16 ~ 10-17）
 - [x] IO 入门：字符流 `FileReader` / `FileWriter`（2026-10-17）
-- [ ] IO 流进阶：缓冲流、转换流
+- [x] 缓冲流基本使用：字节缓冲流复制、BufferedReader.readLine、BufferedWriter.newLine（2026-10-20；提示下完成并运行验证）
+- [ ] 转换流：已讲解 InputStreamReader / OutputStreamWriter 的用途，未单独实操验收
+- [ ] Path / Files：已讲解常用操作，未实操验收
 - [x] 异常处理：`throw` / `throws` / `try-catch`、受检异常（2026-10-17）
 
 ## 学习笔记（2026-10-06）：System / Object / 包装类
@@ -729,3 +732,62 @@ java -cp out com.zhangyihang.review4.ByteReadTest
 ```
 
 相对路径以运行时工作目录为准。ByteReadTest 的单字节读取版本、Notification 的普通父类和抽象类版本曾在复习中运行，当前同步的是各文件最终版本，不包含所有中间版本。
+
+## 学习记录（2026-10-20）
+
+今天完成已学 IO 核心内容的复习收尾，补充缓冲流基础，并开始系统学习集合。以下区分实际源码、运行验证、概念讲解和未完成练习，不以运行通过代表全部独立掌握。
+
+### 今天同步的源码
+
+| 文件 | 内容与状态 |
+| --- | --- |
+| [CopyTest](Review/src/com/zhangyihang/review4/CopyTest.java) | 先复习普通字节流复制，再改为 BufferedInputStream / BufferedOutputStream；当前上传最终的缓冲流版本 |
+| [CharReadTest](Review/src/com/zhangyihang/review4/CharReadTest.java) | FileReader 指定 UTF-8，char[3] 按实际 len 遍历。课堂中曾选择跳过单独验收；本次同步发现已有完整实现，现已补做编译运行验证，输出“你好Java!” |
+| [CharWriteTest](Review/src/com/zhangyihang/review4/CharWriteTest.java) | 两个顺序执行的 try-with-resources，先覆盖第一条、再追加第二条；再次运行仍为两条 |
+| [StudyLogTest](Review/src/com/zhangyihang/review4/StudyLogTest.java) | BufferedWriter + UTF-8 追加并 newLine；BufferedReader 按行读取，以 null 判断结束；读写失败打印原因 |
+| [ListTest](JavaCollections/src/com/zhangyihang/collections/list/ListTest.java) | List<String> 声明、ArrayList 对象，add 插入、set 替换均已验证；最新源码还完成了 remove(1) 接收并打印“小李”，删除练习仅完成第一步 |
+
+源码保留 IDEA 中的实际写法，不为总结而代写、重构。未上传 IDE 缓存、out、class、重复生成的日志等。Review 增加 UTF-8 示例输入 review-text.txt；JavaCollections 增加编译输出与个人 IDE 状态的忽略规则。
+
+### 已运行验证
+
+上传前使用 JDK 25 编译今天的 5 个源文件，并在独立测试目录执行五个入口：
+
+- CopyTest：当前缓冲流版复制 ABC123，源与目标 SHA-256 一致。今天早些时候，普通字节流版还验证过空文件和尾部不足缓冲容量的样例。
+- CharReadTest：读取“你好Java!”，准确输出，尾部不足 3 个字符时不重复旧数据。
+- CharWriteTest：两次运行后的内容相同，均为“第一条记录”和“第二条记录”两行。
+- StudyLogTest：首次运行 2 条，再运行 4 条，中文与追加正确。课堂中按行版本也已验证中间空行不会提前结束。
+- ListTest：依次输出 [小林, 小王, 小周]、3、[小林, 小李, 小周]、3、小李。按下标删除返回值已验证；删除后名单、按内容删除不存在元素及其返回 false 的测试尚未完成。
+
+### 今天理解与修正的问题
+
+1. **有效数量与数组容量**：字符读取曾按 chars.length 遍历，用 ABCD 测试时输出 ABCDBC；改为 i < len 后修复。实际 len 才决定本次哪些位置有效。
+2. **字符与编码**：常用汉字“你”在 UTF-8 文件中占 3 字节，解码后可由一个 Java char 表示；char 是 16 位 UTF-16 编码单元，并非所有汉字或 emoji 都只占一个 char。FileReader 负责解码，不是把 3 个原始字节直接塞进 char。
+3. **覆盖、追加与换行**：FileWriter 默认覆盖，append=true 保留旧内容；write 不自动换行，BufferedWriter.newLine 写当前系统换行符。
+4. **flush 与 close**：flush 推送当前缓冲数据但不关闭流；正常 close 会刷新并关闭。try-with-resources 管理关闭，不必每写一条都 flush；flush 不等于保证已持久写入物理磁盘。
+5. **缓冲不等于解码**：缓冲流管理内部缓冲区；外部 byte[] 仍可用于批量处理。增加字节缓冲层不会自动解决中文解码；已批量读取时，额外缓冲不保证必然更快。
+6. **包装关系**：BufferedInputStream 包装 FileInputStream；BufferedOutputStream 包装 FileOutputStream。曾把 FileOutputStream 误写为 FilterOutputStream，后者不能直接接收文件路径字符串，现已修复。关闭外层会关闭其包装的底层流。
+7. **按行读取**：readLine 返回 String，不含行尾换行符，结束为 null；空行返回空字符串。它不接收 char[] 参数；read(char[]) 仍是按数量读取，不按行划分。可用 String[] 或 ArrayList<String> 保存行，但立即打印不必保存全部内容。
+8. **异常处理**：StudyLogTest 读取失败曾重新抛出 RuntimeException，已改为打印 IOException 的原因；写入提示也已补充具体原因。当前 showRecords 仍有未使用的 char[] 和旧注释，属于可清理项，不影响功能。
+9. **File、Path 与 Files**：File 表示路径并提供部分操作；Path 表示路径；Files 提供静态工具方法。Files.copy 封装复制，默认目标存在时报错，REPLACE_EXISTING 表示允许替换。readString / writeString 适用于小文本，readString 会整体读入内存；缺失父目录仍需单独创建。本部分只有讲解，仓库没有新增 FilesTest。
+10. **集合整体认识**：Collection 下认识 List、Set、Queue；Map 是独立的键值对体系。交互示例观察到 List 保留重复、Set 去重、Map 同键更新值且数量不增加。“小林（新）”是演示提供的新值，不是 Map 自动生成的标记。
+11. **List 基础**：List 是接口，ArrayList 是实现类；<String> 限定元素类型。add(1, 元素) 插入并移动后续元素、人数增加；set(1, 元素) 替换、人数不变。操作按代码顺序作用于同一份名单。
+
+### 下一步与教学安排
+
+- 本轮已学 IO 核心复习基本收尾；转换流、Path/Files 记为概念了解，今后遇到实际场景再巩固，不算独立掌握。
+- 集合主线：泛型与 List/ArrayList → 遍历与安全删除 → Set/HashSet 及 equals/hashCode → Map/HashMap → Comparator 排序 → 社团报名综合练习。
+- 下次从 List.remove 继续，补完返回值、删除后列表和按内容删除的测试，再学习遍历时删除。Set/Map 目前仅整体认识，并未开始独立编码。
+- 用户希望优先学重要且实用的内容；先给全局地图和路线，再用可交互演示、短讲解、小段编码和真实排错推进，减少重复练习和连续长文字。
+
+### 运行提示
+
+沿用 JDK 25。Review 目录中编译 src 后运行 review4 下各入口；相对文件路径以工作目录为准。review-text.txt 为“你好Java!”样例，review-test.txt 为已存在的 ABC123 样例；输出文件由练习生成。
+
+JavaCollections 可在该目录中执行：
+
+```powershell
+$sourceFiles = Get-ChildItem -Path ./src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName
+javac -encoding UTF-8 -d out $sourceFiles
+java -cp out com.zhangyihang.collections.list.ListTest
+```
