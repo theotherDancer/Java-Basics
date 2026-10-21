@@ -203,6 +203,45 @@
 | com.zhangyihang.charstream | CharStreamDemo2.java | `read(char[])`：返回本次读到的字符数，用 `new String(chars, 0, len)` 还原 |
 | com.zhangyihang.charstream | CharStreamDemo3.java | `FileWriter(file, true)` 追加写：`write(String)` / `write(char[])` |
 
+### 十五、复习练习 `Review/`
+
+覆盖 2026-10-19～10-20 已上传的接口多态、登录注册、异常与 IO 复习。表中文件名可直接打开源码；不把仅在本地保存、尚未上传的其他练习列为仓库入口。
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.review_2 | [Notification.java](Review/src/com/zhangyihang/review_2/Notification.java) | 通知接口：定义 send 契约，接口类型可以引用实现类对象 |
+| com.zhangyihang.review_2 | [AppNotification.java](Review/src/com/zhangyihang/review_2/AppNotification.java) | implements 实现接口、重写 send，提供 APP 通知行为 |
+| com.zhangyihang.review_2 | [EmailNotification.java](Review/src/com/zhangyihang/review_2/EmailNotification.java) | 相同接口、不同实现：邮件通知 |
+| com.zhangyihang.review_2 | [SmsNotification.java](Review/src/com/zhangyihang/review_2/SmsNotification.java) | 相同接口、不同实现：短信通知 |
+| com.zhangyihang.review_2 | [Test.java](Review/src/com/zhangyihang/review_2/Test.java) | 接口作参数、接口数组、统一调用 send、跳过 null 元素；notifyUser / notifyAll |
+| com.zhangyihang.review_3 | [User.java](Review/src/com/zhangyihang/review_3/User.java) | 用户封装：private 字段、构造方法、getter |
+| com.zhangyihang.review_3 | [Test.java](Review/src/com/zhangyihang/review_3/Test.java) | ArrayList 用户列表；findUser 返回对象或 null；String.equals 比较内容；登录分支、注册查重、boolean 返回值与调用方判断 |
+| com.zhangyihang.review4 | [Test.java](Review/src/com/zhangyihang/review4/Test.java) | Integer.parseInt、NumberFormatException、throw 抛出 IllegalArgumentException、0～150 年龄校验、循环中逐项捕获异常 |
+| com.zhangyihang.review4 | [FileTest.java](Review/src/com/zhangyihang/review4/FileTest.java) | File.createNewFile 的 true/false 与 IOException；throws 声明、调用方 catch、父目录缺失、逐个文件处理 |
+| com.zhangyihang.review4 | [ByteReadTest.java](Review/src/com/zhangyihang/review4/ByteReadTest.java) | FileInputStream、byte[4]、read(buffer) 返回有效数量、-1 结束、try-with-resources；逐字节转 char 仅用于当前 ASCII 样例 |
+| com.zhangyihang.review4 | [CopyTest.java](Review/src/com/zhangyihang/review4/CopyTest.java) | BufferedInputStream / BufferedOutputStream 包装文件流；read(buffer) 配合 write(buffer, 0, len)；关闭外层资源 |
+| com.zhangyihang.review4 | [CharReadTest.java](Review/src/com/zhangyihang/review4/CharReadTest.java) | FileReader 指定 UTF-8、char[3] 批量读取、按实际 len 遍历，避免尾部旧数据 |
+| com.zhangyihang.review4 | [CharWriteTest.java](Review/src/com/zhangyihang/review4/CharWriteTest.java) | FileWriter 指定 UTF-8；独立的 try-with-resources；先覆盖写入，再 append=true 追加 |
+| com.zhangyihang.review4 | [StudyLogTest.java](Review/src/com/zhangyihang/review4/StudyLogTest.java) | BufferedWriter 追加、newLine；BufferedReader.readLine 返回字符串、null 表示结束；读写异常反馈 |
+
+转换流、flush 语义、File/Path/Files 的区别与常用方法另见 [2026-10-20 学习记录](#学习记录2026-10-20)，其中部分只有讲解，未新增对应独立练习文件。
+
+### 十六、集合常用操作与对象判重 `JavaCollections/`
+
+截至 2026-10-21：以下 7 个源文件已编译验证。ListTest、ListTraversalTest、IteratorTest、SetTest、StudentSetTest 可分别运行；ListPracticeTest 提供业务方法，Student 为实体类。验证范围与未完成项见 [2026-10-21 学习记录](#学习记录2026-10-21)。
+
+| 包 | 文件 | 知识点 |
+| --- | --- | --- |
+| com.zhangyihang.collections.list | [ListTest.java](JavaCollections/src/com/zhangyihang/collections/list/ListTest.java) | List 接口与 ArrayList 实现；add / set / get / size / contains / indexOf；按下标和按内容删除的返回值；查找后判断 -1 再修改 |
+| com.zhangyihang.collections.list | [ListTraversalTest.java](JavaCollections/src/com/zhangyihang/collections/list/ListTraversalTest.java) | 普通 for 的下标与显示编号；增强 for 读取元素；倒序删除，避免跳过补位元素 |
+| com.zhangyihang.collections.list | [IteratorTest.java](JavaCollections/src/com/zhangyihang/collections/list/IteratorTest.java) | iterator() 获取遍历对象；hasNext 返回 boolean 且不推进；next 读取并推进；remove 删除最近读取项；相邻重复项安全删除 |
+| com.zhangyihang.collections.list | [ListPracticeTest.java](JavaCollections/src/com/zhangyihang/collections/list/ListPracticeTest.java) | register 用 contains 查重；updateId 查找并拒绝新学号冲突；cancel 倒序查找删除；方法返回位置与边界检查 |
+| com.zhangyihang.collections.list | [SetTest.java](JavaCollections/src/com/zhangyihang/collections/list/SetTest.java) | Set 接口与 HashSet 实现；学号字符串去重；add 返回是否新增；在 if 中调用 add 已执行添加；size 与重复报名反馈 |
+| com.zhangyihang.collections.set | [Student.java](JavaCollections/src/com/zhangyihang/collections/set/Student.java) | 按学号重写 equals / hashCode；同一引用、null 与类型检查；对象向下转型；String.equals 内容比较；相等对象的哈希值必须一致 |
+| com.zhangyihang.collections.set | [StudentSetTest.java](JavaCollections/src/com/zhangyihang/collections/set/StudentSetTest.java) | 两次 new 的对象身份与业务相等；HashSet 按学号拒绝重复；用另一个同学号对象 contains / remove，验证动态调用对象规则 |
+
+**已讲解、尚未新增实操源码的内容：** List<Integer> 的 remove(1) 与 remove(Integer.valueOf(1))；Collection/List/Set/Queue 与独立 Map 的关系；Map 的 put/get 及返回值。不要把知识点入口或课堂讲解当作独立掌握证明。
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
