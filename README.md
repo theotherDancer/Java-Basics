@@ -23,7 +23,7 @@
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
 | `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
 | `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
-| `JavaCollections/` | 集合学习：List/ArrayList、泛型入门、插入与替换、按下标删除起步 | 2026-10-20（进行中） |
+| `JavaCollections/` | List 增删改查、遍历与安全删除、报名综合练习、HashSet 与学生对象判重 | 2026-10-20 ~ 10-21（Map 待实操） |
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -235,7 +235,11 @@ java com.test.HelloWorld
 - [x] 递归（求和、阶乘）
 - [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
 - [ ] 函数式编程 / Lambda 表达式（进行中）
-- [ ] 集合框架（进阶）
+- [ ] 集合框架（进阶，进行中）
+  - [x] List 常用操作、遍历与安全删除、报名方法综合验证（2026-10-21）
+  - [x] HashSet 基础、Student equals/hashCode、按学号去重与查询删除（2026-10-21；提示下完成并验证）
+  - [ ] Map/HashMap：已讲解基本概念与 put/get，待实操验收
+  - [ ] Comparator、集合工具与队列、集合综合项目
 - [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
 - [x] IO 入门：递归遍历目录、找某类文件
 - [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
@@ -791,3 +795,127 @@ $sourceFiles = Get-ChildItem -Path ./src -Recurse -Filter *.java | Select-Object
 javac -encoding UTF-8 -d out $sourceFiles
 java -cp out com.zhangyihang.collections.list.ListTest
 ```
+
+## 学习记录（2026-10-21）
+
+今天完成 List 常用操作与报名综合练习，并提前学习遍历、安全删除、HashSet 和自定义学生对象判重。以下记录实际代码和验证结果，不把提示下完成、概念讲解与独立掌握混为一谈。
+
+### 今天同步的代码
+
+| 文件 | 内容 |
+| --- | --- |
+| [ListTest](JavaCollections/src/com/zhangyihang/collections/list/ListTest.java) | 添加、插入、替换、两种删除、查询、查找后修改；拆成四个独立演示方法 |
+| [ListTraversalTest](JavaCollections/src/com/zhangyihang/collections/list/ListTraversalTest.java) | 普通 for 打印编号、增强 for 打印通知、倒序删除相邻重复元素 |
+| [IteratorTest](JavaCollections/src/com/zhangyihang/collections/list/IteratorTest.java) | 获取迭代器，使用 hasNext / next / remove 遍历并删除小林 |
+| [ListPracticeTest](JavaCollections/src/com/zhangyihang/collections/list/ListPracticeTest.java) | 学号报名 register、修改 updateId、取消 cancel；拒绝重复报名及修改后的学号冲突 |
+| [SetTest](JavaCollections/src/com/zhangyihang/collections/list/SetTest.java) | HashSet 保存学号，直接使用 add 的返回值反馈报名是否成功；第二次报名同一学号失败 |
+| [Student](JavaCollections/src/com/zhangyihang/collections/set/Student.java) | 学号与姓名字段、构造方法；重写 equals / hashCode，按学号判定学生相等 |
+| [StudentSetTest](JavaCollections/src/com/zhangyihang/collections/set/StudentSetTest.java) | 两个同学号对象加入 Set 的对比实验；使用另一个同学号对象查询和删除 |
+
+List 基础、for 遍历和迭代器已分文件整理，每段演示使用自己的名单，避免前一段删除影响后一段。ListPracticeTest 保留自己编写的倒序循环 cancel，并仅整理格式；直接 return studentIds.remove(studentId) 的简化版本已讲解，但未替换源码。SetTest 目前仍位于 list 包，按 IDEA 的实际结构同步。
+
+### 一、List：位置、重复与方法返回值
+
+- List 是接口，ArrayList 是现成实现类。创建 ArrayList 后，添加、查询、移动元素、扩容等能力由集合负责，不需要自己实现。
+- ArrayList 允许重复且保留列表顺序；[小林, 小周, 小林] 是合法名单。内部存放对象引用，同一个对象引用也可以出现在多个位置。
+- add(index, value) 插入，后面的元素补位移动，数量增加；set(index, value) 替换，数量不变。set 方法与 Set 接口是不同概念。
+- get(index) 获取元素，越界会抛异常；indexOf(value) 返回首次出现的下标，找不到返回 -1；contains 返回 boolean，只查询不修改；size 返回元素个数。
+- remove(int index) 返回被删除的元素；remove(Object value) 删除首个匹配元素并返回 boolean。连续删除唯一的“小周”，结果是 true、false。
+- List<Integer> 的 remove(1) 按下标删除；要删除数字 1，可写 remove(Integer.valueOf(1))。从 [10, 20, 1] 依次执行这两种删除，返回值分别为 20、true，最终为 [10]。本项进行了讲解和纠正，未新增单独的整数练习源文件。
+
+### 二、遍历与安全删除
+
+| 方式 | 适用场景 | 注意点 |
+| --- | --- | --- |
+| 普通 for | 需要下标、显示编号 | 显示编号可用 i + 1，访问元素仍用 i |
+| 增强 for | 依次读取元素 | 不要直接在这种遍历中增删当前 ArrayList |
+| 倒序下标循环 | ArrayList 按条件删除 | 从 size() - 1 到 0，避免正序删除后 i++ 跳过补位元素 |
+| Iterator | 逐个访问，需要时删除 | 删除使用 iterator.remove()，与迭代器配套维护遍历状态 |
+
+```java
+Iterator<String> iterator = names.iterator();
+while (iterator.hasNext()) {
+    String name = iterator.next();
+    if ("小林".equals(name)) {
+        iterator.remove();
+    }
+}
+```
+
+- hasNext() 返回 boolean，只检查，不推进；连续调用不会跳过第一个元素。
+- next() 返回下一元素（本例 String），并推进；读取不会删除。没有下一项还调用会抛 NoSuchElementException。
+- remove() 返回 void，删除最近一次 next 返回的元素。对当前 ArrayList 迭代器，必须先 next；一次 next 后最多 remove 一次，否则抛 IllegalStateException。
+- names.iterator() 返回一个迭代器对象，没有复制名单，也没有读取首个元素。Iterator 接口类型变量接收具体实现对象，调用其方法时体现多态。
+- 遍历期间直接调用 names.remove 可能触发 ConcurrentModificationException，单线程也可能发生；没有抛异常不能作为正确性的证明。
+
+### 三、Set：集合负责查重，对象定义相等规则
+
+Set 是不保留重复元素的接口，HashSet 是已经封装好的实现。HashSet 不保证遍历顺序，没有 get(下标)。它内部使用 HashMap，添加时利用哈希值缩小范围，再判断候选是否相等；不是先添加重复项再清理。
+
+字符串已经由 String 定义了内容相等规则，所以相同学号字符串第二次 add 返回 false。自定义 Student 则需要定义业务上的“同一个学生”：本次选择学号，不比较姓名。
+
+```java
+// 当前规则的核心，沿用学号非 null 的约定
+return this.studentId.equals(other.studentId); // equals 的最终比较
+return this.studentId.hashCode();             // hashCode 的返回值
+```
+
+上面是两个不同方法中的核心语句，不是同一方法里连续写两个 return。当前 Student 源码保留了等价的 if/return true/return false 写法，尚未简化为第一行。
+
+- a == b 判断是否为同一个对象；a.equals(b) 执行 Student 的相等规则。两次 new 创建两个对象，但同学号可 equals 为 true。
+- equals 相等的对象，hashCode 必须相同；hashCode 相同的对象不一定相等，碰撞不表示重复。hashCode 不是唯一身份证号，也不等于必须返回内存地址。
+- HashSet 的 contains/remove 已经封装好，不需要重写；需要判断对象相等时，会使用对象实际类型的 equals。重写 Student.equals，就能让这些操作使用学号规则。
+- 自定义对象未重写 equals 时，继承 Object 的默认身份比较规则。String 则已有自己的内容比较实现。
+- 学生存入 HashSet 后，不要直接修改参与 equals/hashCode 的学号；如需修改，应先移除、修改，再按新状态加入，并处理新学号冲突。仅改姓名不影响当前判重规则。
+- ArrayList 本身允许重复，但 ListPracticeTest.register 可以先 contains 再 add，靠业务代码拒绝重复；绕过 register 直接 add，仍可能加入重复学号。
+
+### 四、今天排错得到的经验
+
+1. **先执行方法，再判断返回值**：if (studentIds.add(id)) 已经尝试添加一次，分支只反馈结果，不应为同一次报名再 add。remove 也一样；contains 则没有增删副作用。
+2. **返回位置决定是否继续查找**：循环内部 return false 会在首个不匹配时提前结束；只有全找完还没找到，才在循环外返回 false。
+3. **更新不能破坏唯一性**：找到旧学号后，用 indexOf(newId) 检查新学号；存在且位置不是当前 i，就拒绝修改。改成自己的原学号允许。
+4. **方法属于哪个类很重要**：曾把 equals 写到 StudentSetTest，导致 this 不是 Student，字段无法按预期访问。判重规则应放 Student，测试类只调用和观察。
+5. **类型转换不创建对象**：Object obj = student 再 (Student) obj，仍指向原对象。类型检查后再向下转型；不能把字符串强行变成学生。
+6. **同名方法看接收对象**：Student.equals 内部的 studentId.equals(...) 调用的是 String.equals，不是递归调用 Student.equals；this.equals(other) 才可能再次进入自身实现。
+7. **this 的使用**：没有同名形参或局部变量时，studentId 与 this.studentId 指当前对象同一字段；构造方法有同名形参时，用 this.studentId 区分字段。
+8. **善用现成返回值**：学号为 String 时，cancel 可以直接 return studentIds.remove(studentId)。现成方法恰好符合业务，就不必重新写查找循环；循环版本也适合练习执行过程。
+9. **排版帮助识别逻辑层级**：每层缩进 4 个空格，方法之间适度留空行，右括号单独一行；return false 不与循环右括号挤在一行。自动格式化不能代替逻辑检查。
+
+### 五、本次上传前的验证
+
+使用本机 JDK 25，编译 JavaCollections 当前全部 7 个源文件，运行 5 个 main 入口，均通过。ListPracticeTest 只有业务方法，没有 main，由独立临时测试调用。
+
+| 验证对象 | 结果 |
+| --- | --- |
+| ListTest | 插入/替换、两种删除、查询、小周签到、小王不存在分支均符合预期 |
+| ListTraversalTest / IteratorTest | 两个相邻“小林”都删掉，最终为 [小周, 小王] |
+| SetTest | 三次报名反馈为成功、重复、成功，最终 2 个学号；不要求打印顺序 |
+| StudentSetTest | 依次输出 false、true、false、1、true、true、0 |
+| 报名方法的 9 项检查 | 新增、重复拒绝、非首位修改、旧号不存在、取消、再次取消、空名单、自身原号、冲突拒绝均通过 |
+| Student 的 7 项检查 | 自身相等、同号不同名、相等哈希一致、不同号同名、null/不同类型、Set 去重、同号对象查询删除均通过 |
+| 迭代器的 4 组样例 | 相邻匹配、空集合、全部匹配、完全不匹配均通过 |
+
+临时验证代码不作为新的 IDEA 作业上传；编译结果、IDE 缓存与本地教学档案也不上传。Student 当前约定 studentId 非 null，未做完整的构造参数校验；其内部已判断 equals 的入参为 null，这是两件不同的事。源文件仍有旧实验注释、未用到的 other 变量等可清理项，不影响本次验证结论；README 中记录的是最终实际结果。
+
+### 六、仅讲解和后续安排
+
+- 已讲解集合框架整体位置：Collection 下有 List、Set、Queue；Map 独立于 Collection；Iterator 是遍历工具。ArrayList/HashSet 是现成工具，不只是抽象分类。
+- Map 已认识键值对、put/get、重复键更新及基本返回值，目前没有新增 Map 实验源码，尚未完成独立实操验收。
+- 下一次从 Map/HashMap 正式开始，再补 Comparator、集合选择与综合应用。今天完成的是 List 原定任务，并提前推进了 Set，集合框架整体尚未学完。
+- 继续用短讲解、图解、预测、自己编码与运行验证推进；能跟随解释不直接记为长期掌握，后续用间隔回顾巩固。
+
+### 运行方式
+
+在 JavaCollections 目录中，使用 JDK 25 编译并选择要复习的入口运行：
+
+```powershell
+$sourceFiles = Get-ChildItem -Path ./src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName
+javac -encoding UTF-8 -d out $sourceFiles
+java -cp out com.zhangyihang.collections.list.ListTest
+java -cp out com.zhangyihang.collections.list.ListTraversalTest
+java -cp out com.zhangyihang.collections.list.IteratorTest
+java -cp out com.zhangyihang.collections.list.SetTest
+java -cp out com.zhangyihang.collections.set.StudentSetTest
+```
+
+SetTest 当前 main 未写 public，沿用本项目 JDK 25 的入口支持；按当前环境保留实际练习写法。
