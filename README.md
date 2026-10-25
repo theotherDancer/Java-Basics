@@ -6,7 +6,49 @@
 - IDE：IntelliJ IDEA
 - 学习时间：基础语法、面向对象、继承均为国庆节（10 月 1 日）之前；多态为国庆节之后
 
-## 目录一览
+**阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
+
+> Java 学习进度以最近一次已同步的 Java 记录（2026-10-21）为准。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+>
+> 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
+
+## 学习进度
+
+- [x] 基础语法（变量 / 运算符 / 分支 / 方法 / 数组）
+- [x] 面向对象（封装、构造方法、工具类、枚举、final）
+- [x] 继承（extends、方法重写、super）
+- [x] 多态（instanceof、类型转换）
+- [x] 抽象类、接口、内部类
+- [x] 常用 API（Random、String）
+- [x] StringBuilder
+- [x] 集合入门（ArrayList）
+- [ ] 综合练习：控制台文字格斗游戏（进行中）
+- [x] 常用类：System、Object、包装类
+- [x] 常用类：Math（数学工具类）
+- [x] 正则表达式（Pattern / Matcher）
+- [x] 查找算法：基本查找 / 二分查找 / 分块查找
+- [x] 排序算法：冒泡 / 选择 / 插入 / 快速排序
+- [x] 递归（求和、阶乘）
+- [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
+- [ ] 函数式编程 / Lambda 表达式（进行中）
+- [ ] 集合框架（进阶，进行中）
+  - [x] List 常用操作、遍历与安全删除、报名方法综合验证（2026-10-21）
+  - [x] HashSet 基础、Student equals/hashCode、按学号去重与查询删除（2026-10-21；提示下完成并验证）
+  - [ ] Map/HashMap：已讲解基本概念与 put/get，待实操验收
+  - [ ] Comparator、集合工具与队列、集合综合项目
+- [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
+- [x] IO 入门：递归遍历目录、找某类文件
+- [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
+- [x] IO 入门：字节输入流 `FileInputStream` / 输出流拷贝文件（`read()`、`read(byte[])`）（2026-10-16 ~ 10-17）
+- [x] IO 入门：字符流 `FileReader` / `FileWriter`（2026-10-17）
+- [x] 缓冲流基本使用：字节缓冲流复制、BufferedReader.readLine、BufferedWriter.newLine（2026-10-20；提示下完成并运行验证）
+- [ ] 转换流：已讲解 InputStreamReader / OutputStreamWriter 的用途，未单独实操验收
+- [ ] Path / Files：已讲解常用操作，未实操验收
+- [x] 异常处理：`throw` / `throws` / `try-catch`、受检异常（2026-10-17）
+
+## 工程目录
+
+> 下表中的时间与“进行中”说明沿用各工程的历史记录；总体状态请先看上方学习进度。
 
 | 目录 | 主题 | 学习时间 |
 | --- | --- | --- |
@@ -28,6 +70,8 @@
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
 ## 知识点索引
+
+按主题寻找已有练习。初学工程在前，集中复习与集合专题在后；同一主题再次出现时，是后续练习与巩固入口。
 
 ### 一、基础语法（根目录 `src/`）
 
@@ -255,54 +299,130 @@ java com.test.HelloWorld
 
 > 说明：本仓库使用 JDK 25，部分文件采用「灵活 main 方法」写法（`static void main()` 或省略 `public`），这是 JDK 21+ 才支持的新特性。
 
-## 学习进度
+## 每日学习记录
 
-- [x] 基础语法（变量 / 运算符 / 分支 / 方法 / 数组）
-- [x] 面向对象（封装、构造方法、工具类、枚举、final）
-- [x] 继承（extends、方法重写、super）
-- [x] 多态（instanceof、类型转换）
-- [x] 抽象类、接口、内部类
-- [x] 常用 API（Random、String）
-- [x] StringBuilder
-- [x] 集合入门（ArrayList）
-- [x] 综合练习：控制台文字格斗游戏（进行中）
-- [x] 常用类：System、Object、包装类
-- [x] 常用类：Math（数学工具类）
-- [x] 正则表达式（Pattern / Matcher）
-- [x] 查找算法：基本查找 / 二分查找 / 分块查找
-- [x] 排序算法：冒泡 / 选择 / 插入 / 快速排序
-- [x] 递归（求和、阶乘）
-- [x] 常用 API：Arrays（toString / binarySearch / copyOf / copyOfRange / fill / sort、降序）
-- [ ] 函数式编程 / Lambda 表达式（进行中）
-- [ ] 集合框架（进阶，进行中）
-  - [x] List 常用操作、遍历与安全删除、报名方法综合验证（2026-10-21）
-  - [x] HashSet 基础、Student equals/hashCode、按学号去重与查询删除（2026-10-21；提示下完成并验证）
-  - [ ] Map/HashMap：已讲解基本概念与 put/get，待实操验收
-  - [ ] Comparator、集合工具与队列、集合综合项目
-- [x] IO 入门：`File` 类常用 API（创建 / 判断 / 删除 / 时间戳 / `listFiles()`）
-- [x] IO 入门：递归遍历目录、找某类文件
-- [x] IO 入门：字节输出流 `FileOutputStream`（`write(int)` / `write(byte[])` / 续写 `append`）
-- [x] IO 入门：字节输入流 `FileInputStream` / 输出流拷贝文件（`read()`、`read(byte[])`）（2026-10-16 ~ 10-17）
-- [x] IO 入门：字符流 `FileReader` / `FileWriter`（2026-10-17）
-- [x] 缓冲流基本使用：字节缓冲流复制、BufferedReader.readLine、BufferedWriter.newLine（2026-10-20；提示下完成并运行验证）
-- [ ] 转换流：已讲解 InputStreamReader / OutputStreamWriter 的用途，未单独实操验收
-- [ ] Path / Files：已讲解常用操作，未实操验收
-- [x] 异常处理：`throw` / `throws` / `try-catch`、受检异常（2026-10-17）
+按日期由早到晚整理。同一天的代码更新、知识笔记和踩坑经验放在同一节；保留原有问题编号、示例、验证结果及未完成事项。
 
-## 学习笔记（2026-10-06）：System / Object / 包装类
+- [2026-10-02：抽象类、接口与内部类](#day-2026-10-02)
+- [2026-10-03：Random 与 String](#day-2026-10-03)
+- [2026-10-04：StringBuilder 与 ArrayList 入门](#day-2026-10-04)
+- [2026-10-05：文字格斗游戏与登录注册](#day-2026-10-05)
+- [2026-10-06：System、Object 与包装类](#day-2026-10-06)
+- [2026-10-07：Math、正则与查找入门](#day-2026-10-07)
+- [2026-10-08：查找算法与冒泡排序](#day-2026-10-08)
+- [2026-10-09：排序算法与递归](#day-2026-10-09)
+- [2026-10-11：Arrays 与 Lambda 入门](#day-2026-10-11)
+- [2026-10-14：File 与异常](#day-2026-10-14)
+- [2026-10-15：目录递归与 IO 入门](#day-2026-10-15)
+- [2026-10-16：字节输入输出流](#day-2026-10-16)
+- [2026-10-17：字节复制、字符流与异常](#day-2026-10-17)
+- [2026-10-18：方法、数组与面向对象复习](#day-2026-10-18)
+- [2026-10-19：接口、登录注册、异常与字节流复习](#day-2026-10-19)
+- [2026-10-20：IO 复习收尾与 List 入门](#day-2026-10-20)
+- [2026-10-21：List、迭代器与 HashSet](#day-2026-10-21)
 
-### System 类
+<a id="day-2026-10-02"></a>
+
+### 2026-10-02｜抽象类、接口与内部类
+
+#### 代码与文档更新
+
+- `Poly/` 新增三个知识点练习：
+  - `com.Abstracttest3`：抽象类与抽象方法（Animal / Cat）。
+  - `com.Interface`：接口 `interface` 与 `implements`，抽象类 + 接口组合使用（Animal / Fork / swim）。
+  - `com.InnerClass`：匿名内部类，用一次性的内部类实现接口（Swim / Test）。
+- README 同步更新知识点索引与学习进度。
+
+<a id="day-2026-10-03"></a>
+
+### 2026-10-03｜Random 与 String
+
+#### 代码与文档更新
+
+- 新增 `API/` 项目：常用 API 练习。
+  - `com.APITest1`：`Random` 随机数（小数、指定范围）。
+  - `com.StringTest2`：String 的五种创建方式。
+  - `com.StringTest3`：字符串比较 `equals` / 登录模拟、字符串遍历、字符种类统计、数组转字符串（`Arrayutil`）。
+- README 同步更新知识点索引与学习进度。
+
+<a id="day-2026-10-04"></a>
+
+### 2026-10-04｜StringBuilder 与 ArrayList 入门
+
+#### 代码与文档更新
+
+- `API/` 项目新增：
+  - `com.StringTest4`：`substring` 截取、`charAt`，手机号脱敏。
+  - `com.StringTest5`：`replaceAll` 敏感词替换。
+  - `com.contains_`：String 查找与转换（`contains` / `startsWith` / `endsWith` / `indexOf` / `lastIndexOf` / `isEmpty` / `toCharArray` / 大小写）。
+  - `com.StringBuilderDemo`：字符串拼接性能问题 + `StringBuilder` 的 `append` / `toString`。
+  - `com.ArrayListDemo`：`ArrayList` 集合入门（`add` / `set` / `get` / `size` / 遍历）。
+- README 同步更新知识点索引与学习进度。
+
+<a id="day-2026-10-05"></a>
+
+### 2026-10-05｜文字格斗游戏与登录注册
+
+#### 代码与文档更新
+
+- 新增 `TestFightGame/` 阶段性项目：控制台「文字格斗游戏」的登录 / 注册模块（`APP` 启动类、`User` 实体、`Login` 界面）。
+- 该项目是把已学内容（面向对象、集合、String、控制台交互）串起来的第一个综合练习；**今天没有新学知识点，项目尚未完成**。
+- README 新增「踩坑经验总结（2026-10-05）」，收录今天调试中遇到的问题与结论。
+
+#### 踩坑经验总结
+
+写「文字格斗游戏」时踩的坑。每条只讲一个点：**现象 → 结论**。
+
+##### 结构 / 括号
+
+1. **方法只能写在类的直接层级**：不能在方法里再定义方法（报 `illegal start of expression`），也不能写在类外面（报 `class, interface, enum, or record expected`）。
+2. **花括号必须配对**：多一个或提前闭合的 `}`，后面的方法就「掉到类外面」。写完按 `Ctrl + Alt + L` 格式化，层次一眼看清。
+3. **同一个方法里局部变量不能重名**：报 `variable xxx is already defined`；方法级和循环块内的同名也不行。
+
+##### 方法 / 参数 / 返回值
+
+4. **返回类型必须和 `return` 一致**：`void` 方法不能 `return 值`（报 `unexpected return value`）。
+5. **`return` 结束的是整个方法，不是循环**：`return` 结束方法 / `break` 结束循环 / `continue` 跳过本次。
+6. **`return false` 要放在循环外面**：放里面会报 `missing return statement`，而且只检查第一个元素。规则：循环里找到就 `return true`，循环外都找完才 `return false`。
+7. **形参 vs 实参**：定义时写「类型 + 名字」（形参），调用时只写对象（实参）；`ArrayList<User> list = new ArrayList<>()` 里的 `list` 是变量名，不是实参。
+
+##### 逻辑
+
+8. **字符比较要用字符字面量**：判断数字写 `c >= '0' && c <= '9'`，别写 `c >= 0 && c <= 9`（那是拿编码值比较，永远判不出数字）。
+9. **集合装的是对象**：`ArrayList<User>` 里 `list.contains("字符串")` 永远返回 `false`，要遍历比较 `getUsername()`。
+10. **防空指针**：`x.equals(u.getUsername())` 比 `u.getUsername().equals(x)` 安全（后者用户名是 `null` 会崩）。
+
+##### 常用 API
+
+11. **`Random` 的构造参数是种子（long）**：同种子序列可复现；`java.util.Random` 是伪随机，安全场景用 `SecureRandom`。
+
+##### 学习方向（AI 时代）
+
+12. **语法 / API 可以少背，判断力必须自己练**：细节多交给 AI，但「读代码、调试、判断对错、设计结构」得自己来——今天的坑几乎都是结构与逻辑问题。
+
+<a id="day-2026-10-06"></a>
+
+### 2026-10-06｜System、Object 与包装类
+
+#### 代码与文档更新
+
+- 学习常用类：`System`、`Object`、包装类（含扩展 `BigInteger` / `BigDecimal`），整理为「学习笔记（2026-10-06）」写进本 README。
+- README 同步更新学习进度（新增「常用类」一项）与更新记录。
+
+#### 知识笔记：System / Object / 包装类
+
+##### System 类
 
 1. `java.lang.System` 是 **final 类 + 私有构造**，不能 `new`，只能用它的**静态成员**。
 2. 常用：`System.out.println(...)` / `print(...)`（标准输出，`out` 是一个 `PrintStream`）；`System.exit(0)`（退出 JVM，0 正常、非 0 异常终止）；`System.currentTimeMillis()`（当前毫秒时间戳，常用来算耗时）；`System.arraycopy(...)`（高效数组复制）；`System.getProperty("os.name")`（系统属性）、`System.getenv(...)`（环境变量）。
 
-### Object 类
+##### Object 类
 
 1. 所有类的**根父类**：`class A {}` 等价于 `class A extends Object {}`。
 2. 被子类经常重写的方法：`toString()`（默认输出 `类名@哈希十六进制`，就是之前 `[C@xxx` 那个规则；`println(对象)` 会自动调用它）；`equals(Object)`（默认比地址；重写后比内容，如 `String` / `Integer`）；`hashCode()`（哈希值，**重写 `equals` 就要一起重写 `hashCode`**，集合去重要用）；`getClass()`（取运行时类型，反射用）。
 3. 为什么重要：多态、集合去重、打印对象、对象比较，都建立在这一层之上。
 
-### 包装类
+##### 包装类
 
 1. 8 种基本类型各有一个包装类：`int→Integer`、`char→Character`、`double→Double`……（其余首字母大写）。
 2. 价值：集合 / 泛型只能装对象（`ArrayList<Integer>`）；自带工具方法与常量（`Integer.parseInt`、`Integer.MAX_VALUE`）；可表示 `null`。
@@ -310,42 +430,23 @@ java com.test.HelloWorld
 4. 两个坑：`==` 只缓存 **-128~127**（比“值”要用 `equals`）；`null` 拆箱会 **NPE**。
 5. 扩展：超大整数用 `BigInteger`，精确小数（如金额）用 `BigDecimal`；`double` 有精度误差、算钱会出错；`BigDecimal` 比较用 `compareTo`，除法要指定精度和舍入模式。
 
-## 踩坑经验总结（2026-10-05）
+<a id="day-2026-10-07"></a>
 
-写「文字格斗游戏」时踩的坑。每条只讲一个点：**现象 → 结论**。
+### 2026-10-07｜Math、正则与查找入门
 
-### 结构 / 括号
+#### 代码与文档更新
 
-1. **方法只能写在类的直接层级**：不能在方法里再定义方法（报 `illegal start of expression`），也不能写在类外面（报 `class, interface, enum, or record expected`）。
-2. **花括号必须配对**：多一个或提前闭合的 `}`，后面的方法就「掉到类外面」。写完按 `Ctrl + Alt + L` 格式化，层次一眼看清。
-3. **同一个方法里局部变量不能重名**：报 `variable xxx is already defined`；方法级和循环块内的同名也不行。
+- 新增 `api-code/` 项目：
+  - `com.zhangyihang.mathTest`：`Math` 数学工具类（`abs` / `ceil` / `floor` / `round` / `pow` / `sqrt` / `cbrt` / `random`）。
+  - `com.zhangyihang.WebSpider`：`Pattern` / `Matcher` 正则入门、忽略大小写与前瞻断言、`replaceAll` / `split`，以及 `URL` 网页爬取占位练习。
+- 新增 `search_code/` 项目：基本查找（从 0 索引逐个比较）。
+- README 新增「踩坑经验总结（2026-10-07）」（正则与 IDEA 排错），并同步更新目录一览、知识点索引、学习进度与更新记录。
 
-### 方法 / 参数 / 返回值
-
-4. **返回类型必须和 `return` 一致**：`void` 方法不能 `return 值`（报 `unexpected return value`）。
-5. **`return` 结束的是整个方法，不是循环**：`return` 结束方法 / `break` 结束循环 / `continue` 跳过本次。
-6. **`return false` 要放在循环外面**：放里面会报 `missing return statement`，而且只检查第一个元素。规则：循环里找到就 `return true`，循环外都找完才 `return false`。
-7. **形参 vs 实参**：定义时写「类型 + 名字」（形参），调用时只写对象（实参）；`ArrayList<User> list = new ArrayList<>()` 里的 `list` 是变量名，不是实参。
-
-### 逻辑
-
-8. **字符比较要用字符字面量**：判断数字写 `c >= '0' && c <= '9'`，别写 `c >= 0 && c <= 9`（那是拿编码值比较，永远判不出数字）。
-9. **集合装的是对象**：`ArrayList<User>` 里 `list.contains("字符串")` 永远返回 `false`，要遍历比较 `getUsername()`。
-10. **防空指针**：`x.equals(u.getUsername())` 比 `u.getUsername().equals(x)` 安全（后者用户名是 `null` 会崩）。
-
-### 常用 API
-
-11. **`Random` 的构造参数是种子（long）**：同种子序列可复现；`java.util.Random` 是伪随机，安全场景用 `SecureRandom`。
-
-### 学习方向（AI 时代）
-
-12. **语法 / API 可以少背，判断力必须自己练**：细节多交给 AI，但「读代码、调试、判断对错、设计结构」得自己来——今天的坑几乎都是结构与逻辑问题。
-
-## 踩坑经验总结（2026-10-07）
+#### 踩坑经验总结
 
 学正则表达式和查找算法时踩的坑。每条只讲一个点：**现象 → 结论**。
 
-### 正则 / Matcher
+##### 正则 / Matcher
 
 13. **`find()` 是消费式的**：每调用一次才向后推进一格；正确写法是 `while (m.find()) { ... }`。
 14. **别用 `while (b)` 配一次性 `find()`**：写了 `boolean b = m.find(); while (b) { ... }` 而循环里从不更新 `b`，`b` 永远为 `true`，`group()` 永远返回同一个匹配 → 死循环。
@@ -355,24 +456,36 @@ java com.test.HelloWorld
 18. **只要带数字的版本号，去掉可选组**：`JDK\s*(\d+)?` → `JDK\s*(\d+)`。
 19. **`replaceAll` / `split` 的形参名是 regex 就按正则解析**：`split("[A-Za-z0-9]+")` 按「字母数字串」切割。
 
-### 结构 / IDEA
+##### 结构 / IDEA
 
 20. **方法必须写在类的花括号内部**：写到类外面（`}` 之后）会报 `class, interface, enum, or record expected`。
 21. **包名要和目录对应**：文件放在 `src\com\zhangyihang\search\` 下，第一行就要写 `package com.zhangyihang.search;`，否则报「包名与文件路径不对应」。
 22. **方法名不要和类名重名**：容易和构造器混淆（如方法也叫 `BasicSearch1`），改用小驼峰。
 
-## 踩坑经验总结（2026-10-08）
+<a id="day-2026-10-08"></a>
+
+### 2026-10-08｜查找算法与冒泡排序
+
+#### 代码与文档更新
+
+- 学习查找算法与排序算法，`search_code/` 同步补齐两个文件：
+  - `com.zhangyihang.search.BinarySearch`：二分查找（数组必须有序，`min` / `max` / `mid` 折半收缩，找不到返回 `-1`）。
+  - `com.zhangyihang.search.BlockSearch`：分块查找（索引表 `block[]` 定位块 + 块内顺序查找），含索引实体类 `block`（`min` / `max` / `startIndex` / `endIndex`）。
+- 新增 `Sort_Code/` 项目：`com.zhangyihang.mysort.a01_BubbleSort`（冒泡排序）。
+- README 新增「踩坑经验总结（2026-10-08）」（结构 / 边界 / 概念三组共 13 条），并同步更新目录一览、知识点索引（新增「十一、排序算法」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学查找 / 排序算法时踩的坑，以及当天问到的几个概念。每条只讲一个点：**现象 → 结论**。
 
-### 结构与编译
+##### 结构与编译
 
 23. **大括号提前闭合，报错位置会很离谱**：`BlockSearch` 在第 21 行就 `}` 结束，`findBlock` / `getIndex` 掉到类外；JDK 25 把这种「顶层方法」当**紧凑源文件**解析，于是报错落在**第 1 行**「压缩源文件不应有程序包声明」，跟真实原因完全对不上。**报错位置离谱时，先数括号。**
 24. **类名不能当对象用**：写 `block.getMin` 报「找不到符号 / 符号: 变量 getMin / 位置: 类 BlockSearch.block」；写 `block.getMin()` 也不行——**实例方法只能由对象调用**，类名只能调静态成员。
 25. **`private` 成员跨类访问不到**：`blockArr[i].min` 报「min 在 block 中是 private 访问控制」；同类里访问别人的私有方法、跨包访问包级成员同样被拒。要用就通过 `getMin()`。
 26. **Java 没有顶层方法，唯一例外是紧凑源文件**：没有 `package` 声明的单文件可以写顶层 `void main()` 并用 `java Demo.java` 运行（JEP 512）；一旦有 `package` 声明就会冲突。
 
-### 逻辑与边界
+##### 逻辑与边界
 
 27. **返回「找不到」用 `null`**：对象类型的惯例，方法注释写清、调用方必须判空；对外 API 可用 `Optional`，只有「不该发生」的情况才抛异常。
 28. **循环走完必须有 `return`**：否则报 `missing return statement`；`return block;` 这种把类名当变量写会报「找不到符号」。
@@ -381,23 +494,36 @@ java com.test.HelloWorld
 31. **分块查找的前提是「块间有序」**：后一块的所有元素都要大于前一块的最大值；当天数据 22~40 / 13~20 / 7~10 / 43~50 块间是乱的，只能靠 `min` / `max` 区间匹配块，没法用「块最大值 + 二分」加速索引表。
 32. **冒泡排序的边界**：外层 `n-1` 轮，内层 `n-1-i`，左 > 右就交换；边界写错不报错，只是结果不对。
 
-### 概念
+##### 概念
 
 33. **跨类调用 = 访问权限 + 调用方式**：`private` 本类 / 默认（包级）同包 / `protected` 同包 + 子类 / `public` 全部；实例方法要 `new` 对象，静态方法 `类名.方法()`，跨包要 `import`；静态方法里不能直接用非静态成员。
 34. **`private` 的意义在「能不能改」，不在「能不能读」**：只给 getter 不给 setter 就是只读；setter 里能加校验；还能只暴露部分字段、返回防御性副本、`final` 做成不可变对象。**每个字段都无脑配 getter/setter，那才真的等于 public。**
 35. **每种查找 / 排序都补三条边界用例**：查第一个、查最后一个、查不存在的元素——当天的 48 就是死在最后一条上。
 
-## 踩坑经验总结（2026-10-09）
+<a id="day-2026-10-09"></a>
+
+### 2026-10-09｜排序算法与递归
+
+#### 代码与文档更新
+
+- 学习四个排序算法与递归，`Sort_Code/` 新增 4 个文件、整理 1 个：
+  - `com.zhangyihang.mysort.a02_SelectionSort`：选择（交换）排序。
+  - `com.zhangyihang.mysort.a03_InsertSort`：插入排序（修好了 `break` 位置与循环边界）。
+  - `com.zhangyihang.mysort.a04_Recursion`：递归求 1~100 的和 + 阶乘（阶乘目前返回 `int`，20! 会溢出，待改 `long`）。
+  - `com.zhangyihang.mysort.a05_quicklySort`：快速排序（递归出口 `i >= j` 放第一行、右指针先动、左右半递归参数修正）。
+- README 新增「踩坑经验总结（2026-10-09）」（结构 / 递归 / 快排 / 数值 / static / 调试 六组，编号 36~56），并同步更新目录一览、知识点索引（补充「十一、排序算法」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学排序算法与递归时踩的坑。每条只讲一个点：**现象 → 结论**。
 
-### 结构与边界
+##### 结构与边界
 
 36. **`}break;` 挤在一行会让 `break` 落到 `if` 外面**：成了循环体最后一句，导致**第一轮就无条件退出**（原本要做的「找第一个无序位置」永远不执行）。括号与 `break` 分行写、再用 `Ctrl+Alt+L` 格式化就能一眼看出。
 37. **循环条件要与下标配套**：`i < arr.length` 却用 `arr[i+1]`，数组**本身已有序**时会访问 `arr[length]`，实测 `ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 5`；要写 `i < arr.length - 1`。
 38. **区间循环用 `<` 而不是 `!=`**：`while (start != end)` 只是靠内层保护才没出事，条件一改就可能死循环。
 
-### 递归
+##### 递归
 
 39. **递归三要素**：出口（最小规模直接给答案）、规模缩小（每层朝出口逼近）、递推关系（当前 + 更小规模的同类问题）；执行分「递」（逐层压栈）和「归」（从出口往回算）两段。
 40. **出口条件要挡住所有不用干的区间**：区间长度 `j - i + 1`，不用排就是「长度 ≤ 1」，即 `if (i >= j) return;`；只写 `>` 会漏掉单元素，实测递归调用次数 21 → 13。
@@ -406,63 +532,89 @@ java com.test.HelloWorld
 43. **出口只判 `== 1` 对非法输入不设防**：`getSum(0)` 会一路减到负数 → `StackOverflowError`；应写 `if (number <= 1) return number;` 或开头校验参数。
 44. **Java 不做尾递归优化**：递归深度受栈限制，纯靠递归的算法要留意深度。
 
-### 快速排序
+##### 快速排序
 
 45. **忘写递归 = 只分区一次**：分区后必须对左右两半再递归，否则根本没排序（实测输出 `48 6 1 5 7 12 20 64 99 21`）。
 46. **基准取最左时，必须右指针先动**：两指针相遇点才会是「≤ 基准」的值；先动左指针会让相遇点变成「≥ 基准」，最后一交换就把大于基准的数放进了左区（实测左区里出现 48 > 20）。记法：从「基准的对面」开始扫。
 
-### 类型与数值
+##### 类型与数值
 
 47. **int 溢出是静默的**：`12!` 是 int 上限（479001600），`13! = 6227020800` 起就溢出；溢出时 Java 只保留结果的**低 32 位**（对 2^32 取余）再按**补码**读，最高位是 1 就显示成负数。
 48. **20! 为什么是负数**：真值 2432902008176640000 → mod 2^32 = 2192834560 → 它 ≥ 2^31，减去 2^32 = **-2102132736**。里程表类比（实测）：`2147483647 + 1 = -2147483648`、`2147483647 * 2 = -2`。
 49. **选类型的标准**：int 约 21 亿（10 位）、long 约 922 亿亿（19 位）；20! 用 long，21! 以上用 `BigInteger`（`b = b.multiply(BigInteger.valueOf(i))`）；想主动检测溢出用 `Math.multiplyExact` / `Math.addExact`。
 50. **中间变量也要用宽类型**：「`int r = 1; r *= i;` 再转 long」白搭——乘法早就溢出过了。
 
-### 静态与非静态
+##### 静态与非静态
 
 51. **`main` 里不能直接调非静态方法**：javac 报「无法从静态上下文中引用非静态 方法 xxx」，要么先 `new` 对象，要么把方法改成 static。
 52. **JDK 25 支持实例 `main`**（JEP 512，实测整个类不写 static 也能跑），但兼容性差，正式写法仍是 `public static void main`。
 53. **静态与非静态的判断口诀**：方法里用到 `this` 的东西（字段、别的非静态方法）→ 非静态；只靠参数算结果 → static（纯算法方法如 `getSum` 就该 static）。
 
-### 调试方法
+##### 调试方法
 
 54. **一次只改一处、改完立刻重跑**：错误是层层揭开的——修完 `StackOverflowError` 立刻暴露 `ArrayIndexOutOfBoundsException`。
 55. **用对照实验定位**：拿 `Arrays.sort` / Python 的 `math.factorial` 当标准答案，比肉眼看快得多；**先看异常栈第一行**指向自己写的哪一行。
 56. **边界用例清单**：空数组、单元素、两个元素、全相同、已有序、完全倒序——当天的 bug 几乎都是被其中一种逼出来的。
 
-## 踩坑经验总结（2026-10-11）
+<a id="day-2026-10-11"></a>
+
+### 2026-10-11｜Arrays 与 Lambda 入门
+
+#### 代码与文档更新
+
+- 新增 `MyAPI/` 项目：
+  - `com.zhangyihang.TestAPI.MyArraysDemo1`：`java.util.Arrays` 常用 API 练习（`toString` / `binarySearch` / `copyOf` / `copyOfRange` / `fill` / `sort`），并用「取负 → 排序 → 再取负」实现降序排序 `sort1`。
+  - `com.zhangyihang.TestLambda.LambdaDemo1`：接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调），并开始接触 Lambda 表达式。**Lambda 尚未学完。**
+- README 新增「踩坑经验总结（2026-10-11）」（结构 / Arrays / 接口多态 / Lambda 四组，编号 57~68），并同步更新目录一览、知识点索引（新增「十二」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学 `java.util.Arrays` 常用 API、接口与 Lambda 入门时踩的坑。每条只讲一个点：**现象 → 结论**。
 
-### 结构 / 语法
+##### 结构 / 语法
 
 57. **匿名内部类作为语句，结尾必须有分号**：`new Swim(){ ... }` 漏掉 `;`，javac 报「需要';'」，定位就指向那个 `}`；写成 `new Swim(){...};` 或直接接 `.swimming();` 即可。
 58. **方法不能嵌套定义**：把方法写进 `main` 的方法体里，会报「非法的表达式开始」「方法声明无效; 需要返回类型」，还连带一批错误——**根因只有一个**：方法只能定义在类的直接层级、和 `main` 平级。
 59. **`return int[]arr;` 是语法错误**：`int[]arr;` 是声明变量的语句，不能当返回值（javac 报「需要 '.class'」）；直接写 `return arr;`。
 
-### Arrays 常用 API
+##### Arrays 常用 API
 
 60. **`Arrays.binarySearch` 要求数组先有序**：对乱序数组用结果没有意义（可能返回负数或错误下标），查找前先 `Arrays.sort`。
 61. **`Arrays.copyOf` 的越界行为**：`n` 比原长度**大就补 0**、小就截断；`copyOfRange(arr, from, to)` 是**左闭右开**区间。
 62. **`Arrays.fill` 会覆盖整个数组**（包括原有元素）。
 63. **Arrays 没有直接降序方法**：①升序后首尾翻转；②「取负 → 升序 → 再取负」——第②种注意 `Integer.MIN_VALUE` 取负会溢出，且会**原地修改传入的数组**。
 
-### 接口 / 多态
+##### 接口 / 多态
 
 64. **接口里可以没有任何抽象方法**：空接口（标记接口，如 `Serializable`）、只放 `default` / `static`（Java 8+）/ `private`（Java 9+）方法的接口都合法。
 65. **接口抽象方法是「实现（implement）」，不是「重写（override）」**：接口只声明、没有方法体，不存在「原来的版本」；调用时因**多态 / 动态绑定**执行实现类那一版。
 
-### Lambda / 匿名内部类
+##### Lambda / 匿名内部类
 
 66. **Lambda 必须有目标类型**：单独写 `() -> ...;` 编译不过，必须赋给接口变量、强制转换 `(Swim) ...`、或作为函数式接口的参数传给方法。
 67. **`method(Swim s)` 这种辅助方法不是必需的**：它只是演示「接口作参数（回调）」，有个目标类型就能用 Lambda。
 68. **函数式接口**（只有一个抽象方法的接口，如 `Swim`）的匿名内部类可以简化成 Lambda：`new Swim(){ @Override public void swimming(){...} }` 等价于 `() -> {...}`。
 
-## 踩坑经验总结（2026-10-14）
+<a id="day-2026-10-14"></a>
+
+### 2026-10-14｜File 与异常
+
+#### 代码与文档更新
+
+- 新增 `Myfile/` 项目：`java.io.File` 常用 API 练习（写在默认包下）。
+  - `FileDemo1`：`File` 的两种构造方式（`new File(path)` / `new File(parent, child)`）与打印。
+  - `FileDemo2`：`isDirectory()` / `isFile()` / `exists()` 判断。
+  - `FileDemo3`：`length()`（文件字节数，对文件夹无意义）、`getAbsolutePath()`、`getName()`、`lastModified()`（毫秒时间戳）。
+  - `FileDemo4`：`createNewFile()` 创建文件（返回 `true` / `false`）与 `throws IOException`。
+  - `FileDemo5`：`delete()` 删除文件。
+- 顺带理清「异常的抛出 / 声明 / 捕获」：`throw`、`throws` 与 `try-catch` 的区别，以及 `createNewFile()` 为什么返回 `false` 而不是抛异常。
+- README 新增「踩坑经验总结（2026-10-14）」（File / 异常 / 结构三组，编号 69~80），并同步更新目录一览、知识点索引（新增「十三」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学 `java.io.File` 常用 API、并顺带搞清「异常的抛出 / 声明 / 捕获」时踩的坑。每条只讲一个点：**现象 → 结论**。
 
-### File 类
+##### File 类
 
 69. **`createNewFile()` 遇到「文件已存在」返回 `false`、不抛异常**：已存在是**预期内的正常结果**，不是错误；`IOException` 只留给真正的 IO 错误（父目录不存在、路径是目录、无权限、磁盘故障）。想「已存在就报错」得自己 `throw`。
 70. **`createNewFile()` / `delete()` / `mkdir()` 都返回 `boolean`**：用不用返回值要想清楚；同一个文件连调两次 `createNewFile()`、第一次的返回值却不接，就是冗余写法。
@@ -471,23 +623,39 @@ java com.test.HelloWorld
 73. **`lastModified()` 返回 `long` 毫秒时间戳**，要转成日期：老 API 用 `new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(ms))`；新 API 推荐 `Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault())` + `DateTimeFormatter`。
 74. **`getName()` 对文件和文件夹行为不同**：文件返回「名字 + 后缀」，文件夹只返回文件夹名。
 
-### 异常
+##### 异常
 
 75. **声明 ≠ 抛出**：方法签名上的 `throws IOException` 只是「声明可能抛」，**不代表真的抛了**；不写它会报**编译期**错误「未报告的异常 java.io.IOException; 必须对其进行捕获或声明以便抛出」。
 76. **抛出 vs 捕获**：`throw` / `throws` 是把问题**甩给上层**，`try-catch` 是**自己处理**完接着往下跑；用了 `try-catch`，`main` 上的 `throws` 就可以去掉。
 77. **`catch` 从上到下匹配**：子类异常要写在父类前面，否则父类会先接住；不确定就 `catch (Exception e)`，但最好写具体类型。
 78. **别用异常控制正常流程**：能用返回值表达的（如 `false`）就别抛异常；异常要构造栈、有开销，只留给「没法继续」的错误。
 
-### 结构 / IDEA
+##### 结构 / IDEA
 
 79. **建包时别手滑打成逗号**：`src` 下出现过一个名为 `com.zhangyihang,myfile` 的 **0 字节普通文件**（本意是包 `com.zhangyihang.myfile`）；IDEA 里建包要右键 `New > Package`、名字用**英文句点**分隔。（该文件未提交）
 80. **跨类访问：局部变量别的类拿不到**：方法体里 `new` 出来的对象只在本方法内有效；要让别的类用，必须提升为**成员变量**（`public` 或提供 getter），实例成员用 `对象名.字段`、静态成员用 `类名.字段`。
 
-## 踩坑经验总结（2026-10-15）
+<a id="day-2026-10-15"></a>
+
+### 2026-10-15｜目录递归与 IO 入门
+
+#### 代码与文档更新
+
+- `Myfile/` 继续练 `File`，新增 4 个文件：
+  - `FileDemo6`：`listFiles()` 列出目录下的直接子项并遍历。
+  - `com.zhangyihang.Test.Test1`：`mkdirs()` 建目录 + `createNewFile()` 建文件（顺带修正了路径多写一层的问题）。
+  - `com.zhangyihang.Test.Test2`：封装方法判断某文件夹下是否存在 `.avi` 文件。
+  - `com.zhangyihang.Test.Test3`：递归遍历文件夹找出所有 `.avi` 文件。
+- 新增 `MyIO/` 项目：`com.zhangyihang.bytestream.ByteStreamDemo1`，字节**输出流** `FileOutputStream` 写出数据（`write(98)` → `close()`）。
+- 理清「输入流 / 输出流」的方向概念（参照物是程序而不是文件）、以及 `File` 与流的职责分工。
+- 把 README 的「踩坑经验总结」全量重排：1~96 条统一为「一条只讲一件事：现象 → 结论」，并把正文里 GitHub 不渲染的 `$...$` 公式改成纯文本。
+- README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 81~96），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学 `File` 递归遍历与字节输出流时踩的坑。每条只讲一个点：**现象 → 结论**。
 
-### 路径 / 文件
+##### 路径 / 文件
 
 81. **相对路径多写一层就找不到**：在 MyIO 项目里写 `new File("MyIO")`，实际指向 `<项目根>\MyIO`，该目录不存在 → `createNewFile()` 报 `IOException: 系统找不到指定的路径。`
 82. **项目根已经叫 MyIO，就别再写 MyIO**：想建 `<项目根>\a.txt`，直接写 `new File("a.txt")`。**规则：路径里每多一层，就必须有一层真实存在。**
@@ -495,7 +663,7 @@ java com.test.HelloWorld
 84. **`listFiles()` 可能返回 `null`，必须判空**：目录无访问权限、或路径其实是普通文件时都会返回 `null`；不判空就 `for (File f : files)` → `NullPointerException`。
 85. **判空判的是返回值，不是入参**：会变 `null` 的是 `listFiles()` 的返回值 `files`；`f` 是 `new File(...)` 造的，不会为 `null`。想知道 `f` 能不能用，用 `isDirectory()` / `exists()`。
 
-### 递归 / 性能
+##### 递归 / 性能
 
 86. **别一上来就扫全盘**：`new File("C:\\")` 递归实测跑了 4 分 20 秒仍未结束，CPU 一直 ~90%，零输出。
 87. **先用小目录验证逻辑**：同一套代码扫桌面（870 个目录 / 11547 个文件）只用 1 秒；确认逻辑对了再换大目录。
@@ -503,7 +671,7 @@ java com.test.HelloWorld
 89. **可遍历的联接会让目录被扫两遍**：`C:\Documents and Settings` 是指向 `C:\Users` 的联接且能列出来，等于 `C:\Users` 被扫了两遍。
 90. **深度优先递归要防栈溢出**：目录层级极深、或遇到可遍历的联接环，递归可能 `StackOverflowError`；改用队列的广度优先，或 `Files.walkFileTree(...)`。
 
-### IO 流概念
+##### IO 流概念
 
 91. **「输入 / 输出」的参照物是「你的程序」**：数据**进程序** = 输入流（调 `read()`），**出程序** = 输出流（调 `write()`）。
 92. **写文件 = 输出流**：`FileOutputStream` 把数据从程序写到磁盘，方向是「出程序」；读文件才用输入流 `FileInputStream`。
@@ -512,11 +680,26 @@ java com.test.HelloWorld
 95. **流用完必须 `close()`**：否则文件被占用、资源泄漏；以后用 `try-with-resources` 自动关。
 96. **「读完了」的信号要判**：字节流 `read()` 返回 `-1`，字符流 `readLine()` 返回 `null`，和 `listFiles()` 的 `null` 一样都是 API 约定。
 
-## 踩坑经验总结（2026-10-16）
+<a id="day-2026-10-16"></a>
+
+### 2026-10-16｜字节输入输出流
+
+#### 代码与文档更新
+
+- `MyIO/` 继续练字节流，新增 4 个文件、更新 1 个：
+  - `ByteStreamDemo1`：补充说明——输出流可以接收文件名字符串或 `File` 对象；文件不存在会创建（前提是父级路径存在），已存在会**先清空**。
+  - `ByteStreamDemo3`：`write(byte[])` 写整个数组、`write(byte[], off, len)` 写数组的一部分。
+  - `ByteStreamDemo4`：`FileOutputStream(file, true)` **续写**模式、`getBytes(StandardCharsets.UTF_8)` 转字节、`\r\n` 写换行。
+  - `ByteStreamDemo5`：字节输入流 `FileInputStream` 的 `read()`，读完返回 `-1`。
+  - `ByteStreamDemo6`：`while ((b = fis.read()) != -1)` 循环读取全部内容。
+- 记录字节流的两个关键点：`write(int)` 写的是字节（ASCII 码）；字节流按字节读中文会乱码（实测）。
+- README 新增「踩坑经验总结（2026-10-16）」（字节输出流 / 字节输入流两组，编号 97~106），并同步更新目录一览、知识点索引（补充「十四」）、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 学字节输出流 / 输入流时踩的坑与记下的 API 细节。每条只讲一个点：**现象 → 结论**。
 
-### 字节输出流
+##### 字节输出流
 
 97. **`FileOutputStream` 会先清空已有文件**：目标文件已存在时，`new FileOutputStream(file)` 会把它**清空再写**（覆盖）；想接着后面写，要传第二个参数 `true`。
 98. **父目录不存在照样报错**：路径的父级文件夹不存在时，`FileOutputStream` 同样报「系统找不到指定的路径」；它不会创建目录（和 `createNewFile()` 一样）。
@@ -526,27 +709,33 @@ java com.test.HelloWorld
 102. **字符串转字节要指定编码**：`s.getBytes(StandardCharsets.UTF_8)`；不写参数就用平台默认编码，跨平台容易不一致。
 103. **Windows 的换行是 `\r\n`**：写换行就写 `"\r\n"`。
 
-### 字节输入流
+##### 字节输入流
 
 104. **`read()` 返回的是字节值（0~255）**：不是字符；读到文件末尾返回 `-1`。
 105. **标准读取循环**：`while ((b = fis.read()) != -1) { ... }`，靠 `-1` 判断结束。
 106. **字节流直接读中文会乱码**：UTF-8 下一个汉字占 3 字节，按字节读再 `(char)` 强转必然乱码（实测 `a.txt` 里的「这是一句神秘的代码」输出成 `è???...`）。读中文要用字符流，或先按 UTF-8 解码。
 
-## IntelliJ IDEA 更新速报（2026-10-17）
+<a id="day-2026-10-17"></a>
 
-- 今天（2026-10-17）JetBrains 官方**没有发布新版本**，官方博客也没有当天的新文章。
-- 最新稳定版：**2026.2.3**（build 262.10968.63，2026-09-16 发布）。
-- 最新抢先版：**2026.3 EAP 7**（build 263.7031.23，2026-10-15 发布）。
-- 近期新闻：2026-10-15，**Java and Kotlin by IntelliJ IDEA 扩展发布 1.0**，可以在 VS Code / Cursor 里使用 IDEA 的 Java / Kotlin 代码分析与重构，需要 IntelliJ IDEA Ultimate 订阅（30 天试用）。
-- 如果 IDE 里弹出更新提示：多半是 2026.2.3 稳定版或 2026.3 EAP。学习阶段建议留在稳定版，EAP 可能有未修复的 bug。
+### 2026-10-17｜字节复制、字符流与异常
 
-参考：[IntelliJ IDEA 官方博客](https://blog.jetbrains.com/idea/) · [2026.3 EAP 7 Release Notes](https://youtrack.jetbrains.com/articles/IDEA-A-2100662751/IntelliJ-IDEA-2026.3-EAP-7-263.7031.23-build-Release-Notes) · [LSP 扩展 1.0 公告](https://blog.jetbrains.com/idea/2026/10/intellij-idea-s-java-and-kotlin-for-cursor-and-vs-code-hits-1-0/)
+#### 代码与文档更新
 
-## 踩坑经验总结（2026-10-17）
+- `MyIO/` 继续练 IO：
+  - `ByteStreamDemo6`：补上 `close()`。
+  - `ByteStreamDemo7`：`FileInputStream` + `FileOutputStream` 边读边写拷贝文件，并统计耗时。
+  - `ByteStreamDemo8`：用 `byte[]` 缓冲区拷贝图片（修正 `read()` / `read(byte[])` 混用导致写出脏数据的问题）。
+  - `CharStreamDemo1`：`FileReader` 无参 `read()` 逐字符读取，中文不再乱码。
+  - `CharStreamDemo2`：`read(char[])` 批量读取，按本次读到的长度构造字符串。
+  - `CharStreamDemo3`：`FileWriter(file, true)` 追加写字符串与字符数组。
+- 理清异常处理：`throw` / `throws` / `try-catch` 的分工、受检异常为什么绕不过编译器、构造器为什么不能重写去掉声明。
+- README 新增「踩坑经验总结（2026-10-17）」（异常 / IO 两组，编号 107~124）与「IntelliJ IDEA 更新速报（2026-10-17）」，并同步更新目录一览、知识点索引、学习进度与更新记录。
+
+#### 踩坑经验总结
 
 围绕「异常到底由谁处理」和「IO 流基础」问出来的问题。每条只讲一个点：**现象 → 结论**。
 
-### 抛出与捕获
+##### 抛出与捕获
 
 107. **`throw` 和 `throws` 不是一回事**：`throw new XxxException(...)` 是当场真的抛出一个异常对象；方法签名上的 `throws XxxException` 只是**声明**「我可能抛」，本身不产生任何异常。
 108. **不写 `throw` 也可能抛异常**：除零抛 `ArithmeticException`、空指针抛 `NullPointerException`、数组越界抛 `ArrayIndexOutOfBoundsException`，这些都是 JVM 自动抛的，跟写没写 `throw` 无关。
@@ -559,7 +748,7 @@ java com.test.HelloWorld
 115. **`try-with-resources` 是关流的标准写法**：`try (var in = new FileInputStream(path)) { ... }` 会自动 `close()`，比手写 `finally` 稳。
 116. **捕获后什么都不做，等于隐藏 bug**：空 `catch` 让程序带病运行，错误会在更远的地方以更奇怪的方式爆出来。
 
-### IO 流
+##### IO 流
 
 117. **四个基类先记住**：`InputStream` / `OutputStream` 按字节，`Reader` / `Writer` 按字符；输入输出以「程序」为参照物。
 118. **`read()` 和 `read(byte[])` 返回值含义不同**：无参 `read()` 返回字节值（0~255，结束是 `-1`）；`read(byte[])` 返回本次读到的**长度**，结束同样是 `-1`。
@@ -570,136 +759,34 @@ java com.test.HelloWorld
 123. **`FileWriter(file, true)` 才是追加**：不传第二个参数就是覆盖，规则和 `FileOutputStream` 一样。
 124. **关流顺序：先开的后关**：Demo7 里先开 `fis` 后开 `fos`，所以先 `fos.close()` 再 `fis.close()`；用 try-with-resources 就不用记顺序。
 
-## 更新记录
+#### 附：IntelliJ IDEA 更新速报（当日历史记录）
 
-### 2026-10-02
+> 以下保留 2026-10-17 当日记录中的版本信息与参考链接，不作为当前版本或升级建议。
 
-- `Poly/` 新增三个知识点练习：
-  - `com.Abstracttest3`：抽象类与抽象方法（Animal / Cat）。
-  - `com.Interface`：接口 `interface` 与 `implements`，抽象类 + 接口组合使用（Animal / Fork / swim）。
-  - `com.InnerClass`：匿名内部类，用一次性的内部类实现接口（Swim / Test）。
-- README 同步更新知识点索引与学习进度。
+- 今天（2026-10-17）JetBrains 官方**没有发布新版本**，官方博客也没有当天的新文章。
+- 最新稳定版：**2026.2.3**（build 262.10968.63，2026-09-16 发布）。
+- 最新抢先版：**2026.3 EAP 7**（build 263.7031.23，2026-10-15 发布）。
+- 近期新闻：2026-10-15，**Java and Kotlin by IntelliJ IDEA 扩展发布 1.0**，可以在 VS Code / Cursor 里使用 IDEA 的 Java / Kotlin 代码分析与重构，需要 IntelliJ IDEA Ultimate 订阅（30 天试用）。
+- 如果 IDE 里弹出更新提示：多半是 2026.2.3 稳定版或 2026.3 EAP。学习阶段建议留在稳定版，EAP 可能有未修复的 bug。
 
-### 2026-10-03
+参考：[IntelliJ IDEA 官方博客](https://blog.jetbrains.com/idea/) · [2026.3 EAP 7 Release Notes](https://youtrack.jetbrains.com/articles/IDEA-A-2100662751/IntelliJ-IDEA-2026.3-EAP-7-263.7031.23-build-Release-Notes) · [LSP 扩展 1.0 公告](https://blog.jetbrains.com/idea/2026/10/intellij-idea-s-java-and-kotlin-for-cursor-and-vs-code-hits-1-0/)
 
-- 新增 `API/` 项目：常用 API 练习。
-  - `com.APITest1`：`Random` 随机数（小数、指定范围）。
-  - `com.StringTest2`：String 的五种创建方式。
-  - `com.StringTest3`：字符串比较 `equals` / 登录模拟、字符串遍历、字符种类统计、数组转字符串（`Arrayutil`）。
-- README 同步更新知识点索引与学习进度。
+<a id="复习记录2026-10-18"></a>
 
-### 2026-10-04
+<a id="day-2026-10-18"></a>
 
-- `API/` 项目新增：
-  - `com.StringTest4`：`substring` 截取、`charAt`，手机号脱敏。
-  - `com.StringTest5`：`replaceAll` 敏感词替换。
-  - `com.contains_`：String 查找与转换（`contains` / `startsWith` / `endsWith` / `indexOf` / `lastIndexOf` / `isEmpty` / `toCharArray` / 大小写）。
-  - `com.StringBuilderDemo`：字符串拼接性能问题 + `StringBuilder` 的 `append` / `toString`。
-  - `com.ArrayListDemo`：`ArrayList` 集合入门（`add` / `set` / `get` / `size` / 遍历）。
-- README 同步更新知识点索引与学习进度。
-
-### 2026-10-05
-
-- 新增 `TestFightGame/` 阶段性项目：控制台「文字格斗游戏」的登录 / 注册模块（`APP` 启动类、`User` 实体、`Login` 界面）。
-- 该项目是把已学内容（面向对象、集合、String、控制台交互）串起来的第一个综合练习；**今天没有新学知识点，项目尚未完成**。
-- README 新增「踩坑经验总结（2026-10-05）」，收录今天调试中遇到的问题与结论。
-
-### 2026-10-06
-
-- 学习常用类：`System`、`Object`、包装类（含扩展 `BigInteger` / `BigDecimal`），整理为「学习笔记（2026-10-06）」写进本 README。
-- README 同步更新学习进度（新增「常用类」一项）与更新记录。
-
-### 2026-10-07
-
-- 新增 `api-code/` 项目：
-  - `com.zhangyihang.mathTest`：`Math` 数学工具类（`abs` / `ceil` / `floor` / `round` / `pow` / `sqrt` / `cbrt` / `random`）。
-  - `com.zhangyihang.WebSpider`：`Pattern` / `Matcher` 正则入门、忽略大小写与前瞻断言、`replaceAll` / `split`，以及 `URL` 网页爬取占位练习。
-- 新增 `search_code/` 项目：基本查找（从 0 索引逐个比较）。
-- README 新增「踩坑经验总结（2026-10-07）」（正则与 IDEA 排错），并同步更新目录一览、知识点索引、学习进度与更新记录。
-
-### 2026-10-08
-
-- 学习查找算法与排序算法，`search_code/` 同步补齐两个文件：
-  - `com.zhangyihang.search.BinarySearch`：二分查找（数组必须有序，`min` / `max` / `mid` 折半收缩，找不到返回 `-1`）。
-  - `com.zhangyihang.search.BlockSearch`：分块查找（索引表 `block[]` 定位块 + 块内顺序查找），含索引实体类 `block`（`min` / `max` / `startIndex` / `endIndex`）。
-- 新增 `Sort_Code/` 项目：`com.zhangyihang.mysort.a01_BubbleSort`（冒泡排序）。
-- README 新增「踩坑经验总结（2026-10-08）」（结构 / 边界 / 概念三组共 13 条），并同步更新目录一览、知识点索引（新增「十一、排序算法」）、学习进度与更新记录。
-
-### 2026-10-09
-
-- 学习四个排序算法与递归，`Sort_Code/` 新增 4 个文件、整理 1 个：
-  - `com.zhangyihang.mysort.a02_SelectionSort`：选择（交换）排序。
-  - `com.zhangyihang.mysort.a03_InsertSort`：插入排序（修好了 `break` 位置与循环边界）。
-  - `com.zhangyihang.mysort.a04_Recursion`：递归求 1~100 的和 + 阶乘（阶乘目前返回 `int`，20! 会溢出，待改 `long`）。
-  - `com.zhangyihang.mysort.a05_quicklySort`：快速排序（递归出口 `i >= j` 放第一行、右指针先动、左右半递归参数修正）。
-- README 新增「踩坑经验总结（2026-10-09）」（结构 / 递归 / 快排 / 数值 / static / 调试 六组，编号 36~56），并同步更新目录一览、知识点索引（补充「十一、排序算法」）、学习进度与更新记录。
-
-### 2026-10-11
-
-- 新增 `MyAPI/` 项目：
-  - `com.zhangyihang.TestAPI.MyArraysDemo1`：`java.util.Arrays` 常用 API 练习（`toString` / `binarySearch` / `copyOf` / `copyOfRange` / `fill` / `sort`），并用「取负 → 排序 → 再取负」实现降序排序 `sort1`。
-  - `com.zhangyihang.TestLambda.LambdaDemo1`：接口 + 匿名内部类实现接口、`method(Swim s)` 演示接口作参数（回调），并开始接触 Lambda 表达式。**Lambda 尚未学完。**
-- README 新增「踩坑经验总结（2026-10-11）」（结构 / Arrays / 接口多态 / Lambda 四组，编号 57~68），并同步更新目录一览、知识点索引（新增「十二」）、学习进度与更新记录。
-
-### 2026-10-14
-
-- 新增 `Myfile/` 项目：`java.io.File` 常用 API 练习（写在默认包下）。
-  - `FileDemo1`：`File` 的两种构造方式（`new File(path)` / `new File(parent, child)`）与打印。
-  - `FileDemo2`：`isDirectory()` / `isFile()` / `exists()` 判断。
-  - `FileDemo3`：`length()`（文件字节数，对文件夹无意义）、`getAbsolutePath()`、`getName()`、`lastModified()`（毫秒时间戳）。
-  - `FileDemo4`：`createNewFile()` 创建文件（返回 `true` / `false`）与 `throws IOException`。
-  - `FileDemo5`：`delete()` 删除文件。
-- 顺带理清「异常的抛出 / 声明 / 捕获」：`throw`、`throws` 与 `try-catch` 的区别，以及 `createNewFile()` 为什么返回 `false` 而不是抛异常。
-- README 新增「踩坑经验总结（2026-10-14）」（File / 异常 / 结构三组，编号 69~80），并同步更新目录一览、知识点索引（新增「十三」）、学习进度与更新记录。
-
-### 2026-10-15
-
-- `Myfile/` 继续练 `File`，新增 4 个文件：
-  - `FileDemo6`：`listFiles()` 列出目录下的直接子项并遍历。
-  - `com.zhangyihang.Test.Test1`：`mkdirs()` 建目录 + `createNewFile()` 建文件（顺带修正了路径多写一层的问题）。
-  - `com.zhangyihang.Test.Test2`：封装方法判断某文件夹下是否存在 `.avi` 文件。
-  - `com.zhangyihang.Test.Test3`：递归遍历文件夹找出所有 `.avi` 文件。
-- 新增 `MyIO/` 项目：`com.zhangyihang.bytestream.ByteStreamDemo1`，字节**输出流** `FileOutputStream` 写出数据（`write(98)` → `close()`）。
-- 理清「输入流 / 输出流」的方向概念（参照物是程序而不是文件）、以及 `File` 与流的职责分工。
-- 把 README 的「踩坑经验总结」全量重排：1~96 条统一为「一条只讲一件事：现象 → 结论」，并把正文里 GitHub 不渲染的 `$...$` 公式改成纯文本。
-- README 新增「踩坑经验总结（2026-10-15）」（路径 / 递归性能 / IO 流概念三组，编号 81~96），并同步更新目录一览、知识点索引（补充「十三」、新增「十四」）、学习进度与更新记录。
-
-### 2026-10-16
-
-- `MyIO/` 继续练字节流，新增 4 个文件、更新 1 个：
-  - `ByteStreamDemo1`：补充说明——输出流可以接收文件名字符串或 `File` 对象；文件不存在会创建（前提是父级路径存在），已存在会**先清空**。
-  - `ByteStreamDemo3`：`write(byte[])` 写整个数组、`write(byte[], off, len)` 写数组的一部分。
-  - `ByteStreamDemo4`：`FileOutputStream(file, true)` **续写**模式、`getBytes(StandardCharsets.UTF_8)` 转字节、`\r\n` 写换行。
-  - `ByteStreamDemo5`：字节输入流 `FileInputStream` 的 `read()`，读完返回 `-1`。
-  - `ByteStreamDemo6`：`while ((b = fis.read()) != -1)` 循环读取全部内容。
-- 记录字节流的两个关键点：`write(int)` 写的是字节（ASCII 码）；字节流按字节读中文会乱码（实测）。
-- README 新增「踩坑经验总结（2026-10-16）」（字节输出流 / 字节输入流两组，编号 97~106），并同步更新目录一览、知识点索引（补充「十四」）、学习进度与更新记录。
-
-### 2026-10-17
-
-- `MyIO/` 继续练 IO：
-  - `ByteStreamDemo6`：补上 `close()`。
-  - `ByteStreamDemo7`：`FileInputStream` + `FileOutputStream` 边读边写拷贝文件，并统计耗时。
-  - `ByteStreamDemo8`：用 `byte[]` 缓冲区拷贝图片（修正 `read()` / `read(byte[])` 混用导致写出脏数据的问题）。
-  - `CharStreamDemo1`：`FileReader` 无参 `read()` 逐字符读取，中文不再乱码。
-  - `CharStreamDemo2`：`read(char[])` 批量读取，按本次读到的长度构造字符串。
-  - `CharStreamDemo3`：`FileWriter(file, true)` 追加写字符串与字符数组。
-- 理清异常处理：`throw` / `throws` / `try-catch` 的分工、受检异常为什么绕不过编译器、构造器为什么不能重写去掉声明。
-- README 新增「踩坑经验总结（2026-10-17）」（异常 / IO 两组，编号 107~124）与「IntelliJ IDEA 更新速报（2026-10-17）」，并同步更新目录一览、知识点索引、学习进度与更新记录。
-
-
-## 复习记录（2026-10-18）
+### 2026-10-18｜方法、数组与面向对象复习
 
 本次为 Java 基础至 IO 入门的集中复习，以下区分独立编码成果与讲解、问答中复习的内容，不代表所有知识均已熟练掌握。
 
-### 独立编码与运行
+#### 独立编码与运行
 
 - 正数计数：遍历 `int[]`，统计大于 0 的元素，循环结束后返回数量；不修改原数组，空数组返回 0。已提交方法并反馈运行成功。
 - 下标查找：`findIndex(int[] arr, int target)` 找到后返回第一次出现的下标，遍历结束仍未找到返回 -1。已反馈查找不存在元素的测试运行成功；重复元素、空数组等测试仍需补充确认。
 - 封装与年龄校验：使用私有字段、构造方法、getter/setter；非法年龄不修改原字段。最初只检查了下限，复习中补充了 0～150 的完整条件与边界测试思路。
 - 静态计数：`Student2` 使用实例字段 name、静态字段 count、静态方法 getCount；有参构造创建两个对象后计数为 2。新增的无参构造最初未计数，已讲解通过 `this("未命名")` 复用有参构造；修改后的运行结果尚未确认。
 
-### 核心知识梳理
+#### 核心知识梳理
 
 1. **方法、数组与引用**：Java 按值传递参数；数组和对象作为实参时复制引用的值。通过引用修改同一对象的状态，各引用都能观察到；给某个变量重新赋值，不会改变另一个变量的指向。
 2. **返回值与有效数据**：返回值含义由方法约定，可能是数量、下标或特殊标记。数组容量不等于本次有效数据长度。
@@ -711,18 +798,22 @@ java com.test.HelloWorld
 8. **字符流回顾**：read() 返回读取的字符对应的整数或末尾标记 -1；read(char[]) 把字符放入数组，返回实际读到的字符数，末尾返回 -1。非空缓冲区不能用返回 0 判断末尾；未覆盖的数组位置可能保留旧数据。
 9. **批量读取**：使用 `while ((count = reader.read(buffer)) != -1)`，再按 `new String(buffer, 0, count)` 使用有效部分；判断和处理时重复调用 read 会漏读。
 
-### 当前进度与后续安排
+#### 当前进度与后续安排
 
 - 已完成数组与方法、循环控制的核心练习；已复习对象引用、封装、static，正在巩固构造方法与继承。
 - 易错点：遗漏先前输出、混淆引用重新赋值与对象修改、遗漏范围上限、混淆读取数量与末尾标记。
 - 后续：构造调用小练习 → 继承/重写/多态/抽象类与接口 → String/ArrayList 基础与登录验证 → 异常、File、字节流和字符流综合验收。
 - 本次 README 总结基于交流中实际提交的代码和回答；本地 IDEA 复习项目尚未提供给当前环境，尚未上传，不能以本记录代替源码同步。
 
-## 复习记录（2026-10-19）
+<a id="复习记录2026-10-19"></a>
+
+<a id="day-2026-10-19"></a>
+
+### 2026-10-19｜接口、登录注册、异常与字节流复习
 
 今天围绕面向对象、多态、String/ArrayList、登录注册、异常和字节输入流复习。代码由学习者在讲解和提示下编写、修改；运行通过不代表已能完全独立实现。
 
-### 源码与验证
+#### 源码与验证
 
 本次同步今天的 10 个 Java 源文件至 `Review/src/com/zhangyihang/`，保留本地原始代码。未上传 IDEA 配置、编译产物或昨天的 `review_1`；10 月 18 日记录中有关旧复习源码未同步的说明仍适用。
 
@@ -736,7 +827,7 @@ java com.test.HelloWorld
 
 上传前使用 JDK 25 编译全部 10 个源文件，并在独立测试目录运行上述五个入口，均正常退出。登录代码当前将密码不匹配提示为“登录错误”，实际分支正确；本项目仅为明文密码、内存集合的学习练习，尚无持久化和真实网站登录状态管理。
 
-### 今天理清的概念与踩坑
+#### 今天理清的概念与踩坑
 
 1. **接口与对象**：接口不是类，但也是引用类型，可声明变量、参数和数组。真正创建的是实现类对象。`new Notification[3]` 创建数组，三个元素初始为 null，不会创建通知对象。
 2. **数组与集合**：数组用 `arr[i]`，ArrayList 用 `users.get(i)`；访问长度分别用 `length` 和 `size()`。
@@ -752,7 +843,7 @@ java com.test.HelloWorld
 12. **打印数组**：byte[] 的 toString 不显示文件内容；当前练习对英文数字逐字节转 char 打印，这不适用于一般 UTF-8 中文解码。
 13. **代码结构**：曾因多余右大括号使方法或 catch 脱离所属结构，已修复；继续注意缩进与括号配对。
 
-### 进度与下一步
+#### 进度与下一步
 
 - 已完成以上提示下的编码练习和验证；参数、返回值、分支含义及异常传播仍需持续巩固。
 - 增强 for 仅作概念讲解，当前练习继续使用普通 for；未计为独立掌握。
@@ -760,7 +851,7 @@ java com.test.HelloWorld
 - 然后复习字符流读取/写入、编码与追加写入，完成小型 IO 综合验收；今天尚未完成该部分。
 - 后续沿已提供的 AI 全栈课程目录学习；本轮只复习此前已学内容，不以完成目录比例替代实际掌握程度。
 
-### 运行说明
+#### 运行说明
 
 `Review/` 仅包含今天的源码与 ASCII 测试文件 `review-test.txt`。使用 JDK 25，在此目录编译并运行（PowerShell）：
 
@@ -776,11 +867,15 @@ java -cp out com.zhangyihang.review4.ByteReadTest
 
 相对路径以运行时工作目录为准。ByteReadTest 的单字节读取版本、Notification 的普通父类和抽象类版本曾在复习中运行，当前同步的是各文件最终版本，不包含所有中间版本。
 
-## 学习记录（2026-10-20）
+<a id="学习记录2026-10-20"></a>
+
+<a id="day-2026-10-20"></a>
+
+### 2026-10-20｜IO 复习收尾与 List 入门
 
 今天完成已学 IO 核心内容的复习收尾，补充缓冲流基础，并开始系统学习集合。以下区分实际源码、运行验证、概念讲解和未完成练习，不以运行通过代表全部独立掌握。
 
-### 今天同步的源码
+#### 今天同步的源码
 
 | 文件 | 内容与状态 |
 | --- | --- |
@@ -792,7 +887,7 @@ java -cp out com.zhangyihang.review4.ByteReadTest
 
 源码保留 IDEA 中的实际写法，不为总结而代写、重构。未上传 IDE 缓存、out、class、重复生成的日志等。Review 增加 UTF-8 示例输入 review-text.txt；JavaCollections 增加编译输出与个人 IDE 状态的忽略规则。
 
-### 已运行验证
+#### 已运行验证
 
 上传前使用 JDK 25 编译今天的 5 个源文件，并在独立测试目录执行五个入口：
 
@@ -802,7 +897,7 @@ java -cp out com.zhangyihang.review4.ByteReadTest
 - StudyLogTest：首次运行 2 条，再运行 4 条，中文与追加正确。课堂中按行版本也已验证中间空行不会提前结束。
 - ListTest：依次输出 [小林, 小王, 小周]、3、[小林, 小李, 小周]、3、小李。按下标删除返回值已验证；删除后名单、按内容删除不存在元素及其返回 false 的测试尚未完成。
 
-### 今天理解与修正的问题
+#### 今天理解与修正的问题
 
 1. **有效数量与数组容量**：字符读取曾按 chars.length 遍历，用 ABCD 测试时输出 ABCDBC；改为 i < len 后修复。实际 len 才决定本次哪些位置有效。
 2. **字符与编码**：常用汉字“你”在 UTF-8 文件中占 3 字节，解码后可由一个 Java char 表示；char 是 16 位 UTF-16 编码单元，并非所有汉字或 emoji 都只占一个 char。FileReader 负责解码，不是把 3 个原始字节直接塞进 char。
@@ -816,14 +911,14 @@ java -cp out com.zhangyihang.review4.ByteReadTest
 10. **集合整体认识**：Collection 下认识 List、Set、Queue；Map 是独立的键值对体系。交互示例观察到 List 保留重复、Set 去重、Map 同键更新值且数量不增加。“小林（新）”是演示提供的新值，不是 Map 自动生成的标记。
 11. **List 基础**：List 是接口，ArrayList 是实现类；<String> 限定元素类型。add(1, 元素) 插入并移动后续元素、人数增加；set(1, 元素) 替换、人数不变。操作按代码顺序作用于同一份名单。
 
-### 下一步与教学安排
+#### 下一步与教学安排
 
 - 本轮已学 IO 核心复习基本收尾；转换流、Path/Files 记为概念了解，今后遇到实际场景再巩固，不算独立掌握。
 - 集合主线：泛型与 List/ArrayList → 遍历与安全删除 → Set/HashSet 及 equals/hashCode → Map/HashMap → Comparator 排序 → 社团报名综合练习。
 - 下次从 List.remove 继续，补完返回值、删除后列表和按内容删除的测试，再学习遍历时删除。Set/Map 目前仅整体认识，并未开始独立编码。
 - 用户希望优先学重要且实用的内容；先给全局地图和路线，再用可交互演示、短讲解、小段编码和真实排错推进，减少重复练习和连续长文字。
 
-### 运行提示
+#### 运行提示
 
 沿用 JDK 25。Review 目录中编译 src 后运行 review4 下各入口；相对文件路径以工作目录为准。review-text.txt 为“你好Java!”样例，review-test.txt 为已存在的 ABC123 样例；输出文件由练习生成。
 
@@ -835,11 +930,15 @@ javac -encoding UTF-8 -d out $sourceFiles
 java -cp out com.zhangyihang.collections.list.ListTest
 ```
 
-## 学习记录（2026-10-21）
+<a id="学习记录2026-10-21"></a>
+
+<a id="day-2026-10-21"></a>
+
+### 2026-10-21｜List、迭代器与 HashSet
 
 今天完成 List 常用操作与报名综合练习，并提前学习遍历、安全删除、HashSet 和自定义学生对象判重。以下记录实际代码和验证结果，不把提示下完成、概念讲解与独立掌握混为一谈。
 
-### 今天同步的代码
+#### 今天同步的代码
 
 | 文件 | 内容 |
 | --- | --- |
@@ -853,7 +952,7 @@ java -cp out com.zhangyihang.collections.list.ListTest
 
 List 基础、for 遍历和迭代器已分文件整理，每段演示使用自己的名单，避免前一段删除影响后一段。ListPracticeTest 保留自己编写的倒序循环 cancel，并仅整理格式；直接 return studentIds.remove(studentId) 的简化版本已讲解，但未替换源码。SetTest 目前仍位于 list 包，按 IDEA 的实际结构同步。
 
-### 一、List：位置、重复与方法返回值
+#### 一、List：位置、重复与方法返回值
 
 - List 是接口，ArrayList 是现成实现类。创建 ArrayList 后，添加、查询、移动元素、扩容等能力由集合负责，不需要自己实现。
 - ArrayList 允许重复且保留列表顺序；[小林, 小周, 小林] 是合法名单。内部存放对象引用，同一个对象引用也可以出现在多个位置。
@@ -862,7 +961,7 @@ List 基础、for 遍历和迭代器已分文件整理，每段演示使用自�
 - remove(int index) 返回被删除的元素；remove(Object value) 删除首个匹配元素并返回 boolean。连续删除唯一的“小周”，结果是 true、false。
 - List<Integer> 的 remove(1) 按下标删除；要删除数字 1，可写 remove(Integer.valueOf(1))。从 [10, 20, 1] 依次执行这两种删除，返回值分别为 20、true，最终为 [10]。本项进行了讲解和纠正，未新增单独的整数练习源文件。
 
-### 二、遍历与安全删除
+#### 二、遍历与安全删除
 
 | 方式 | 适用场景 | 注意点 |
 | --- | --- | --- |
@@ -887,7 +986,7 @@ while (iterator.hasNext()) {
 - names.iterator() 返回一个迭代器对象，没有复制名单，也没有读取首个元素。Iterator 接口类型变量接收具体实现对象，调用其方法时体现多态。
 - 遍历期间直接调用 names.remove 可能触发 ConcurrentModificationException，单线程也可能发生；没有抛异常不能作为正确性的证明。
 
-### 三、Set：集合负责查重，对象定义相等规则
+#### 三、Set：集合负责查重，对象定义相等规则
 
 Set 是不保留重复元素的接口，HashSet 是已经封装好的实现。HashSet 不保证遍历顺序，没有 get(下标)。它内部使用 HashMap，添加时利用哈希值缩小范围，再判断候选是否相等；不是先添加重复项再清理。
 
@@ -908,7 +1007,7 @@ return this.studentId.hashCode();             // hashCode 的返回值
 - 学生存入 HashSet 后，不要直接修改参与 equals/hashCode 的学号；如需修改，应先移除、修改，再按新状态加入，并处理新学号冲突。仅改姓名不影响当前判重规则。
 - ArrayList 本身允许重复，但 ListPracticeTest.register 可以先 contains 再 add，靠业务代码拒绝重复；绕过 register 直接 add，仍可能加入重复学号。
 
-### 四、今天排错得到的经验
+#### 四、今天排错得到的经验
 
 1. **先执行方法，再判断返回值**：if (studentIds.add(id)) 已经尝试添加一次，分支只反馈结果，不应为同一次报名再 add。remove 也一样；contains 则没有增删副作用。
 2. **返回位置决定是否继续查找**：循环内部 return false 会在首个不匹配时提前结束；只有全找完还没找到，才在循环外返回 false。
@@ -920,7 +1019,7 @@ return this.studentId.hashCode();             // hashCode 的返回值
 8. **善用现成返回值**：学号为 String 时，cancel 可以直接 return studentIds.remove(studentId)。现成方法恰好符合业务，就不必重新写查找循环；循环版本也适合练习执行过程。
 9. **排版帮助识别逻辑层级**：每层缩进 4 个空格，方法之间适度留空行，右括号单独一行；return false 不与循环右括号挤在一行。自动格式化不能代替逻辑检查。
 
-### 五、本次上传前的验证
+#### 五、本次上传前的验证
 
 使用本机 JDK 25，编译 JavaCollections 当前全部 7 个源文件，运行 5 个 main 入口，均通过。ListPracticeTest 只有业务方法，没有 main，由独立临时测试调用。
 
@@ -936,14 +1035,14 @@ return this.studentId.hashCode();             // hashCode 的返回值
 
 临时验证代码不作为新的 IDEA 作业上传；编译结果、IDE 缓存与本地教学档案也不上传。Student 当前约定 studentId 非 null，未做完整的构造参数校验；其内部已判断 equals 的入参为 null，这是两件不同的事。源文件仍有旧实验注释、未用到的 other 变量等可清理项，不影响本次验证结论；README 中记录的是最终实际结果。
 
-### 六、仅讲解和后续安排
+#### 六、仅讲解和后续安排
 
 - 已讲解集合框架整体位置：Collection 下有 List、Set、Queue；Map 独立于 Collection；Iterator 是遍历工具。ArrayList/HashSet 是现成工具，不只是抽象分类。
 - Map 已认识键值对、put/get、重复键更新及基本返回值，目前没有新增 Map 实验源码，尚未完成独立实操验收。
 - 下一次从 Map/HashMap 正式开始，再补 Comparator、集合选择与综合应用。今天完成的是 List 原定任务，并提前推进了 Set，集合框架整体尚未学完。
 - 继续用短讲解、图解、预测、自己编码与运行验证推进；能跟随解释不直接记为长期掌握，后续用间隔回顾巩固。
 
-### 运行方式
+#### 运行方式
 
 在 JavaCollections 目录中，使用 JDK 25 编译并选择要复习的入口运行：
 
