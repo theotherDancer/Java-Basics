@@ -8,7 +8,7 @@
 
 **阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
 
-> Java 学习进度以最近一次已同步的 Java 记录（2026-10-21）为准。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+> 本仓库最近更新：2026-10-30，新增网络编程入门代码与笔记。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
 >
 > 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
 
@@ -46,6 +46,9 @@
 - [ ] Path / Files：已讲解常用操作，未实操验收
 - [x] 异常处理：`throw` / `throws` / `try-catch`、受检异常（2026-10-17）
 
+- [x] 网络编程入门：IP、端口、InetAddress、UDP 单次与循环收发（2026-10-30；代码编译通过，运行与待验证项见当日记录）
+- [ ] TCP、网络多线程：尚未系统学习
+
 ## 工程目录
 
 > 下表中的时间与“进行中”说明沿用各工程的历史记录；总体状态请先看上方学习进度。
@@ -66,6 +69,9 @@
 | `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
 | `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
 | `JavaCollections/` | List 增删改查、遍历与安全删除、报名综合练习、HashSet 与学生对象判重 | 2026-10-20 ~ 10-21（Map 待实操） |
+| [NetworkProgramming/](NetworkProgramming/) | IP、InetAddress、UDP 收发与缓冲区有效长度 | 2026-10-30 |
+
+> 新增 NetworkProgramming 仅归档源码和运行说明，IDEA 中选择 JDK 25，并将 src 标记为 Sources Root；其他旧工程沿用历史目录。
 
 > 每个子目录都是独立的 IDEA 工程（各自带 `.iml` 与 `src/`）。
 
@@ -286,6 +292,22 @@
 
 **已讲解、尚未新增实操源码的内容：** List<Integer> 的 remove(1) 与 remove(Integer.valueOf(1))；Collection/List/Set/Queue 与独立 Map 的关系；Map 的 put/get 及返回值。不要把知识点入口或课堂讲解当作独立掌握证明。
 
+
+### 十七、网络编程入门 `NetworkProgramming/`
+
+学习日期：2026-10-30。本机原工程名为 `network programming`，本仓库归档为 `NetworkProgramming`；包名和源码内容不变。
+
+| 文件 | 内容与当前状态 |
+|---|---|
+| [inetAddress1.java](NetworkProgramming/src/com/zhangyihang/inetAddress1.java) | getByName、getLocalHost；getAllByName 已讲解，未写入当前文件 |
+| [udpSendDemo1.java](NetworkProgramming/src/com/zhangyihang/udpSendDemo1.java) | 单次发送：UTF-8 编码、目标地址与端口、send、close |
+| [udpReceiveDemo2.java](NetworkProgramming/src/com/zhangyihang/udpReceiveDemo2.java) | 单次接收：绑定 10086、receive、按实际长度解码、获取发送方信息、close |
+| [udpSendTest.java](NetworkProgramming/src/com/zhangyihang/Test1/udpSendTest.java) | 键盘输入、循环发送，输入 886 退出发送端；不是双向聊天室 |
+| [udpReceiveTest.java](NetworkProgramming/src/com/zhangyihang/Test1/udpReceiveTest.java) | 循环接收、重复使用数组、通过 getLength 限定解码范围；尚无正常退出条件 |
+
+详细概念、排错过程与验证边界见 [2026-10-30 学习记录](#day-2026-10-30)。运行步骤见 [网络工程说明](NetworkProgramming/README.md)。
+
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -320,6 +342,7 @@ java com.test.HelloWorld
 - [2026-10-19：接口、登录注册、异常与字节流复习](#day-2026-10-19)
 - [2026-10-20：IO 复习收尾与 List 入门](#day-2026-10-20)
 - [2026-10-21：List、迭代器与 HashSet](#day-2026-10-21)
+- [2026-10-30：网络基础、InetAddress 与 UDP 收发](#day-2026-10-30)
 
 <a id="day-2026-10-02"></a>
 
@@ -1057,3 +1080,173 @@ java -cp out com.zhangyihang.collections.set.StudentSetTest
 ```
 
 SetTest 当前 main 未写 public，沿用本项目 JDK 25 的入口支持；按当前环境保留实际练习写法。
+
+
+<a id="day-2026-10-30"></a>
+
+### 2026-10-30｜网络基础、InetAddress 与 UDP 收发
+
+今天为 JavaWeb 补网络编程基础，按网课学习到 UDP 发送、接收，并增加键盘输入和循环接收。对应成长营 Level 1 的 Java 高级编程网络部分，不把它记成已完成 Level 2 请求参数学习。
+
+#### 一、先把“谁和谁通信”想明白
+
+- C/S：专用客户端与服务端，例如聊天客户端；B/S：浏览器与服务端，例如浏览器访问自己的 /hello。
+- 浏览器本身也是客户端。专用客户端也可以使用 HTTP，不能把架构与某一种传输协议直接画等号。
+- 网络通信解决程序之间如何交换数据；多线程解决一个程序怎样并发处理任务，两者有关但不是同一个概念。本日未系统学习多线程。
+- IP 帮助定位目标网络接口；端口帮助区分目标服务；一个服务可以通过不同路径提供多个功能，不需要每个接口各占一个端口。
+
+#### 二、IP、IPv4、IPv6 和命令
+
+| 概念 | 今天的理解 |
+|---|---|
+| IPv4 | 32 位，常见点分十进制，每段 0～255 |
+| IPv6 | 128 位，用冒号分隔十六进制段，连续全零段可压缩 |
+| 本机回环 | 127.0.0.1 是常用 IPv4 回环地址，::1 是 IPv6 回环地址 |
+| localhost | 表示本机的主机名，不是端口，也不是某个框架 |
+| 私有地址 | 不同局域网可以重复使用，不是全球唯一公网地址 |
+| NAT 与端口转换 | 多台内部设备可以共享公网 IPv4；转换表区分回复该交给谁 |
+| MAC 物理地址 | 与 IP、现实地理位置是不同概念，不能直接互相换算 |
+| 端口 | 范围 0～65535；0 通常用于让系统分配可用端口，不作为普通固定监听端口 |
+
+本机此次 Wi-Fi 地址为 10.41.204.187，源码中仍保留它。这是当时的局域网环境配置，换电脑或换网络后要重新确认，不是通用目标地址。私有 IP 不能确定现实中的门牌位置。
+
+`ipconfig` 查看本机网络配置，`ipconfig /all` 查看更详细信息。`ping github.com` 使用主机名；不能把完整的 `https://github.com/` 当主机名传给 ping。主机名可先经 DNS 解析为 IP，再进行 ICMP 回显探测。请求超时不等于 HTTP 网页一定无法访问；解析成功也不代表服务已连通。
+
+#### 三、InetAddress：名字与地址
+
+`InetAddress.getByName(...)` 返回一个 InetAddress；`getAllByName(...)` 返回本次解析得到的 InetAddress 数组，可能只有一个元素。它们不负责发起 HTTP 请求，解析失败可能抛 UnknownHostException。
+
+当前 inetAddress1 实际写了 getByName 和 getLocalHost；getAllByName 只是问答讲解，不计作代码实操验收。
+
+#### 四、UDP 数据怎样发出去
+
+```text
+发送端自己的本地端口             接收端监听端口
+系统分配的端口  ─── UDP 数据包 ───→  10086
+                         数据包目标端口填写 10086
+```
+
+```java
+DatagramSocket ds = new DatagramSocket(); // 绑定自己的本地端口，由系统分配
+DatagramPacket dp =
+        new DatagramPacket(bytes, bytes.length, address, 10086); // 对方目标端口
+ds.send(dp); // 到这里才真正发送
+```
+
+| 对象或方法 | 干什么 |
+|---|---|
+| DatagramSocket | 本地 UDP 通信端点，负责发送或接收 |
+| DatagramPacket | 保存数据数组、长度、地址和端口等数据包信息 |
+| new DatagramSocket(端口) | 指定自己要绑定的本地端口，不是对方端口 |
+| send(dp) | 发送数据包 |
+| receive(dp) | 等待并接收数据包，无数据时通常阻塞等待 |
+| dp.getAddress / getPort | 接收后读取发送方地址和发送方端口 |
+| ds.getLocalPort | 获取当前 Socket 自己绑定的本地端口 |
+
+DatagramPacket 的五参数构造依次是：字节数组、起始偏移、字节数量、目标 InetAddress、目标端口。length 是数量，不是结束下标；创建数据包不等于已经发送。
+
+**端口冲突的实际疑问：** 把发送端 Socket 也设成 10086，和同机接收端抢占同一个 UDP 绑定，导致报错。改回自动分配后，学习者反馈解决。同一电脑通常不能这样重复绑定；不同电脑使用相同端口号并不冲突。必须匹配的是发送包的目标端口和接收端监听端口，不是要求两边本地端口相等。
+
+注意：两个发送类仍有旧注释“这里的端口是目标端口”，该注释位于 Socket 构造说明处，不准确；应理解为“Socket 参数指定本地端口，Packet 参数指定目标端口”。源码保留学习原貌，以本节解释为准。
+
+#### 五、为什么只发“爱你”，却看到“爱你哈”
+
+截图中本次数据长度是 6，但打印出现“爱你哈”。接收端原先按整个数组容量解码，数组后部旧内容被带出来了：不是 UDP 自动多发了一个字。
+
+```text
+上一条数组：[爱的3字节][你的3字节][哈的3字节]……
+本次覆盖：  [爱的3字节][你的3字节][旧的哈仍然保留]……
+             └────本次有效6字节────┘
+```
+
+最关键的问答：
+
+**Q：接收数组在循环外，解析数组 data 在循环内，为什么仍然有旧内容？**
+
+```java
+byte[] bytes = new byte[1020];
+// 数据包使用 bytes 保存接收内容
+byte[] data = dp.getData();
+```
+
+data 是新声明的引用变量，不是新建的数组。getData 返回原数组的引用，所以 data 与 bytes 指向同一个数组，可以用 `data == bytes` 验证。在循环内部声明变量，不会自动复制或清空它引用的对象。
+
+**Q：getData 取整个数组，getLength 怎么又只取本次长度？**
+
+```text
+dp 数据包对象
+├─ 缓冲数组的引用 → 容量 1020
+├─ 本次有效长度  → 6
+├─ 对方地址
+└─ 对方端口
+```
+
+它们读取的是不同信息：getData 返回 byte[]，getLength 返回 int，不是“取数组再计算容量”。
+
+| 表达式 | 接收后的含义 |
+|---|---|
+| bytes.length / dp.getData().length | 数组容量，循环接收示例是 1020 |
+| dp.getLength() | 本次实际接收到的字节数，不累计 |
+| dp.getOffset() | 有效数据在数组中的起始偏移 |
+
+接收前构造包时指定可接收范围；receive 后数据包记录本次实际长度。本轮已将打印改成 `new String(data, 0, length1)`，当前偏移为 0，因此解决了读取旧尾部数据的代码问题。与 IO 流的 read(buffer) 一样：**缓冲容量不等于本次有效数量。**
+
+更明确、可移植的解码写法如下，这是讲解建议，尚未改入本轮源码：
+
+```java
+String message = new String(
+        dp.getData(), dp.getOffset(), dp.getLength(),
+        java.nio.charset.StandardCharsets.UTF_8
+);
+```
+
+发送使用 UTF-8，接收也应明确使用 UTF-8。现有接收类依赖默认字符集，在本机 JDK 25 默认 UTF-8 环境中学习，不据此推广到任何环境均无乱码。
+
+#### 六、循环里为什么不立即 close
+
+接收端要不断 receive，Socket 需要保持打开；每轮 close 后下一轮就不能再接收。当前 while(true) 没有 break，在循环后直接加 close 会不可达。
+
+完整程序应设计退出条件，并用 try-with-resources 或 finally 管理资源。本次只讲解了这种完善方向，循环接收类尚无正常退出和自动关闭机制，不能记为已经完善。
+
+发送端输入 886 时先 break，不把 886 发给接收端；它只停止发送端，接收端仍继续等待。源码注释写“聊天室”，但实际只是单向发送、接收，还不是双向聊天程序。Scanner 仍在发送循环内反复创建，可后续移到循环外，本次未重构。
+
+#### 七、思维导图
+
+```mermaid
+mindmap
+  root((2026-10-30 网络编程))
+    找到目标
+      IP定位网络接口
+      端口定位服务
+      主机名可通过DNS解析
+      ping不是HTTP请求
+    Java地址对象
+      getByName返回一个地址对象
+      getAllByName返回地址数组
+      当前源码包含getLocalHost
+    UDP发送
+      Socket绑定自己
+      Packet填写对方
+      字符串编码成字节
+      send才实际发送
+    UDP接收
+      监听目标端口
+      receive等待数据
+      获取发送者IP和端口
+      循环期间保持Socket打开
+    数组与有效长度
+      getData返回原数组引用
+      数组长度是容量
+      getLength是本次字节数
+      只解码有效范围
+      短消息不应带出旧尾部
+```
+
+#### 八、验证范围与下次起点
+
+- 本次实际读取并归档 5 个 Java 文件；全部用 JDK 25、UTF-8 编译通过。包级 static main 属于本工程采用的 JDK 25 写法，不因省略 public 就认定错误。
+- 学习者运行截图证明循环发送、接收曾工作，也暴露了尾部旧字符问题；端口冲突修改后反馈解决。
+- 有效长度修改已检查源码；修改后“长消息→短消息”连续运行结果尚未收到反馈。本次归档没有启动发送端、占用 10086 或执行无限接收程序，不把编译通过写成完整网络运行验收。
+- 不上传 IDEA 私有配置、编译输出、密码或数据库。源码保持原貌，尚未补入显式字符集、退出条件、资源自动关闭。
+- 下次按网络网课进度接续，先验证长短消息输出，再继续新内容；TCP、多线程通信尚未计入完成。
+- JavaWeb 暂停在 /greet 请求参数，相关独立仓库为 [JavaWeb-Study](https://github.com/theotherDancer/JavaWeb-Study)，本日不标记该练习完成。
