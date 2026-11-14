@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流 / 字符流入门）/ 异常处理（入门）。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流 / 字符流入门）/ 异常处理（入门）→ 网络编程入门 → 多线程入门。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -8,7 +8,7 @@
 
 **阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
 
-> 本仓库最近更新：2026-10-30，新增网络编程入门代码与笔记。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+> 本仓库最近更新：2026-11-14，新增多线程入门练习与笔记。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
 >
 > 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
 
@@ -48,6 +48,8 @@
 
 - [x] 网络编程入门：IP、端口、InetAddress、UDP 单次与循环收发（2026-10-30；代码编译通过，运行与待验证项见当日记录）
 - [ ] TCP、网络多线程：尚未系统学习
+- [x] JavaSE 多线程入门（2026-11-14）。练过 `Thread`、`Runnable`、`Callable` 与 `FutureTask`，并观察线程状态和 `synchronized` 等锁。
+- [ ] JavaSE 多线程进阶。共享数据与线程安全、线程通信、线程池待练。
 
 ## 工程目录
 
@@ -70,6 +72,7 @@
 | `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
 | `JavaCollections/` | List 增删改查、遍历与安全删除、报名综合练习、HashSet 与学生对象判重 | 2026-10-20 ~ 10-21（Map 待实操） |
 | [NetworkProgramming/](NetworkProgramming/) | IP、InetAddress、UDP 收发与缓冲区有效长度 | 2026-10-30 |
+| [multithreading/](multithreading/) | 线程创建、启动与取结果、线程状态、同步锁实验 | 2026-11-14 |
 
 > 新增 NetworkProgramming 仅归档源码和运行说明，IDEA 中选择 JDK 25，并将 src 标记为 Sources Root；其他旧工程沿用历史目录。
 
@@ -307,6 +310,19 @@
 
 详细概念、排错过程与验证边界见 [2026-10-30 学习记录](#day-2026-10-30)。运行步骤见 [网络工程说明](NetworkProgramming/README.md)。
 
+### 十八、多线程入门 `multithreading/`
+
+学习日期为 2026-11-14。IDEA 工程名为 `multithreading`，Java 文件位于 `src/` 的默认包。
+
+| 文件 | 内容与当前状态 |
+| --- | --- |
+| [PrintThread.java](multithreading/src/PrintThread.java) | 继承 `Thread`，重写 `run()`，用线程名对照调用方式。 |
+| [PrintTask.java](multithreading/src/PrintTask.java) | 实现 `Runnable`，由 `new Thread(task)` 接收任务。 |
+| [SumTask.java](multithreading/src/SumTask.java) | 实现 `Callable<Integer>`，打印线程名和状态，休眠后返回 `55`。 |
+| [ThreadNameDemo.java](multithreading/src/ThreadNameDemo.java) | 包装求和任务、启动线程、查看状态、等待结束和取回结果。 |
+| [BlockedDemo.java](multithreading/src/BlockedDemo.java) | 用同一个对象锁观察工作线程的 `BLOCKED` 状态。 |
+
+在 IDEA 用 JDK 25 运行 `ThreadNameDemo` 看求和与状态，运行 `BlockedDemo` 看争锁。详细问答和输出见 [2026-11-14 学习记录](#day-2026-11-14)。
 
 ## 运行方式
 
@@ -343,6 +359,7 @@ java com.test.HelloWorld
 - [2026-10-20：IO 复习收尾与 List 入门](#day-2026-10-20)
 - [2026-10-21：List、迭代器与 HashSet](#day-2026-10-21)
 - [2026-10-30：网络基础、InetAddress 与 UDP 收发](#day-2026-10-30)
+- [2026-11-14：Java 多线程入门、线程状态与同步锁](#day-2026-11-14)
 
 <a id="day-2026-10-02"></a>
 
@@ -1250,3 +1267,86 @@ mindmap
 - 不上传 IDEA 私有配置、编译输出、密码或数据库。源码保持原貌，尚未补入显式字符集、退出条件、资源自动关闭。
 - 下次按网络网课进度接续，先验证长短消息输出，再继续新内容；TCP、多线程通信尚未计入完成。
 - JavaWeb 暂停在 /greet 请求参数，相关独立仓库为 [JavaWeb-Study](https://github.com/theotherDancer/JavaWeb-Study)，本日不标记该练习完成。
+
+<a id="day-2026-11-14"></a>
+
+### 2026-11-14｜Java 多线程入门、线程状态与同步锁
+
+在 IDEA 的 `multithreading` 中补 JavaSE 多线程，练习从进程和线程到六种状态。对应黑马 Java 基础下部 P135 的入门和 P145 的线程生命周期。下一次从 P146 进入线程安全。[P135 · 什么是多线程](https://www.bilibili.com/video/BV1yW4y1Y7Ms/?p=135) · [P145 · 线程生命周期](https://www.bilibili.com/video/BV1yW4y1Y7Ms/?p=145) · [P146 · 线程安全](https://www.bilibili.com/video/BV1yW4y1Y7Ms/?p=146)
+
+#### 一、`main()` 和普通方法是谁在执行？
+
+进程可以理解为正在运行的程序实例，线程是进程中执行代码的一条路径。IDEA 运行普通 Java 程序后，主线程负责执行 `main()`。主线程直接调用普通方法时，会进入该方法、执行完再返回。我一开始猜两处线程名不同，随后在 IDEA 用 `Thread.currentThread().getName()` 打印主线程名，并用 `run()` 的对照实验把这个区别确认下来。
+
+并发看一段时间内多个任务能否推进，并行看同一时刻多个任务是否真的在执行。用学生查询的例子检验了这个区别。线程 A 正在等 MySQL、只有线程 B 在执行 Java 代码时，两个请求可以并发推进，但在那个时刻只有 B 在执行 Java 代码。
+
+#### 二、`new`、`run()` 和 `start()` 分别做了什么？
+
+`new PrintThread()` 创建处于 `NEW` 状态的线程对象。主线程直接调用 `worker.run()` 时，还是主线程进入 `run()`，所以打印 `main`。主线程调用 `worker.start()` 后，新线程获得执行机会时调用 `run()`，这时实验曾打印 `Thread-0`。如果主线程在 `start()` 后也打印一句，两个打印的先后要看各自什么时候执行到打印语句。
+
+**为什么在 `PrintThread` 里写 `Thread.currentThread()`？** `currentThread()` 是 `Thread` 定义的静态方法。选 `Thread` 这个类名可以看清方法来自哪里。它返回当下的执行者，因此主线程直接调用 `worker.run()` 时，`this.getName()` 读的是 `worker` 对象的名字，而 `Thread.currentThread().getName()` 读的是 `main`。
+
+#### 三、怎样把任务交给线程并取回结果？
+
+| 写法 | 本次代码 |
+| --- | --- |
+| 继承 `Thread` | `PrintThread.run()` 定义要执行的代码，用 `new PrintThread()` 创建线程对象。 |
+| 实现 `Runnable` | `PrintTask.run()` 定义任务，用 `new Thread(task)` 把任务交给线程。`new PrintThread(task)` 报错是因为子类不会继承父类的构造器，而这个子类没有声明接受任务的构造器。 |
+| Lambda | `BlockedDemo` 用 `Runnable task = () -> { ... }` 定义 `run()` 的内容。`()` 表示无参数，花括号里的代码会在调用任务的 `run()` 时执行。 |
+| `Callable<Integer>` + `FutureTask<Integer>` | `SumTask.call()` 可以返回 `Integer`。`FutureTask` 接受 `Callable`，同时实现了能交给 `Thread` 的 `Runnable` 接口，并保存计算结果。 |
+
+```text
+主线程   new SumTask → new FutureTask<>(sumTask) → new Thread(futureTask) → start()
+工作线程 futureTask.run() → sumTask.call() → 求和并返回 55 → FutureTask 保存结果
+主线程   get() → 取出 55 → println(result)
+```
+
+**如果只删掉 `.get()`？** `futureTask` 的类型是 `FutureTask<Integer>`，不能直接赋给 `Integer result`。`get()` 才返回计算值。如果删掉取值和打印两行，保留 `start()`，工作线程仍会算出 `55`，只会省略主线程取值和打印的步骤。
+
+#### 四、`sleep()`、`join()` 和 `getState()` 看的是谁？
+
+| 调用 | 在练习里的作用 |
+| --- | --- |
+| `Thread.sleep(500)` 写在 `main()` | 主线程休眠约半秒。写成 `worker.sleep(500)` 仍会暂停调用者，因为 `sleep()` 是静态方法。 |
+| `Thread.sleep(2000)` 写在 `call()` | 执行求和任务的工作线程休眠约两秒。 |
+| `worker.join()` 写在 `main()` | 主线程等 `worker` 执行结束。在当前代码里，随后调用 `futureTask.get()` 可以直接读到 `55`。 |
+| `worker.getState()` 写在 `main()` | 主线程读取 `worker` 在查询时刻的状态。 |
+
+| 状态 | 观察位置 |
+| --- | --- |
+| `NEW` | 主线程在 `worker.start()` 前查看工作线程。 |
+| `RUNNABLE` | 工作线程在 `call()` 里查看自己。这个状态也包括线程就绪、等待 CPU 调度的情况。 |
+| `TIMED_WAITING` | 工作线程 `sleep(2000)` 时，主线程在半秒后查询它的状态。 |
+| `WAITING` | 主线程在无超时的 `join()` 里等工作线程结束。这段时间需要另一条线程来观察主线程。 |
+| `BLOCKED` | 工作线程走到自己的 `synchronized` 入口，等待主线程释放同一个对象的锁。 |
+| `TERMINATED` | 主线程在 `join()` 返回后查看工作线程。 |
+
+#### 五、两段 `synchronized` 代码为什么会争同一把锁？
+
+代码分在两个地方。主线程执行 `main()` 末尾的同步块，工作线程启动后执行 Lambda 内的同步块。两处 `synchronized (lock)` 都指向同一个对象，因此线程需要先获取同一把对象锁才能各自进入代码块。
+
+```java
+synchronized (lock) {
+    System.out.println("进来了");
+    worker.start();
+    Thread.sleep(500);
+    System.out.println(worker.getState());
+}
+```
+
+主线程打印「进来了」以后，持锁启动工作线程，再睡半秒。此时工作线程有机会跑到自己的同步块入口等锁。主线程醒来看到 `BLOCKED` 后，走出同步块并释放锁，工作线程才进去打印。退出这段同步块就会释放锁，正常走到右花括号、提前 `return`、异常抛出同步块都算退出。
+
+把 `start()` 放到同步块外面时，主线程先释放锁再启动工作线程。两次打印仍然可以是相同顺序，是否发生争锁要看中间的状态。开发时曾遇到 `BlockedDemo.java` 里写了 `public class BlockedNameDemo`，用 `javac` 确认报错原因是类名与文件名不一致，随后改成 `BlockedDemo` 才能继续。
+
+#### 六、验证范围与下次起点
+
+本次用 JDK 25、UTF-8 将当前 5 个 Java 文件编译到临时目录，再分别运行两个入口。下面是实际采样结果。
+
+| 入口 | 实际输出，按行顺序 |
+| --- | --- |
+| `ThreadNameDemo` | `main` → `NEW` → `支线程1` → `RUNNABLE` → `TIMED_WAITING` → `支线程1已结束` → `TERMINATED` → `55` |
+| `BlockedDemo` | `进来了` → `BLOCKED` → `工作线程进来了` |
+
+`TIMED_WAITING` 和 `BLOCKED` 是本次运行的采样值，具体查询时机受调度影响。`WAITING` 通过无超时的 `join()` 讲解，尚未写观察线程单独验证。学习时补的注释记录了任务包装、启动、等待和取结果的区别。
+
+**下次从 P146 接续。** 让两条线程共同修改一个计数器，先设定正确总数，再把 `count++` 拆成「读取 → 加一 → 写回」，分析两条线程为什么可能读到同一个旧值。复现后，用同一个对象的 `synchronized` 锁保护更新过程，比较修复前后的结果。
