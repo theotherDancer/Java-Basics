@@ -8,7 +8,7 @@
 
 **阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
 
-> 本仓库最近更新：2026-11-14，新增多线程入门练习与笔记。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+> 本仓库最近更新：2026-11-15，新增共享计数器、生产者—消费者和线程池练习。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
 >
 > 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
 
@@ -49,7 +49,8 @@
 - [x] 网络编程入门：IP、端口、InetAddress、UDP 单次与循环收发（2026-10-30；代码编译通过，运行与待验证项见当日记录）
 - [ ] TCP、网络多线程：尚未系统学习
 - [x] JavaSE 多线程入门（2026-11-14）。练过 `Thread`、`Runnable`、`Callable` 与 `FutureTask`，并观察线程状态和 `synchronized` 等锁。
-- [ ] JavaSE 多线程进阶。共享数据与线程安全、线程通信、线程池待练。
+- [x] JavaSE 多线程基础第一轮（2026-11-15）。练过共享计数、实例锁和类锁、`ReentrantLock`、`wait()` / `notify()`、线程池提交与取结果。
+- [ ] JavaSE 多线程工程实践。下一步用 `ThreadPoolExecutor` 观察有界队列、任务排队与拒绝。
 
 ## 工程目录
 
@@ -72,7 +73,7 @@
 | `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
 | `JavaCollections/` | List 增删改查、遍历与安全删除、报名综合练习、HashSet 与学生对象判重 | 2026-10-20 ~ 10-21（Map 待实操） |
 | [NetworkProgramming/](NetworkProgramming/) | IP、InetAddress、UDP 收发与缓冲区有效长度 | 2026-10-30 |
-| [multithreading/](multithreading/) | 线程创建、启动与取结果、线程状态、同步锁实验 | 2026-11-14 |
+| [multithreading/](multithreading/) | 线程创建与状态、共享计数、等待唤醒和线程池 | 2026-11-14 ~ 11-15 |
 
 > 新增 NetworkProgramming 仅归档源码和运行说明，IDEA 中选择 JDK 25，并将 src 标记为 Sources Root；其他旧工程沿用历史目录。
 
@@ -312,7 +313,7 @@
 
 ### 十八、多线程入门 `multithreading/`
 
-学习日期为 2026-11-14。IDEA 工程名为 `multithreading`，Java 文件位于 `src/` 的默认包。
+学习日期为 2026-11-14 至 11-15。IDEA 工程名为 `multithreading`，Java 文件位于 `src/` 的默认包。
 
 | 文件 | 内容与当前状态 |
 | --- | --- |
@@ -321,8 +322,12 @@
 | [SumTask.java](multithreading/src/SumTask.java) | 实现 `Callable<Integer>`，打印线程名和状态，休眠后返回 `55`。 |
 | [ThreadNameDemo.java](multithreading/src/ThreadNameDemo.java) | 包装求和任务、启动线程、查看状态、等待结束和取回结果。 |
 | [BlockedDemo.java](multithreading/src/BlockedDemo.java) | 用同一个对象锁观察工作线程的 `BLOCKED` 状态。 |
+| [Counter.java](multithreading/src/Counter.java) | 用同一个 `ReentrantLock` 保护 `count++`，在 `finally` 里解锁。 |
+| [CounterDemo.java](multithreading/src/CounterDemo.java) | 两个线程共享一个计数器，各累加十万次，主线程等待后取总数。 |
+| [WaitNotifyDemo.java](multithreading/src/WaitNotifyDemo.java) | 用 `wait()` 和 `notify()` 跑通一份数据的生产与消费。 |
+| [ThreadPoolDemo.java](multithreading/src/ThreadPoolDemo.java) | 用固定大小为 2 的线程池提交两个 `SumTask`，获取结果并关闭线程池。 |
 
-在 IDEA 用 JDK 25 运行 `ThreadNameDemo` 看求和与状态，运行 `BlockedDemo` 看争锁。详细问答和输出见 [2026-11-14 学习记录](#day-2026-11-14)。
+在 IDEA 中选择 JDK 25，将 `multithreading/src` 标记为 Sources Root。运行 `ThreadNameDemo` 看求和与状态，运行 `BlockedDemo` 看争锁，运行 `CounterDemo`、`WaitNotifyDemo` 和 `ThreadPoolDemo` 复现共享计数、等待唤醒和双线程池。详细问答和输出见 [2026-11-14 学习记录](#day-2026-11-14) 和 [2026-11-15 学习记录](#day-2026-11-15)。
 
 ## 运行方式
 
@@ -360,6 +365,7 @@ java com.test.HelloWorld
 - [2026-10-21：List、迭代器与 HashSet](#day-2026-10-21)
 - [2026-10-30：网络基础、InetAddress 与 UDP 收发](#day-2026-10-30)
 - [2026-11-14：Java 多线程入门、线程状态与同步锁](#day-2026-11-14)
+- [2026-11-15：共享计数、等待唤醒与线程池](#day-2026-11-15)
 
 <a id="day-2026-10-02"></a>
 
@@ -1350,3 +1356,83 @@ synchronized (lock) {
 `TIMED_WAITING` 和 `BLOCKED` 是本次运行的采样值，具体查询时机受调度影响。`WAITING` 通过无超时的 `join()` 讲解，尚未写观察线程单独验证。学习时补的注释记录了任务包装、启动、等待和取结果的区别。
 
 **下次从 P146 接续。** 让两条线程共同修改一个计数器，先设定正确总数，再把 `count++` 拆成「读取 → 加一 → 写回」，分析两条线程为什么可能读到同一个旧值。复现后，用同一个对象的 `synchronized` 锁保护更新过程，比较修复前后的结果。
+
+<a id="day-2026-11-15"></a>
+
+### 2026-11-15｜共享计数、等待唤醒与线程池
+
+继续在 IDEA 的 `multithreading` 工程补 JavaSE。上次在 `BlockedDemo` 观察到线程争锁，这次用三个实验串起线程安全、线程间通信和线程池。到这里完成了多线程基础第一轮。
+
+#### 一、两个线程各加十万次，为什么结果是 154046？
+
+`Counter` 里的 `count` 是一个从 0 开始的计数字段。先在主线程调用两次 `increment()`，验证得到 2。随后用 `new Counter()` 创建一个共享对象，线程 A 和 B 都跑同一个 `Runnable`，各调用十万次 `increment()`。通过 `new Thread(task)` 把任务交给线程，再用 `start()` 启动。主线程用两个 `join()` 等它们结束再打印结果。
+
+预期是 200000，未加锁时实测一次得到 154046。`count++` 可以拆成「读旧值 → 加一 → 写回」。如果 A 和 B 都读到 0，再分别写回 1，两次操作只增加了一次。`join()` 决定主线程何时读最终值，对每次累加的保护要放在 `increment()` 里。[CounterDemo.java](multithreading/src/CounterDemo.java)
+
+#### 二、没有 `new lock`，`synchronized (this)` 用的是什么锁？
+
+每个对象都关联一把内置锁。两个线程调用同一个 `counter.increment()`，同步块中的 `this` 指向同一个对象。先用 `synchronized (this)` 保护累加，再改成实例同步方法，运行得到 200000。退出同步块或同步方法时，Java 会释放相应的锁。
+
+静态同步方法用 `Counter.class` 的锁。我们推演了只把 `count` 改成 `static`，两个线程却各拿一个 `Counter` 实例的锁会怎样。它们拿的是不同的锁，改的是同一个变量，所以依然可能丢失更新。
+
+当前的 [Counter.java](multithreading/src/Counter.java) 改用了显式的 `ReentrantLock`。同一个 `Counter` 的两次累加会使用它持有的同一把锁。先获取锁，再进入 `try`，最后在 `finally` 解锁。正常执行和抛异常退出都会经过 `finally`，而 `catch` 只在发生匹配的异常时执行。
+
+```java
+lock.lock();
+try {
+    count++;
+} finally {
+    lock.unlock();
+}
+```
+
+也用两把锁推演了死锁。A 持有 `lock1` 等 `lock2`，B 持有 `lock2` 等 `lock1`。两边都卡在第二个 `lock()`，连释放第一把锁的 `finally` 都到不了。让两条线程都先拿 `lock1` 再拿 `lock2`，后到的线程就在第一把锁处等待，先到的线程可以继续获取第二把锁。
+
+#### 三、消费者先等时，生产者怎样通知它继续？
+
+用 `hasData` 模拟一份数据，`false` 表示空，`true` 表示有数据。生产者和消费者同步在同一个 `Object lock` 上。消费者没看到数据时用 `lock.wait()` 暂时释放这把锁并等待。生产者拿到锁，把 `hasData` 改成 `true`，调用 `lock.notify()`，走出同步块才释放锁。消费者收到通知后要重新拿到锁，才能从 `wait()` 返回。
+
+- **醒来为什么再检查？** 推演两个消费者争一份数据。被通知的 A 重新拿到锁前，B 可能已经取走数据。`while` 会回到条件处重查，空了就接着等待。
+- **没有通知会怎样？** 生产者先放数据时，消费者检查到 `true` 可以直接取。消费者已经在 `wait()` 时，单改标志和释放锁可能让它一直等下去。
+- **哪条线程在休眠？** `main()` 每隔约 10 毫秒查看一次消费者状态，这个 `sleep(10)` 暂停的是主线程。消费者在 `wait()` 时让出 `lock`。线程调用 `sleep()` 时仍持有已经拿到的锁。
+
+先后修过三处问题。把直接放在类体里的同步语句放进 `consume()`，把 `hasData = false` 移回同步块，让检查和更新一起受锁保护。最后将 `Runnable task` 传给 `new Thread(task)`，解决只启动了空线程、无人通知消费者的问题。
+
+主线程先启动消费者，看到它进入 `WAITING` 后启动生产者，再用两个 `join()` 等它们结束。实际输出如下。[WaitNotifyDemo.java](multithreading/src/WaitNotifyDemo.java)
+
+```text
+消费者已进入WAITING
+生产者放入了数据
+消费者取走了数据
+```
+
+#### 四、线程池复用什么？任务太多时去哪里？
+
+沿用 [SumTask.java](multithreading/src/SumTask.java) 中的 `Callable<Integer>` 求 1 到 10 的总和。用 `ExecutorService` 接住 `Executors` 创建的线程池，`submit()` 返回 `Future<Integer>`，主线程用 `get()` 取结果，并在 `finally` 调用 `shutdown()`。
+
+单线程池实验实际打印了 `pool-1-thread-1`、`RUNNABLE` 和 `55`。用同一个池写了两次提交的练习，也推演了手动在线程的任务体内顺序调用两个 `FutureTask.run()`。两种写法都能让同一条线程完成两项工作，每次 `new SumTask()` 都创建一个任务对象。线程池可以继续接收新任务并分配给已有的工作线程。
+
+切换到双线程池时，`newSingleThreadExecutor(2)` 报错，编译器提示 `int` 无法转换为 `ThreadFactory`。改用 `newFixedThreadPool(2)` 创建两条可用的工作线程。把两次 `submit()` 都放到 `get()` 前，让两个任务先进入池，主线程再等结果。[ThreadPoolDemo.java](multithreading/src/ThreadPoolDemo.java)
+
+```java
+Future<Integer> result1 = pool.submit(new SumTask());
+Future<Integer> result2 = pool.submit(new SumTask());
+System.out.println(result1.get());
+System.out.println(result2.get());
+```
+
+IDEA 实测看到两条不同的工作线程名和两次 `55`。工作线程在自己的 `sleep(2000)` 之前打印 `RUNNABLE`。两条线程打印名字的先后由调度决定，主线程按两次 `get()` 的顺序打印结果。
+
+如果两条工作线程都忙，已经提交的第三个任务会在池的队列里等，哪条线程先做完手头的任务就可以接下一项。调用 `get()` 的线程等的是任务结果，`join()` 等的是线程结束。正在任务里休眠的工作线程仍被当前任务占用。持续提交速度高于处理速度时，队列中的待执行任务会增加。
+
+#### 五、验证范围与下次起点
+
+归档前用 JDK 25、UTF-8 编译当前多线程工程的九个 Java 源文件，并运行三个入口。三个程序均正常退出。
+
+| 入口 | 复跑结果 |
+| --- | --- |
+| `CounterDemo` | 当前显式锁版本输出 `200000`。未加锁时的 `154046` 是本次学习中已有的 IDEA 实测。 |
+| `WaitNotifyDemo` | 按「消费者等待 → 生产者放入数据 → 消费者取走数据」输出。 |
+| `ThreadPoolDemo` | 两条工作线程分别执行求和，主线程输出两个 `55`。 |
+
+死锁和第三个任务排队已做执行顺序推演。**下次从 `ThreadPoolExecutor` 接着学。** 用两条工作线程和容量为 1 的队列，让两个任务占住工作线程，观察第三项排队以及队列满时第四项如何触发拒绝。
