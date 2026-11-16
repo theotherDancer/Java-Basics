@@ -1,6 +1,6 @@
 # Java 学习记录
 
-记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流 / 字符流入门）/ 异常处理（入门）→ 网络编程入门 → 多线程入门。
+记录我学习 Java 的练习代码，按学习顺序：基础语法 → 面向对象 → 继承 → 多态 → 抽象类 / 接口 / 内部类 → 常用 API → StringBuilder → 集合入门 → 阶段性项目实战 → 常用类（System / Object / 包装类）→ Math / 正则表达式 → 查找算法 → 排序算法 → `java.util.Arrays` 常用 API → 函数式编程 / Lambda → File 类常用 API → IO 流（字节流 / 字符流入门）/ 异常处理（入门）→ 网络编程入门 → 多线程入门 → 反射与注解入门。
 
 - 语言：Java（JDK 25）
 - IDE：IntelliJ IDEA
@@ -8,7 +8,7 @@
 
 **阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
 
-> 本仓库最近更新：2026-11-15，新增共享计数器、生产者—消费者和线程池练习。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+> 本仓库最近更新：2026-11-16，新增 `Review` 的反射与自定义注解练习。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
 >
 > 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
 
@@ -51,6 +51,8 @@
 - [x] JavaSE 多线程入门（2026-11-14）。练过 `Thread`、`Runnable`、`Callable` 与 `FutureTask`，并观察线程状态和 `synchronized` 等锁。
 - [x] JavaSE 多线程基础第一轮（2026-11-15）。练过共享计数、实例锁和类锁、`ReentrantLock`、`wait()` / `notify()`、线程池提交与取结果。
 - [ ] JavaSE 多线程工程实践。下一步用 `ThreadPoolExecutor` 观察有界队列、任务排队与拒绝。
+- [x] JavaSE 反射与注解入门（2026-11-16）。定义并读取 `@Route`，按路径和请求方式反射调用无参方法，已验证 GET、POST 与不匹配场景。
+- [ ] JavaSE 反射与注解后续。补 `@Target`、保留策略与默认值，再练带参方法、构造方法和字段。
 
 ## 工程目录
 
@@ -70,7 +72,7 @@
 | `MyAPI/` | `java.util.Arrays` 常用 API、Lambda 表达式入门 | 2026-10-11（lambda 进行中） |
 | `Myfile/` | `java.io.File` 常用 API：创建 / 判断 / 删除 / 时间戳 / 递归遍历 | 2026-10-14 ~ 10-15（IO 进行中） |
 | `MyIO/` | IO 流：字节流（读 / 写 / 拷贝）、字符流（FileReader / FileWriter） | 2026-10-15 ~ 10-17（IO 进行中） |
-| `Review/` | 复习：接口多态、登录注册、异常、File；字节复制、字符读写与缓冲流 | 2026-10-19 ~ 10-20 |
+| [`Review/`](Review/) | 接口多态、登录注册、异常、File、IO、反射与自定义注解 | 2026-10-19 ~ 10-20、11-16 |
 | `JavaCollections/` | List 增删改查、遍历与安全删除、报名综合练习、HashSet 与学生对象判重 | 2026-10-20 ~ 10-21（Map 待实操） |
 | [NetworkProgramming/](NetworkProgramming/) | IP、InetAddress、UDP 收发与缓冲区有效长度 | 2026-10-30 |
 | [multithreading/](multithreading/) | 线程创建与状态、共享计数、等待唤醒和线程池 | 2026-11-14 ~ 11-15 |
@@ -329,6 +331,14 @@
 
 在 IDEA 中选择 JDK 25，将 `multithreading/src` 标记为 Sources Root。运行 `ThreadNameDemo` 看求和与状态，运行 `BlockedDemo` 看争锁，运行 `CounterDemo`、`WaitNotifyDemo` 和 `ThreadPoolDemo` 复现共享计数、等待唤醒和双线程池。详细问答和输出见 [2026-11-14 学习记录](#day-2026-11-14) 和 [2026-11-15 学习记录](#day-2026-11-15)。
 
+### 十九、反射与注解入门 `Review/`
+
+| 文件 | 内容与当前状态 |
+| --- | --- |
+| [RouteDemo.java](Review/src/com/zhangyihang/reflection/RouteDemo.java) | 定义运行时注解 `@Route`，遍历类声明的方法，匹配请求路径和方式，反射调用无参方法。 |
+
+在 IDEA 中打开 `Review`，运行 `com.zhangyihang.reflection.RouteDemo.main()`。详见 [2026-11-16 学习记录](#day-2026-11-16)。
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -366,6 +376,7 @@ java com.test.HelloWorld
 - [2026-10-30：网络基础、InetAddress 与 UDP 收发](#day-2026-10-30)
 - [2026-11-14：Java 多线程入门、线程状态与同步锁](#day-2026-11-14)
 - [2026-11-15：共享计数、等待唤醒与线程池](#day-2026-11-15)
+- [2026-11-16：反射、自定义注解与路由匹配](#day-2026-11-16)
 
 <a id="day-2026-10-02"></a>
 
@@ -1436,3 +1447,35 @@ IDEA 实测看到两条不同的工作线程名和两次 `55`。工作线程在�
 | `ThreadPoolDemo` | 两条工作线程分别执行求和，主线程输出两个 `55`。 |
 
 死锁和第三个任务排队已做执行顺序推演。**下次从 `ThreadPoolExecutor` 接着学。** 用两条工作线程和容量为 1 的队列，让两个任务占住工作线程，观察第三项排队以及队列满时第四项如何触发拒绝。
+
+<a id="day-2026-11-16"></a>
+
+### 2026-11-16｜反射、自定义注解与路由匹配
+
+在 IDEA 的 `Review` 工程新增 [RouteDemo.java](Review/src/com/zhangyihang/reflection/RouteDemo.java)。从学生管理项目里同为 `/students` 的查询和新增入手，用纯 Java 模拟根据请求方式和路径选择处理方法的过程。
+
+#### 一、程序怎么在运行时找到方法？
+
+从 `Student.class` 和 `student.getClass()` 区分对象实例与类的运行时信息。已知方法名时，可以用 `getMethod("findAll")` 找到公开的无参方法。要逐个检查方法时，用 `RouteDemo.class.getDeclaredMethods()` 遍历这个类自己声明的方法。得到的 `Method` 对象可以用来查看方法名、读取注解和执行方法。
+
+#### 二、给方法贴上注解有什么用？
+
+`@interface Route` 定义了两个注解元素，`value()` 保存路径，`method()` 保存 HTTP 请求方式。`@Retention(RetentionPolicy.RUNTIME)` 使反射能在运行时读取该注解。用 `method.getAnnotation(Route.class)` 读取标签，当前方法没有贴 `@Route` 时得到 `null`。
+
+在查询和新增两个方法上分别贴 `@Route(value = "/students", method = "GET")` 和 `@Route(value = "/students", method = "POST")`。循环里先判断有注解，再用 `equals()` 比较路径和请求方式。`"/student"` 与 `"/students"`、`"Post"` 与 `"POST"` 都是不同字符串。复核注释时也区分了「读取注解」和后面的「匹配请求」。
+
+#### 三、返回的字符串怎么到了控制台？
+
+`method.invoke(controller)` 在 `controller` 对象上执行选中的无参方法，返回值由 `main()` 的 `result` 接收。接着 `System.out.println(result)` 把它显示在控制台。学生项目里，Spring MVC 根据映射注解把 HTTP 请求交给对应的 Controller 方法，再把返回值处理成 HTTP 响应。
+
+#### 四、验证范围与下次起点
+
+用 JDK 25 和 UTF-8 编译归档源码及临时测试副本，运行 `RouteDemo.main()`。主程序用字符串模拟请求。
+
+| 输入 | 实际输出 |
+| --- | --- |
+| `POST /students`（归档源码） | `新增成功` |
+| `GET /students`（临时副本） | `查询成功` |
+| `POST /student`（临时副本） | 正常退出，控制台没有业务输出 |
+
+下次先实操 `@Target(ElementType.METHOD)`，再对照 `@Retention` 的三种保留策略和注解元素的默认值。反射接着练 `findById(String studentId)`，区分查找方法时给出的参数类型和调用时传入的实际值。构造方法与字段的反射入口待学。
