@@ -8,7 +8,7 @@
 
 **阅读导航：** [学习进度](#学习进度) · [工程目录](#工程目录) · [知识点索引](#知识点索引) · [运行方式](#运行方式) · [每日学习记录](#每日学习记录)
 
-> 本仓库最近更新：2026-11-16，新增 `Review` 的反射与自定义注解练习。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
+> 本仓库最近更新为 2026-11-18，补充 Spring 组件、依赖注入与 MyBatis 参数注解的概念学习记录。2026-10-30 的网络编程记录见下方日期导航。原有主题的勾选和阶段状态保留截至 2026-10-21 的归档口径；10 月 27～28 日集合、Stream 等后续记录另见 [Database-Basics](https://github.com/theotherDancer/Database-Basics)，不要把旧日待办当成当前完整学习状态。勾选表示已学习或已验证相关练习，不代表全部独立熟练掌握；具体完成方式与限制见对应日期。
 >
 > 本页按“查当前进度 → 找工程与源码 → 看运行方式 → 按日期回顾”的顺序组织。每日记录中的“今天”“下一步”“进行中”均描述当时的状态，不自动代表现在的安排。
 
@@ -53,6 +53,8 @@
 - [ ] JavaSE 多线程工程实践。下一步用 `ThreadPoolExecutor` 观察有界队列、任务排队与拒绝。
 - [x] JavaSE 反射与注解入门（2026-11-16）。定义并读取 `@Route`，按路径和请求方式反射调用无参方法，已验证 GET、POST 与不匹配场景。
 - [ ] JavaSE 反射与注解后续。补 `@Target`、保留策略与默认值，再练带参方法、构造方法和字段。
+- [x] Spring / MyBatis 注解概念复习（2026-11-18）。对照学生项目讲解组件注册、依赖注入、MVC 返回值、`@Param` 与 `@RequestParam`，完成聊天判断练习。
+- [ ] 框架注解实操。下一步讲解 `@RequestParam` 的 `defaultValue`，再通过 IDEA 编写和请求验证巩固。
 
 ## 工程目录
 
@@ -339,6 +341,8 @@
 
 在 IDEA 中打开 `Review`，运行 `com.zhangyihang.reflection.RouteDemo.main()`。详见 [2026-11-16 学习记录](#day-2026-11-16)。
 
+11 月 18 日从这个例子延伸到 Spring 组件注册、依赖注入和请求参数绑定。当天的概念对照、聊天作答与验证边界见 [Spring / MyBatis 常用注解记录](#day-2026-11-18)。
+
 ## 运行方式
 
 每个子目录都是独立工程，在 IDEA 中打开对应目录，点绿色三角运行带 `main` 方法的类即可。命令行示例：
@@ -377,6 +381,7 @@ java com.test.HelloWorld
 - [2026-11-14：Java 多线程入门、线程状态与同步锁](#day-2026-11-14)
 - [2026-11-15：共享计数、等待唤醒与线程池](#day-2026-11-15)
 - [2026-11-16：反射、自定义注解与路由匹配](#day-2026-11-16)
+- [2026-11-18：Spring 组件、依赖注入与参数注解](#day-2026-11-18)
 
 <a id="day-2026-10-02"></a>
 
@@ -1479,3 +1484,72 @@ IDEA 实测看到两条不同的工作线程名和两次 `55`。工作线程在�
 | `POST /student`（临时副本） | 正常退出，控制台没有业务输出 |
 
 下次先实操 `@Target(ElementType.METHOD)`，再对照 `@Retention` 的三种保留策略和注解元素的默认值。反射接着练 `findById(String studentId)`，区分查找方法时给出的参数类型和调用时传入的实际值。构造方法与字段的反射入口待学。
+
+<a id="day-2026-11-18"></a>
+
+### 2026-11-18｜Spring 组件、依赖注入与参数注解
+
+从 11 月 16 日的自定义 `@Route` 练习，继续理解框架怎样利用注解管理对象、处理请求和绑定参数。按 `@Component`、`@Service`、`@Repository`、`@Controller`、`@Autowired`、`@Resource` 的顺序逐个讲解，每个结合学生管理项目对照核心作用、处理机制、使用场景、示例、分层和易错点。之后补了 MyBatis 的 `@Param` 与 Spring MVC 的 `@RequestParam`。
+
+#### 一、Spring 怎么发现组件，又怎么把依赖交给它？
+
+`@Component` 把类标记为组件扫描候选。类处于扫描范围并满足条件时，Spring 注册对应的 `BeanDefinition`，再按定义创建、配置和管理对象。组件扫描能够读取字节码中的注解信息，创建对象和调用成员还会涉及反射等机制。
+
+`@Service`、`@Repository`、`@Controller` 的定义上都标有 `@Component`，分别表达业务层、数据访问层和控制器身份。这是元注解组合关系。Controller → Service → Mapper 是业务调用方向。两种关系各有用途。
+
+| 注解 | 今天理解的职责与边界 |
+| --- | --- |
+| `@Component` | 通用组件标记，类要处于扫描范围并满足扫描条件。 |
+| `@Service` | 标记业务组件。校验和业务步骤由方法体实现，事务行为需要相应的事务配置和声明。 |
+| `@Repository` | 标记具体数据访问组件，并供持久化异常转换机制识别。转换需要处理器与转换器配合。 |
+| `@Controller` | 标记控制器，Spring MVC 根据请求映射登记和查找处理方法。 |
+| `@Autowired` | 根据类型解析依赖，多候选时结合限定与优先规则选择。可用在构造方法、字段和方法上。 |
+| `@Resource` | 根据指定或默认名称解析依赖，默认名称不存在时可回退到类型匹配。Spring 常用的注入位置是字段和 setter。 |
+
+我正确判断了 `new StudentNoticeSender()` 得到自己创建的新对象，也判断出构造参数声明为 `StudentQueryService` 时，传入的是实现对象的引用。默认单例 Bean 通常由同一个容器复用。学生项目的 Controller 只有一个构造方法，因此省略 `@Autowired` 仍可进行构造方法注入。
+
+`@Resource` 来自 Jakarta 标准，当前学生项目使用 `jakarta.annotation.Resource`。显式指定 `name` 时按该名称查找并检查类型；默认未显式指定名称时，先用字段名或 setter 对应的属性名查找，同名 Bean 不存在才回退到类型匹配。显式名称不存在时注入失败。 [组件扫描](https://docs.spring.io/spring-framework/reference/core/beans/classpath-scanning.html) · [Autowired](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html) · [Resource](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/resource.html)
+
+#### 二、学生业务应该放在哪一层？
+
+以新增学生为例，我正确区分了「发现学号已存在时拒绝新增」属于业务规则，「执行 INSERT」属于数据访问。查询得到 `null` 后，上层决定怎样向用户表达；当前学生项目由 Controller 返回带有「未找到学生」提示的结果。
+
+对照了项目中的 `StudentMapper` 接口与旧 JDBC DAO。具体数据访问类可以由普通组件扫描注册，MyBatis Mapper 接口则通过 MyBatis-Spring 的注册机制提供代理对象。单独给接口贴 `@Repository`，普通组件扫描无法据此生成接口实现。MyBatis-Spring 的 `SqlSessionTemplate` 自身提供异常转换能力。 [Mapper 注册](https://mybatis.org/spring/mappers.html) · [SqlSessionTemplate](https://mybatis.org/spring/sqlsession.html)
+
+#### 三、Controller 返回字符串时，浏览器收到什么？
+
+`@Controller` 中的映射方法返回 `"students"`，通常把该字符串作为视图名，由视图解析器定位并渲染页面。配合 `@ResponseBody` 时，返回值通过消息转换器写入响应体，字符串可以作为文本响应。两种方式最终都会形成 HTTP 响应。
+
+我正确判断出第一种是视图名，随后补清第二种发送的是字符串内容。`@RestController` 组合了 `@Controller` 与 `@ResponseBody` 的能力，这对应学生项目里把 `Result` 转成 JSON 的返回方式。 [返回值处理](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/return-types.html) · [ResponseBody](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/responsebody.html)
+
+#### 四、Param 的名字到底和谁对应？
+
+`@Param` 属于 MyBatis，给 Mapper 方法参数起一个供 SQL 使用的名字。比如 `@Param("number") String studentId` 对应 SQL 的 `#{number}`，数据库列名、Java 参数名和这个标签名各有各的用途。我正确完成了从 `#{id}` 到 `#{number}` 的改写。
+
+Java 调用仍按位置传实参。假设插入方法的前两个参数分别贴着 `@Param("studentId")` 和 `@Param("name")`，调用时写成 `insert(name, studentId, 20)`，第一个位置接到的就是姓名。我正确判断出 SQL 的 `#{studentId}` 会拿到「小明」。MyBatis 根据标签建立名称与值的对应关系，`#{...}` 最终通过 JDBC 参数占位符绑定值。 [Param 定义](https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/annotations/Param.html) · [SQL 参数绑定](https://mybatis.org/mybatis-3/sqlmap-xml.html#select)
+
+#### 五、RequestParam 接收的是哪一段数据？
+
+`@RequestParam` 属于 Spring MVC，用来把 HTTP 查询参数或表单参数绑定到 Controller 方法参数。
+
+```java
+@RequestParam("name") String username
+```
+
+HTTP 参数名是 `name`，Java 参数名是 `username`。`/greet?name=小明` 可以提供所需参数，`/greet?username=小明` 会缺少必需的 `name`。我正确指出了参数名不匹配，随后明确这是缺少必需参数，通常返回 HTTP 400，方法体不会执行。
+
+```java
+@RequestParam(value = "name", required = false) String username
+```
+
+`required = false` 允许省略参数。对这里的 `String`，省略时得到 `null`，方法体可以据此处理访客场景。 `defaultValue` 在收尾前刚准备展开，完整示例与验证留到下一次。 [RequestParam](https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestparam.html)
+
+#### 六、今天的证据、教学复盘与下次起点
+
+本次验证范围为本机学生项目的只读源码对照、官方文档核对和聊天判断。源码检查确认 Controller 使用 `@RestController` 和单构造方法注入，`StudentService` 标有 `@Service`，模拟服务的组件注解处于注释状态，Mapper 使用 `@Mapper` 和命名参数。今天的代码示例用于讲解，独立编写与运行验收待后续完成。
+
+教学按一个注解讲完再推进下一个，每个用例从熟悉的学生查询或新增进入。我能区分组件注册与依赖注入、业务规则与 SQL、视图名与响应体，并能判断参数名匹配和位置传参。后续继续用小范围代码和请求结果检查这些判断。
+
+下一次先讲 `@RequestParam` 的 `defaultValue`，再安排 IDEA 与浏览器实操。JavaSE 方面的 `@Target`、保留策略对照、自定义注解默认值和带参方法反射等仍待继续练习。
+
+复习口诀沿用「Component 登记组件，Service 管业务，Repository 管存取，Controller 接请求，Autowired 依类型，Resource 优先依名称」。
